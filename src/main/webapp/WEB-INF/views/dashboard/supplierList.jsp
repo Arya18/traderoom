@@ -66,6 +66,8 @@
 										<th>Address</th>
 										<th>Email</th>
 										<th>Phone</th>
+										<th>GST No.</th>
+										<th>Tin No.</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -78,6 +80,8 @@
 											<td>${supplier.address}</td>
 											<td>${supplier.email}</td>
 											<td>${supplier.contactNo}</td>
+											<td>${supplier.tinNumber}</td>
+											<td>${supplier.gstNumber}</td>
 
 											<td><a href="/dashboard/update-supplier/${supplier.id}"
 												class="btn btn-sm btn-success"><span

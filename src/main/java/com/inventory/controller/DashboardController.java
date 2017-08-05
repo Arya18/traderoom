@@ -823,6 +823,8 @@ public class DashboardController extends BaseController {
 		supplierFromDb.setName(supplier.getName());
 		supplierFromDb.setContactNo(supplier.getContactNo());
 		supplierFromDb.setEmail(supplier.getEmail());
+		supplierFromDb.setTinNumber(supplier.getTinNumber());
+		supplierFromDb.setGstNumber(supplier.getGstNumber());
 		
 		supplierServices.addOrUpdateSupplier(supplierFromDb);
 		model.addAttribute("Update_Msg", true);

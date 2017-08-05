@@ -72,6 +72,25 @@
 										</div>
 									</div>
 								</div>
+								
+									<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="modelNumber">Tin Number</label> <input
+												type="text" placeholder="Tin Number" id="tinNumber"
+												name="tinNumber" value="${supplier.tinNumber}"
+												class="form-control">
+										</div>
+									</div>
+
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="size">GST Number</label> <input type="text"
+												placeholder="GST Number" name="gstNumber" id="gstNumber"
+												value="${supplier.gstNumber}" class="form-control">
+										</div>
+									</div>
+								</div>
 
 							</div>
 							<!-- /.box-body -->

@@ -1,0 +1,7 @@
+ALTER TABLE `inventorymgmt`.`supplier` 
+ADD COLUMN `gst_number` VARCHAR(100) NULL AFTER `name`,
+ADD COLUMN `tin_number` VARCHAR(45) NULL AFTER `gst_number`;
+ALTER TABLE `inventorymgmt`.`supplier` 
+CHANGE COLUMN `tin_number` `tin_number` VARCHAR(100) NULL DEFAULT NULL ;
+
+

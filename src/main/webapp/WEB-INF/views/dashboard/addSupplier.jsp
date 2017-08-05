@@ -52,14 +52,14 @@
                                   <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="modelNumber">Contact number</label>
+                                            <label for="contactNo">Contact number</label>
                                             <input type="text" placeholder="contact No" id="contactNo" name="contactNo" required class="form-control">
                                         </div>
                                     </div>
                                     
                                        <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="size">Email</label>
+                                            <label for="email">Email</label>
                                             <input type="email" placeholder="Email" name="email" id="email" class="form-control">
                                         </div>
                                     </div>
@@ -68,15 +68,15 @@
                                           <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="modelNumber">Tin Number</label>
-                                            <input type="text" placeholder="Tin No" id="tinNo" name="tinNo" class="form-control">
+                                            <label for="tinNumber">Tin Number</label>
+                                            <input type="text" placeholder="Tin No" id="tinNumber" name="tinNumber" class="form-control">
                                         </div>
                                     </div>
                                     
                                        <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="gstno">GST Number</label>
-                                            <input type="text" placeholder="GST Number" name="gstno" id="gstno" class="form-control">
+                                            <label for="gstNumber">GST Number</label>
+                                            <input type="text" placeholder="GST Number" name="gstNumber" id="gstNumber" class="form-control">
                                         </div>
                                     </div>
                                     </div>

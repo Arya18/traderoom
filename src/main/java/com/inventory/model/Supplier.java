@@ -26,6 +26,11 @@ import com.inventory.DTO.AdminDTO;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Supplier implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public long getId() {
 		return id;
 	}
@@ -73,6 +78,22 @@ public class Supplier implements Serializable{
 	
 	
 
+	public String getTinNumber() {
+		return tinNumber;
+	}
+
+	public void setTinNumber(String tinNumber) {
+		this.tinNumber = tinNumber;
+	}
+
+	public String getGstNumber() {
+		return gstNumber;
+	}
+
+	public void setGstNumber(String gstNumber) {
+		this.gstNumber = gstNumber;
+	}
+
 	public Checker getChecker() {
 		return checker;
 	}
@@ -101,6 +122,12 @@ public class Supplier implements Serializable{
 	
 	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "tin_number")
+	private String tinNumber;
+	
+	@Column(name = "gst_number")
+	private String gstNumber;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="adminId")
