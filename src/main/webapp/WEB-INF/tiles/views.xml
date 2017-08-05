@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="register" extends="www">
+		<put-attribute name="body" value="/WEB-INF/views/body.jsp" />
+	</definition>
+
+	<definition name="forgot" extends="www">
+		<put-attribute name="body" value="/WEB-INF/views/forgot.jsp" />
+	</definition>
+
+	<definition name="login" extends="www">
+		<put-attribute name="body" value="/WEB-INF/views/login.jsp" />
+	</definition>
+
+	<definition name="dashboard" extends="common-dashboard">
+		<put-attribute name="header"
+			value="/WEB-INF/views/dashboard/header.jsp" />
+		<put-attribute name="menu"
+			value="/WEB-INF/views/dashboard/leftSideBar.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/dashboard/body.jsp" />
+		<put-attribute name="footer" value="" />
+	</definition>
+
+	<definition name="create-users" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/createUsers.jsp" />
+	</definition>
+
+	<definition name="customer-report" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/customerReport.jsp" />
+	</definition>
+
+	<definition name="sales-invoice" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/salesInvoice.jsp" />
+	</definition>
+
+	<definition name="product-list" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/productList.jsp" />
+	</definition>
+
+	<definition name="update-product" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/updateProduct.jsp" />
+	</definition>
+	<definition name="add-product" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/addProduct.jsp" />
+	</definition>
+
+	<definition name="supplier-list" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/supplierList.jsp" />
+	</definition>
+
+	<definition name="update-supplier" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/updateSupplier.jsp" />
+	</definition>
+	<definition name="add-supplier" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/addSupplier.jsp" />
+	</definition>
+
+	<definition name="customer-list" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/customerList.jsp" />
+	</definition>
+
+	<definition name="update-customer" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/updateCustomer.jsp" />
+	</definition>
+	<definition name="add-customer" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/addCustomer.jsp" />
+	</definition>
+	<definition name="final-saleInvoice" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/finalSaleInvoice.jsp" />
+	</definition>
+	<definition name="purchaseInvoice" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/purchaseInvoice.jsp" />
+	</definition>
+	<definition name="myprofile" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/myprofile.jsp" />
+	</definition>
+
+	<definition name="stock-report" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/stockReport.jsp" />
+	</definition>
+
+	<definition name="supplier-report" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/supplierReport.jsp" />
+	</definition>
+	<definition name="final-purchaseInvoice" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/finalPurchaseInvoice.jsp" />
+	</definition>
+	<definition name="reorder-product-report" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/reorderStockReport.jsp" />
+	</definition>
+	<definition name="product-singleUnitList" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/singleProductUnitList.jsp" />
+	</definition>
+	<definition name="update-unit-location" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/updateSingleProductUnit.jsp" />
+	</definition>
+	<definition name="due-saleInvoice" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/dueSaleInvoice.jsp" />
+	</definition>
+	<definition name="due-purchaseInvoice" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/duePurchaseInvoice.jsp" />
+	</definition>
+
+	<definition name="update-saleInvoice" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/updateSaleInvoice.jsp" />
+	</definition>
+
+	<definition name="update-purchaseInvoice" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/updatePurchaseInvoice.jsp" />
+	</definition>
+</tiles-definitions>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE tiles-definitions PUBLIC  
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<definition name="www" template="/WEB-INF/common/layout.jsp">
+
+		<put-attribute name="title" value="Inventory Management" />
+		<put-attribute name="stylecss" value="/WEB-INF/common/stylecss.jsp" />
+		<put-attribute name="header" value="/WEB-INF/common/header.jsp" />
+		<put-attribute name="menu" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/common/footer.jsp" />
+		<put-attribute name="scriptjs" value="/WEB-INF/common/scriptjs.jsp" />
+	</definition>
+
+	<definition name="common-dashboard" template="/WEB-INF/common/layout.jsp">
+
+		<put-attribute name="title" value="Inventory Management" />
+		<put-attribute name="stylecss" value="/WEB-INF/common/stylecss.jsp" />
+		<put-attribute name="header" value="/WEB-INF/dashboard/header.jsp" />
+		<put-attribute name="menu" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/common/footer.jsp" />
+		<put-attribute name="scriptjs" value="/WEB-INF/common/scriptjs.jsp" />
+	</definition>
+
+</tiles-definitions>
+
