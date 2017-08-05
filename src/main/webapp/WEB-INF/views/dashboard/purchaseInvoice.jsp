@@ -128,6 +128,8 @@
 												id="unitPrice1" class="form-control unitPrice" required>
 										</div>
 									</div>
+									</div>
+									<div class="row">
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="rebate_discount">Rebate Discount</label> <input
@@ -151,23 +153,6 @@
 												value="" id="bill_amount1" class="form-control bill_amount">
 										</div>
 									</div>
-
-
-									<div class="">
-										<div class="form-group">
-											<input type="hidden" name="id1" id="id1" class="form-control">
-										</div>
-									</div>
-									<div>
-										<input type="hidden" name="discountRate" id="discountRate1"
-											value="0" id="discount" class="form-control" required>
-									</div>
-									<div>
-										<input type="hidden" id="discountedAmount1"
-											name="discountedAmount" value="0"
-											placeholder="Discounted amount" class="form-control" required>
-									</div>
-
 
 									<div class="col-md-2">
 										<div class="form-group">
@@ -194,6 +179,20 @@
 										<p>
 											<a href="#" class="deleteRow" name="deleteRow">Delete</a>
 										</p>
+									</div>
+									<div class="">
+										<div class="form-group">
+											<input type="hidden" name="id1" id="id1" class="form-control">
+										</div>
+									</div>
+									<div>
+										<input type="hidden" name="discountRate" id="discountRate1"
+											value="0" id="discount" class="form-control" required>
+									</div>
+									<div>
+										<input type="hidden" id="discountedAmount1"
+											name="discountedAmount" value="0"
+											placeholder="Discounted amount" class="form-control" required>
 									</div>
 								</div>
 							</div>
@@ -616,6 +615,7 @@
 			  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2 hide"]').addClass("hide",1000);
 		  }
          var brandName=$('#brand'+currentDivPos).val();
+         $("#star_rating"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
          $("#modelContainer"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
          $("#sizeContainer"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
           url=null;
@@ -688,9 +688,10 @@
                    if(response.exists){
                        jQuery(".error_container").html("");
                        for( var index = 0; index < response.star.length; index ++){
+                       	if(response.star[index] != null){
                                StarContainer ="<option value='"+ response.star[index] +"'>"+response.star[index]+"</option>";
                                jQuery("#star_rating"+currentDivPos).append(StarContainer);
-                          
+                          }
                        }
                            
                        StarContainer ="</select></div></div>";

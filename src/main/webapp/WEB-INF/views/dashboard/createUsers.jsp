@@ -190,10 +190,10 @@
                                                   }
                                               }
                                           },
-                                          email : {
+                                         email : {
                                               validators : {
                                                   notEmpty : {
-                                                      message : 'The email is required and cannot be empty'
+                                                      message : "Email is required, if doen't have one enter random & unique id" 
                                                   },
                                                   emailAddress : {
                                                       message : 'The input is not a valid email address'
