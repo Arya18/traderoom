@@ -294,7 +294,7 @@ public class ProductPurchaseInvoiceDaoImpl implements ProductPurchaseInvoiceDao{
 			query.setParameter("name", firmName);
 		}
 		if(brandName!=null && !brandName.trim().isEmpty()){
-			query.setParameter("brandName", brandName);
+			query.setParameter("brand", brandName);
 		}
 		if(modelnumber!=null && !modelnumber.trim().isEmpty()){
 			query.setParameter("modelnumber", modelnumber);
