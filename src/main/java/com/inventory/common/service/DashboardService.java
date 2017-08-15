@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.inventory.common.dao.DashboardDao;
+import com.inventory.model.Firms;
 import com.inventory.model.Product;
 import com.inventory.model.ProductPurchaseInvoice;
 import com.inventory.model.ProductSaleInvoice;
@@ -74,6 +75,23 @@ public class DashboardService {
 			String modelNumber, String serialNo) {
 		return dashboardDao.findproductInfoByModelAndSerialNo(brandName,modelNumber,serialNo);
 	}*/
+	
+	public List<Firms> findallFirms() {
+		return dashboardDao.findallFirms();
+	}
+
+	public Firms getFirmByName(String name) {
+		return dashboardDao.getFirmByName(name);
+	}
+
+	public void addOrUpdateFirm(Firms firm) {
+		dashboardDao.addOrUpdateFirm(firm);
+	}
+
+	public Firms getFirmById(long firmId) {
+		return dashboardDao.getFirmById(firmId);
+	}
+
 	
 
 }

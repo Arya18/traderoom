@@ -84,4 +84,16 @@ public List<ProductPurchaseInvoice> getProductByIndoorOutdoorStatus(
 	return productPurchaseInvoiceDao.getProductByIndoorOutdoorStatus(productid,indoorStatus,outdoorStatus);
 }
 
+@Override
+public List<ProductPurchaseInvoice> getAllProductPurchaseInvoice() {
+	return productPurchaseInvoiceDao.getAllProductPurchaseInvoice();
+}
+
+@Override
+public List<Object[]> getRecordByFilter(String firmName, String unit, String brandName, String modelnumber, String size,
+		String starName, String location) {
+	return productPurchaseInvoiceDao.getRecordByFilter(firmName,unit,brandName,modelnumber, size,
+		starName,location);
+}
+
 }

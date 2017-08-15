@@ -15,7 +15,7 @@
 		<section class="content">
 
 			<div class="row">
-				<div class="col-md-12" style="margin-bottom: 10px;">
+			<!-- 	<div class="col-md-12" style="margin-bottom: 10px;">
 					<form id="frm1" method="post" enctype="multipart/form-data"
 						action="/dashboard/uploadPurchaseinvoice">
 						<div class="control-group">
@@ -33,7 +33,7 @@
 							</div>
 						</div>
 					</form>
-				</div>
+				</div> -->
 
 				<div class="col-md-12 error_msg"></div>
 				<div class="col-md-12">
@@ -132,7 +132,7 @@
 									<div class="row">
 									<div class="col-md-2">
 										<div class="form-group">
-											<label for="rebate_discount">Rebate Discount</label> <input
+											<label for="rebate_discount">Rebate/Cash Discount</label> <input
 												type="text" name="rebateDiscount"
 												placeholder="Rebate Discount" value="0"
 												id="rebate_discount1" class="form-control rebate_discount">
@@ -150,7 +150,7 @@
 										<div class="form-group">
 											<label for="bill_amount">Bill Amount</label> <input
 												type="text" name="billAmount" placeholder="Bill Amount"
-												value="" id="bill_amount1" class="form-control bill_amount">
+												value="0" id="bill_amount1" class="form-control bill_amount">
 										</div>
 									</div>
 
@@ -264,12 +264,17 @@
 										<div class="error_invoice hidden" id="invoiceErrorMsg"
 											style="color: red;"></div>
 									</div>
-									<!-- <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label for="finalDiscount">Final Discount %</label>
-                                            <input type="text" placeholder="Discounted amount" id="discountedPercent" name="discountPercent" class="form-control" required>
-                                        </div>
-                                    </div> -->
+									<div class="col-md-2">
+									<div class="form-group">
+										<label for="firm">Firm Name</label>
+										 <select class="form-control" name="firmId" id="firmId1">
+											<option value="0">--Select--</option>
+											<c:forEach items="${firms}" var="firm">
+												<option value='${firm.id}'>${firm.name}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="totalDiscountedAmount">Discounted amount</label>

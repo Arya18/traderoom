@@ -70,6 +70,10 @@ public class ProductPurchaseInvoice {
 	
 	@Column(name="indoorsale")
 	private int indoorsale;
+	
+	@ManyToOne
+	@JoinColumn(name = "firm_id")
+	private Firms firm;
 
 	public long getId() {
 		return id;
@@ -87,7 +91,6 @@ public class ProductPurchaseInvoice {
 		this.product = product;
 	}
 
-	
 
 	public PurchaseInvoice getPurchaseInvoice() {
 		return purchaseInvoice;
@@ -213,6 +216,14 @@ public class ProductPurchaseInvoice {
 
 	public void setIndoorLocation(String indoorLocation) {
 		this.indoorLocation = indoorLocation;
+	}
+
+	public Firms getFirm() {
+		return firm;
+	}
+
+	public void setFirm(Firms firm) {
+		this.firm = firm;
 	}
 	
 }

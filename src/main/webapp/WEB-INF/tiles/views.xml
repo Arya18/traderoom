@@ -138,4 +138,21 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/dashboard/updatePurchaseInvoice.jsp" />
 	</definition>
+	
+	<definition name="firms" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/firmsList.jsp" />
+	</definition>
+	<definition name="update-firm" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/updateFirm.jsp" />
+	</definition>
+	<definition name="add-firm" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/addFirm.jsp" />
+	</definition>
+	<definition name="get-filter-record" extends="dashboard">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dashboard/getFilterRecord.jsp" />
+	</definition>
 </tiles-definitions>

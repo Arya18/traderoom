@@ -31,6 +31,57 @@ public class Supplier implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
+
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
+	private long id;
+	
+	@Column(name = "name")
+	private String name;
+	
+	@Column(name = "address")
+	private String address;
+	
+	@Column(name = "contactNo")
+	private long contactNo;
+	
+	@Column(name = "email")
+	private String email;
+	
+	@Column(name = "tin_number")
+	private String tinNumber;
+	
+	@Column(name = "gst_number")
+	private String gstNumber;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="adminId")
+	private Admin admin;
+
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="checkerId")
+	private Checker checker;
+
+	@OneToMany(mappedBy="supplier")
+	private List<SupplierReport> supplierReport;
+	
+	@OneToMany(mappedBy="supplier")
+	private Set<PurchaseInvoice> purchaseInvoices;
+	
+	 public Supplier(){
+		
+	}
+	
+	public Supplier(AdminDTO adminDTO){
+		this.name = adminDTO.getName();
+		this.address = adminDTO.getAddress();
+		this.contactNo = adminDTO.getContactNo();
+		this.email = adminDTO.getEmail();
+	}
+
+
+	
 	public long getId() {
 		return id;
 	}
@@ -105,57 +156,6 @@ public class Supplier implements Serializable{
 	public void setAdmin(Admin admin) {
 		this.admin = admin;
 	}
-
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private long id;
-	
-	@Column(name = "name")
-	private String name;
-	
-	@Column(name = "address")
-	private String address;
-	
-	@Column(name = "contactNo")
-	private long contactNo;
-	
-	@Column(name = "email")
-	private String email;
-	
-	@Column(name = "tin_number")
-	private String tinNumber;
-	
-	@Column(name = "gst_number")
-	private String gstNumber;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="adminId")
-	private Admin admin;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="checkerId")
-	private Checker checker;
-
-	@OneToMany(mappedBy="supplier")
-	private List<SupplierReport> supplierReport;
-	
-	@OneToMany(mappedBy="supplier")
-	private Set<PurchaseInvoice> purchaseInvoices;
-	
-	 public Supplier(){
-		
-	}
-	
-	public Supplier(AdminDTO adminDTO){
-		this.name = adminDTO.getName();
-		this.address = adminDTO.getAddress();
-		this.contactNo = adminDTO.getContactNo();
-		this.email = adminDTO.getEmail();
-	}
-
-
-	
 	
 	public List<SupplierReport> getSupplierReport() {
 		return supplierReport;

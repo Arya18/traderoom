@@ -94,13 +94,16 @@
 								<thead>
 									<tr>
 										<th>Purchase Invoice No.</th>
+										<th>Trade Discount</th>
+										<th>Rebate Discount</th>
 										<th>Unit price</th>
-										<th>Discount Rate</th>
+										<th>Firm Name</th>
 										<th>Serial No</th>
 										<th>Sale</th>
 										<th>Indoor Serial No</th>
 										<th>Indoor Sale</th>
-										<th>Location</th>
+										<th>Outer Unit Location</th>
+										<th>Indoor Unit Location</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -111,8 +114,10 @@
 										<tr id="${productPurchaseInvoice.id}">
 
 											<td>${productPurchaseInvoice.cmpyPurchaseInvoiceNo}</td>
+											<td>${productPurchaseInvoice.tradeDiscount}</td>
+											<td>${productPurchaseInvoice.rebateDiscount}</td>
 											<td>${productPurchaseInvoice.unitPrice}</td>
-											<td>${productPurchaseInvoice.discountRate}</td>
+											<td>${productPurchaseInvoice.firmName}</td>
 											<td>${productPurchaseInvoice.serialNo}<c:if
 													test="${productPurchaseInvoice.saleInvoiceNo!=null}">(
 									         <a
@@ -134,6 +139,7 @@
 													<c:otherwise>Yes</c:otherwise>
 												</c:choose></td>
 											<td>${productPurchaseInvoice.location}</td>
+											<td>${productPurchaseInvoice.indoorLocation}</td>
 											<td><a
 												href="/dashboard/update-unitLocation/${productPurchaseInvoice.id}"
 												class="btn btn-sm btn-success"><span

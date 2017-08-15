@@ -45,19 +45,15 @@
 				<div class="col-sm-4 invoice-col">
 					From
 					<address>
-						<strong>Deepak Cool Home</strong><br> Gandi Park<br>
-						Agra Road,Aligarh<br> Phone: 9999999999<br /> Email:
-						info@deepakCoolhome.com
+						<strong>${firm.name}</strong><br>${firm.addresLine1}<br>
+						${firm.addressLine2}<br> Phone: ${firm.contactNumber}<br /> GST Number:
+						${firm.gstNumber}<br />Tin Number:${firm.tinNumber}
 					</address>
 				</div>
 				<!-- /.col -->
 				<div class="col-sm-4 invoice-col">
 					To
 					<address>
-						<%-- <c:forEach var="ProductSaleInvoice" items="${listProductSaleInvoices}"> 
-                            
-                                <strong>${ProductSaleInvoice.saleinvoice.customer.name}</strong><br></c:forEach>  --%>
-
 						<strong>${saleInvoice.customer.name}</strong><br>
 						${saleInvoice.customer.address}<br>
 						Phone:${saleInvoice.customer.contactNo}<br />

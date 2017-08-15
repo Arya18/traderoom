@@ -208,6 +208,17 @@
 											style="color: red;"></div>
 									</div>
 									<div class="col-md-2">
+									<div class="form-group">
+										<label for="firm">Firm Name</label>
+										 <select class="form-control" name="firmId" id="firmId1">
+											<option value="0">--Select--</option>
+											<c:forEach items="${firms}" var="firm">
+												<option value='${firm.id}'>${firm.name}</option>
+											</c:forEach>
+										</select>
+									</div>
+									</div>
+									<div class="col-md-2">
 										<div class="form-group">
 											<label for="finalAmount">Total Discount</label> <input
 												type="text" placeholder="Discounted amount"

@@ -2,6 +2,7 @@ package com.inventory.dao;
 
 import java.util.List;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -18,6 +19,7 @@ public class ProductPurchaseInvoiceDaoImpl implements ProductPurchaseInvoiceDao{
 	
 	@Autowired SessionFactory sessionFactory;
 	Session session = null;
+	Transaction tx = null;
 	@Override
 	public ProductPurchaseInvoice getProductPurchaseInvoiceBySerialNo(
 			String serialNo) {
@@ -127,14 +129,17 @@ public class ProductPurchaseInvoiceDaoImpl implements ProductPurchaseInvoiceDao{
 		
 		@SuppressWarnings("unchecked")
 		List<ProductPurchaseInvoice> ppis=session.createQuery("FROM ProductPurchaseInvoice WHERE product_id=:id").setParameter("id",id).list();
+		session.close();
 		return ppis;	
 		}
 
 	@Override
 	public List<ProductPurchaseInvoice> getAllIndoorProductByProductId(
 			long productid,int indoorSaleStatus) {
+		session = sessionFactory.openSession();
 		@SuppressWarnings("unchecked")
 		List<ProductPurchaseInvoice> ppis=session.createQuery("FROM ProductPurchaseInvoice WHERE product_id=:id AND indoorsale=:indoorStatus").setParameter("id",productid).setParameter("indoorStatus", indoorSaleStatus).list();
+		session.close();
 		return ppis;
 	}
 
@@ -143,17 +148,168 @@ public class ProductPurchaseInvoiceDaoImpl implements ProductPurchaseInvoiceDao{
 	@Override
 	public List<ProductPurchaseInvoice> getAllOutdoorProductByProductid(
 			long productid, int status) {
+		session = sessionFactory.openSession();
 		@SuppressWarnings("unchecked")
 		List<ProductPurchaseInvoice> ppis=session.createQuery("FROM ProductPurchaseInvoice WHERE product_id=:id AND sale=:status").setParameter("id",productid).setParameter("status", status).list();
+		session.close();
 		return ppis;
 	}
 
 	@Override
 	public List<ProductPurchaseInvoice> getProductByIndoorOutdoorStatus(
 			long productid, int indoorStatus, int outdoorStatus) {
+		session = sessionFactory.openSession();
 		@SuppressWarnings("unchecked")
 		List<ProductPurchaseInvoice> ppis=session.createQuery("FROM ProductPurchaseInvoice WHERE product_id=:id AND sale=:status AND indoorsale=:indoorStatus").setParameter("id",productid).setParameter("status", outdoorStatus).setParameter("indoorStatus", indoorStatus).list();
+		session.close();
 		return ppis;
+	}
+
+	@Override
+	public List<ProductPurchaseInvoice> getAllProductPurchaseInvoice() {
+		session = sessionFactory.openSession();
+		@SuppressWarnings("unchecked")
+		List<ProductPurchaseInvoice> ppis= session.createQuery("FROM ProductPurchaseInvoice p WHERE p.sale=0").list();
+		session.close();
+		return ppis;
+	}
+
+	@Override
+	public List<Object[]> getRecordByFilter(String firmName, String unit, String brandName, String modelnumber,
+			String size, String starName, String location) {
+		session = sessionFactory.openSession();
+		tx = session.beginTransaction();
+		
+		String joinQuery="select p.brand,p.modelNumber,p.quantity,fr.name,ps.indoorSerialNo,ps.serialNo,ps.indoor_location,ps.outer_location,ps.unit_price,p.id,p.size,p.starRating from product p "+ 
+					"left join product_supplier ps on p.id=ps.product_id left join firms fr on ps.firm_id=fr.id";
+		StringBuilder queryString=new StringBuilder(joinQuery);
+		boolean flag=false;
+		if(firmName!=null && !firmName.trim().isEmpty()){
+			queryString.append(" where fr.name=:name");
+			flag=true;
+		}
+		
+		if(unit!=null && !unit.trim().isEmpty()){
+			if(unit.equals("I")){
+				if(flag){
+					queryString.append(" AND ps.indoorsale=0");
+				}
+				else{
+					queryString.append(" where ps.indoorsale=0");
+				}
+				flag=true;
+		}
+		}
+		else{
+			
+			if(flag){
+				queryString.append(" AND ps.sale=0");
+			}
+			else{
+				queryString.append(" where ps.sale=0");
+			}
+			flag=true;
+		}
+		
+		if(brandName!=null && !brandName.trim().isEmpty()){
+			if(flag){
+				queryString.append(" AND p.brand=:brand");
+			}
+			else{
+				queryString.append(" where p.brand=brand");
+			}
+			flag=true;
+		}
+		
+		if(modelnumber!=null && !modelnumber.trim().isEmpty()){
+			if(flag){
+				queryString.append(" AND p.modelNumber=:modelnumber");
+			}
+			else{
+				queryString.append(" where p.modelNumber=modelnumber");
+			}
+			flag=true;
+		}
+		
+		if(size!=null && !size.trim().isEmpty()){
+			if(flag){
+				queryString.append(" AND p.size=:size");
+			}
+			else{
+				queryString.append(" where p.size=:size");
+			}
+			flag=true;
+		}
+		
+		if(starName!=null && !starName.trim().isEmpty()){
+			if(flag){
+				queryString.append(" AND p.starRating=:star");
+			}
+			else{
+				queryString.append(" where p.starRating=:star");
+			}
+			flag=true;
+		}
+		if(location!=null && !location.trim().isEmpty()){
+			if(location.equals("IUG")){
+				if(flag){
+					queryString.append(" AND ps.indoorLocation='Godown");
+				}
+				else{
+					queryString.append(" where ps.indoorLocation='Godown");
+				}
+				flag=true;
+		}
+			else if(location.equals("IUS")){
+				if(flag){
+					queryString.append(" AND ps.indoorLocation='Shop");
+				}
+				else{
+					queryString.append(" where ps.indoorLocation='Shop");
+				}
+				flag=true;
+		}
+			else if(location.equals("UG")){
+				if(flag){
+					queryString.append(" AND ps.location='Shop");
+				}
+				else{
+					queryString.append(" where ps.location='Shop");
+				}
+				flag=true;
+		}
+			else if(location.equals("US")){
+				if(flag){
+					queryString.append(" AND ps.location='Shop");
+				}
+				else{
+					queryString.append(" where ps.location='Shop");
+				}
+				flag=true;
+		}
+		
+		}
+		SQLQuery query = (SQLQuery) session.createSQLQuery(queryString.toString());
+		if(firmName!=null && !firmName.trim().isEmpty()){
+			query.setParameter("name", firmName);
+		}
+		if(brandName!=null && !brandName.trim().isEmpty()){
+			query.setParameter("brandName", brandName);
+		}
+		if(modelnumber!=null && !modelnumber.trim().isEmpty()){
+			query.setParameter("modelnumber", modelnumber);
+		}
+		if(size!=null && !size.trim().isEmpty()){
+			query.setParameter("size", size);
+		}
+		if(starName!=null && !starName.trim().isEmpty()){
+			query.setParameter("star", starName);
+		}
+		@SuppressWarnings("unchecked")
+		List<Object[]> rows = query.list();
+		tx.commit();
+		session.close();
+		return rows;
 	}
 	
 	}

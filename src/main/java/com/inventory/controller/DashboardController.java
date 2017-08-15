@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+import com.inventory.DTO.FilterStockReport;
 import com.inventory.DTO.ProductDTO;
 import com.inventory.DTO.PurchaseinvoiceProductDTO;
 import com.inventory.DTO.SaleInvoiceProductDTO;
@@ -54,6 +56,7 @@ import com.inventory.model.Admin;
 import com.inventory.model.Checker;
 import com.inventory.model.Customer;
 import com.inventory.model.CustomerReport;
+import com.inventory.model.Firms;
 import com.inventory.model.Maker;
 import com.inventory.model.Product;
 import com.inventory.model.ProductPurchaseInvoice;
@@ -82,6 +85,10 @@ import com.inventory.services.SupplierServices;
 import com.inventory.services.TaxInvoiceServices;
 import com.inventory.utility.CommonUtils;
 import com.inventory.utility.SessionUser;
+import static com.inventory.utility.ConversionUtils.getSafeString;
+import static com.inventory.utility.ConversionUtils.getSafeInteger;
+import static com.inventory.utility.ConversionUtils.getSafeDouble;
+import static com.inventory.utility.ConversionUtils.getSafeLong;
 
 @Controller
 @RequestMapping(value="/dashboard")
@@ -222,6 +229,8 @@ public class DashboardController extends BaseController {
 			productBrands.add(pro.getBrand());
 		}
 		model.addAttribute("products", productBrands);
+		List<Firms> firms =dashboardService.findallFirms();
+		model.addAttribute("firms", firms);
 		return "sales-invoice";
 	}
 	
@@ -989,6 +998,13 @@ public class DashboardController extends BaseController {
 				return new ResponseEntity<String>(sipd.getInvoiceNumber()+ "Sale Invoice number already exist",HttpStatus.BAD_REQUEST);
 			}
 			
+			if(sipd.getFirmId()==null){
+				return new ResponseEntity<String>("No Firm name found",HttpStatus.BAD_REQUEST);
+			} 
+			Firms firm=dashboardService.getFirmById(sipd.getFirmId());
+			if(firm==null){
+				return new ResponseEntity<String>("No Firm name found",HttpStatus.BAD_REQUEST);
+			}
 			SaleInvoice saleinvoice=new SaleInvoice();
 			
 			saleinvoice.setCmpySaleInvoiceNo(sipd.getInvoiceNumber());
@@ -1072,6 +1088,7 @@ public class DashboardController extends BaseController {
 				psi.setDiscountRate(product.getDiscountRate());
 				psi.setCmpyPurchaseInvoiceNo(product.getPurchaseInvoiceNo());
 				psi.setSerialNumber(product.getSerialNumber());
+				psi.setFirm(firm);
 				
 				psi.setIndoorSerialNo("");
 				if(product.getIndoorModelNumber()!=null || product.getIndoorModelNumber().trim().length()>0){
@@ -1146,6 +1163,8 @@ public class DashboardController extends BaseController {
 					map.put("indoorSerialNo",productSaleInvoice.getIndoorSerialNo());
 					listmap.add(map);
 				}
+				Firms firm=productSaleInvoices.iterator().next().getFirm();
+				model.addAttribute("firm", firm);
 				model.addAttribute("productList",listmap);
 				model.addAttribute("saleInvoice", saleInvoice);
 				//SaleInvoice previousSaleInvoice=saleInvoiceServices.getLastSaleInvoice(saleInvoice.getCustomer().getId());
@@ -1180,6 +1199,8 @@ public class DashboardController extends BaseController {
 					map.put("indoorSerialNo",productPurchsaseInvoice.getIndoorSerialNo());
 					listmap.add(map);
 				}
+				Firms firm=productPurchaseInvoices.iterator().next().getFirm();
+				model.addAttribute("firm", firm);
 				model.addAttribute("productList",listmap);
 				model.addAttribute("purchaseInvoice", purchaseInvoice);
 				return "final-purchaseInvoice";
@@ -1198,6 +1219,8 @@ public class DashboardController extends BaseController {
 			}
 			model.addAttribute("suppliers", map);
 			
+			List<Firms> firms=dashboardService.findallFirms();
+			model.addAttribute("firms",firms);
 			List<Product> products=productServices.getAllProducts();
 			Set<String> productBrands=new TreeSet<String>();
 			for (Product pro : products) {
@@ -1214,7 +1237,6 @@ public class DashboardController extends BaseController {
 		try{
 			PurchaseInvoice purchaseInvoice=null;
 			Supplier supplier=supplierServices.getSupplierById(purchaseInvoiceProductDTO.getSupplierId());
-			System.out.println("Supplier name"+supplier.getName());
 			
 			if(supplier==null)
 				return new ResponseEntity<String>("Supplier does not exits",HttpStatus.BAD_REQUEST);
@@ -1241,6 +1263,14 @@ public class DashboardController extends BaseController {
 			PurchaseInvoice purchaseInv=purchaseInvoiceServices.getpurchaseInvoiceByInvoiceNumber(purchaseInvoiceProductDTO.getInvoiceNumber());
 			if(purchaseInv!=null)
 				return new ResponseEntity<String>(purchaseInvoiceProductDTO.getInvoiceNumber()+ " purchase invoice number already exists",HttpStatus.BAD_REQUEST);
+			
+			if(purchaseInvoiceProductDTO.getFirmId()==null){
+				return new ResponseEntity<String>("No Firm name found",HttpStatus.BAD_REQUEST);
+			} 
+			Firms firm=dashboardService.getFirmById(purchaseInvoiceProductDTO.getFirmId());
+			if(firm==null){
+				return new ResponseEntity<String>("No Firm name found",HttpStatus.BAD_REQUEST);
+			}
 			
 				purchaseInvoice=new PurchaseInvoice();
 				purchaseInvoice.setCmpyPurchaseInvoiceNo(purchaseInvoiceProductDTO.getInvoiceNumber());
@@ -1311,6 +1341,7 @@ public class DashboardController extends BaseController {
 					ppi.setBillAmount(product.getBillAmount());
 					ppi.setSale(0);
 					ppi.setSerialNo(product.getSerialNumber());
+					ppi.setFirm(firm);
 					
 					ppi.setIndoorSerialNo("");
 					if(product.getIndoorModelNumber().trim().length()>0){
@@ -1441,16 +1472,8 @@ public class DashboardController extends BaseController {
 	public String downloadStockReport(HttpServletResponse response){
 		XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Stock Report");
-         
-     /*   Object[][] bookData = {
-                {"Head First Java", "Kathy Serria", 79},
-                {"Effective Java", "Joshua Bloch", 36},
-                {"Clean Code", "Robert martin", 42},
-                {"Thinking in Java", "Bruce Eckel", 35},
-        };*/
-        
-        
-        // create style for header cells
+              
+      // create style for header cells
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
         font.setFontName("Arial");
@@ -2147,15 +2170,20 @@ public class DashboardController extends BaseController {
 			map.put("cmpyPurchaseInvoiceNo", productPurchaseInvoice.getPurchaseInvoice().getCmpyPurchaseInvoiceNo());
 			map.put("unitPrice",productPurchaseInvoice.getUnitPrice());
 			map.put("discountRate", productPurchaseInvoice.getDiscountRate());
+			map.put("rebateDiscount",productPurchaseInvoice.getRebateDiscount());
+			map.put("tradeDiscount", productPurchaseInvoice.getTradeDiscount());
 			map.put("serialNo",productPurchaseInvoice.getSerialNo());
 			map.put("sale", productPurchaseInvoice.getSale());
 			map.put("indoorSerialNo",productPurchaseInvoice.getIndoorSerialNo());
 			map.put("indoorsale",productPurchaseInvoice.getIndoorsale());
 			map.put("location",productPurchaseInvoice.getLocation());
+			map.put("indoorLocation", productPurchaseInvoice.getIndoorLocation());
+			map.put("firmName", productPurchaseInvoice.getFirm().getName());
 			map.put("saleInvoiceNo",null);
 			map.put("saleInvoiceId",null);
 			map.put("saleInvoiceNoForIndoor",null);
 			map.put("saleInvoiceIdForIndoor",null);
+			
 			
 			try
 			{
@@ -2356,11 +2384,15 @@ public class DashboardController extends BaseController {
 			map.put("cmpyPurchaseInvoiceNo", productPurchaseInvoice.getPurchaseInvoice().getCmpyPurchaseInvoiceNo());
 			map.put("unitPrice",productPurchaseInvoice.getUnitPrice());
 			map.put("discountRate", productPurchaseInvoice.getDiscountRate());
+			map.put("rebateDiscount",productPurchaseInvoice.getRebateDiscount());
+			map.put("tradeDiscount", productPurchaseInvoice.getTradeDiscount());
 			map.put("serialNo",productPurchaseInvoice.getSerialNo());
 			map.put("sale", productPurchaseInvoice.getSale());
 			map.put("indoorSerialNo",productPurchaseInvoice.getIndoorSerialNo());
 			map.put("indoorsale",productPurchaseInvoice.getIndoorsale());
 			map.put("location",productPurchaseInvoice.getLocation());
+			map.put("indoorLocation", productPurchaseInvoice.getIndoorLocation());
+			map.put("firmName", productPurchaseInvoice.getFirm().getName());
 			map.put("saleInvoiceNo",null);
 			map.put("saleInvoiceId",null);
 			map.put("saleInvoiceNoForIndoor",null);
@@ -2399,5 +2431,216 @@ public class DashboardController extends BaseController {
 		model.addAttribute("productPurchaseInvoiceList",list);
 		model.addAttribute("productid", productid);
 		 return "product-singleUnitList";
+	}
+	
+	@RequestMapping(value="/firms", method=RequestMethod.GET)
+	public String getallFirms(Model model){
+		List<Firms> firms=dashboardService.findallFirms();
+		model.addAttribute("firms", firms);
+		 return "firms";
+	}
+	
+	@RequestMapping(value="/addfirm",method=RequestMethod.GET)
+	public String addFirm(){
+		 return "add-firm";
+	}
+	
+	@RequestMapping(value="/addfirm",method=RequestMethod.POST)
+	public String saveFirm(Model model,@ModelAttribute Firms firm,HttpSession httpSession){
+		
+		if(firm.getName().trim().length()==0 && firm.getAddresLine1().length()==0 && firm.getShortName().length()==0){
+			setError(model, "name or Address or short name of firm cannot be empty");
+			return "add-firm";
+		}
+		
+		Firms firmName=dashboardService.getFirmByName(firm.getName());
+		if(firmName!=null){
+			setError(model, " firm "+firm.getName()+ " already exist");
+			return "add-firm";
+		}
+		
+		dashboardService.addOrUpdateFirm(firm);
+		model.addAttribute("Success", true);
+		return "redirect:/dashboard/firms";
+	}
+
+	@RequestMapping(value="/update-firm/{firmId}",method=RequestMethod.GET)
+	public String updateFirm(Model model,@PathVariable(value="firmId") long firmId){
+		Firms firm=dashboardService.getFirmById(firmId);
+		if(firm==null){
+			setError(model, " firm does not exit");
+			return "redirect:/dashboard/firms";
+		}
+		model.addAttribute("firm", firm);
+		 return "update-firm";
+	}
+	
+	@RequestMapping(value="/update-firm/{firmId}",method=RequestMethod.POST)
+	public String SaveUpdatedFirm(Model model,HttpSession httpSession,@ModelAttribute Firms firm,@PathVariable(value="firmId") long firmId){
+		Firms firmFromDb=dashboardService.getFirmById(firmId);
+		
+		if(firmFromDb==null){
+			setError(model, "Sorry no firm found for updation");
+			 return "update-firm";
+		}
+		
+		if(firm.getName().trim().length()==0 ||firm.getAddresLine1().length()==0){
+			model.addAttribute("firm", firmFromDb);
+			setError(model, "Name or Address of firm cannot be empty");
+			return "update-firm";
+		}
+			
+			firmFromDb.setAddresLine1(firm.getAddresLine1());
+			firmFromDb.setAddressLine2(firm.getAddressLine2());
+			firmFromDb.setCity(firm.getCity());
+			firmFromDb.setState(firm.getState());
+			firmFromDb.setGstNumber(firm.getGstNumber());
+			firmFromDb.setTinNumber(firm.getTinNumber());
+			firmFromDb.setContactNumber(firm.getContactNumber());
+			firmFromDb.setEmail(firm.getEmail());
+			firmFromDb.setShortName(firm.getShortName());
+		
+		dashboardService.addOrUpdateFirm(firmFromDb);
+		model.addAttribute("Update_Msg", true);
+		 return "redirect:/dashboard/firms";
+	}
+	
+	@RequestMapping(value="/getFilterRecord",method=RequestMethod.GET)
+	public String getFilterRecord(Model model){
+		List<ProductPurchaseInvoice> ppi =new ArrayList<ProductPurchaseInvoice>();
+		List<ProductPurchaseInvoice> productPurchaseInvoice=productPurchaseInvoiceService.getAllProductPurchaseInvoice();
+		List<FilterStockReport> FinalStockReportList=new ArrayList<>();
+		if(productPurchaseInvoice!=null){
+		List<FilterStockReport> FilterStockReportList=transformProductPurchaseinvoice(productPurchaseInvoice);
+		FinalStockReportList=finalFilterRecords(FilterStockReportList);
+		}
+		model.addAttribute("finalStock", FinalStockReportList);
+		
+		
+		List<Firms> firms=dashboardService.findallFirms();
+		Set<String> firmName=new HashSet<>();
+		for (Firms firm : firms) {
+			firmName.add(firm.getName());
+		}
+		model.addAttribute("firmName", firmName);
+		List<Product> products=productServices.getAllProducts();
+		Set<String> brandName=new HashSet<>();
+		Set<String> modelnumber=new HashSet<>();
+		Set<String> size=new HashSet<>();
+		Set<String> star=new HashSet<>();
+		for (Product product : products) {
+			brandName.add(product.getBrand());
+			modelnumber.add(product.getModelNumber());
+			size.add(product.getSize());
+			star.add(product.getStar());
+			
+		}
+		model.addAttribute("brandName", brandName);
+		model.addAttribute("modelnumber", modelnumber);
+		model.addAttribute("size", size);
+		model.addAttribute("star", star);
+		 return "get-filter-record";
+	}
+	
+	@RequestMapping(value="/getStockByFilterRecord",method=RequestMethod.GET)
+	public String getStockByFilterRecord(Model model,
+			@RequestParam(value="firmName") String firmName,@RequestParam(value="unit") String unit,
+			@RequestParam(value="brandName") String brandName,@RequestParam(value="modelnumber") String modelnumber,
+			@RequestParam(value="size") String size,@RequestParam(value="starName") String starName,
+			@RequestParam(value="location") String location){
+		List<Object[]> objects=productPurchaseInvoiceService.getRecordByFilter(firmName,unit,brandName,modelnumber,size,starName,location);
+		List<FilterStockReport> list=new CopyOnWriteArrayList<FilterStockReport>();
+		for (Object[] obj : objects) {
+			list.add(transformObject(obj));
+		}
+		List<FilterStockReport> finalStockReportList=finalFilterRecords(list);
+		model.addAttribute("finalStock", finalStockReportList);
+		
+		List<Firms> firms=dashboardService.findallFirms();
+		Set<String> firmsName=new HashSet<>();
+		for (Firms firm : firms) {
+			firmsName.add(firm.getName());
+		}
+		model.addAttribute("firmName", firmName);
+		List<Product> products=productServices.getAllProducts();
+		Set<String> brandsName=new HashSet<>();
+		Set<String> modelnumbers=new HashSet<>();
+		Set<String> sizes=new HashSet<>();
+		Set<String> stars=new HashSet<>();
+		for (Product product : products) {
+			brandsName.add(product.getBrand());
+			modelnumbers.add(product.getModelNumber());
+			sizes.add(product.getSize());
+			stars.add(product.getStar());
+			
+		}
+		model.addAttribute("brandName", brandsName);
+		model.addAttribute("modelnumber", modelnumbers);
+		model.addAttribute("size", sizes);
+		model.addAttribute("star", stars);
+		return "get-filter-record";
+	}
+	
+	private FilterStockReport transformObject(Object[] obj){
+		FilterStockReport filterStockReport=new FilterStockReport();
+		filterStockReport.setBrandName(getSafeString(obj[0]));
+		filterStockReport.setModelNumber(getSafeString(obj[1]));
+		//filterStockReport.setQuantity(getSafeInteger(obj[2]));
+		filterStockReport.setQuantity(0);
+		filterStockReport.setFirmName(getSafeString(obj[3]));
+		filterStockReport.setIndoorSerialNo(getSafeString(obj[4]));
+		filterStockReport.setSerialNo(getSafeString(obj[5]));
+		filterStockReport.setIndoorLocation(getSafeString(obj[6]));
+		filterStockReport.setLocation(getSafeString(obj[7]));
+		filterStockReport.setUnitPrice(getSafeDouble(obj[8]));
+		filterStockReport.setProductId(getSafeLong(obj[9]));
+		filterStockReport.setSize(getSafeString(obj[10]));
+		filterStockReport.setStar(getSafeString(obj[11]));
+		return filterStockReport;
+		
+	}
+	
+	private List<FilterStockReport> finalFilterRecords(List<FilterStockReport> list){
+		List<FilterStockReport> finalFilterRecord=new CopyOnWriteArrayList<>();
+		for (FilterStockReport filterStockReport : list) {
+			if(finalFilterRecord.isEmpty()){
+				finalFilterRecord.add(filterStockReport);
+				FilterStockReport fsr=new FilterStockReport();
+			}
+			else{
+				for(FilterStockReport fsr:finalFilterRecord){
+					if(fsr.getProductId()==filterStockReport.getProductId() && fsr.getFirmName().equalsIgnoreCase(filterStockReport.getFirmName())){
+						fsr.setQuantity(fsr.getQuantity()+1);
+						fsr.setUnitPrice(fsr.getUnitPrice()+filterStockReport.getUnitPrice());
+					}
+					else{
+						finalFilterRecord.add(filterStockReport);
+					}
+				}
+			}
+			
+		}
+		return finalFilterRecord;
+	}
+	private List<FilterStockReport> transformProductPurchaseinvoice(List<ProductPurchaseInvoice> productPurchaseInvoices){
+		List<FilterStockReport> filterList=new CopyOnWriteArrayList<>();
+		for (ProductPurchaseInvoice productPurchaseInvoice : productPurchaseInvoices) {
+			FilterStockReport filterStockReport=new FilterStockReport();
+			filterStockReport.setBrandName(productPurchaseInvoice.getProduct().getBrand());
+			filterStockReport.setModelNumber(productPurchaseInvoice.getProduct().getModelNumber());
+			filterStockReport.setSize(productPurchaseInvoice.getProduct().getSize());
+			filterStockReport.setStar(productPurchaseInvoice.getProduct().getStar());
+			//filterStockReport.setQuantity(getSafeInteger(obj[2]));
+			filterStockReport.setQuantity(0);
+			filterStockReport.setFirmName(productPurchaseInvoice.getFirm().getName());
+			filterStockReport.setIndoorSerialNo(productPurchaseInvoice.getIndoorSerialNo());
+			filterStockReport.setSerialNo(productPurchaseInvoice.getSerialNo());
+			filterStockReport.setIndoorLocation(productPurchaseInvoice.getIndoorSerialNo());
+			filterStockReport.setLocation(productPurchaseInvoice.getLocation());
+			filterStockReport.setUnitPrice(productPurchaseInvoice.getUnitPrice());
+			filterStockReport.setProductId(productPurchaseInvoice.getProduct().getId());
+			filterList.add(filterStockReport);
+		}
+		return filterList;
 	}
 }

@@ -24,12 +24,120 @@
 		<!-- Main content -->
 		<section class="content">
 			<div class="row">
+			
+			<!-- 		<div class="col-md-12" style="margin-bottom: 10px;">
+
+					<form id="filterForm" method="get"
+						action="/dashboard/getSingleProductUnitByFilter">
+						<div class="alert alert-danger text-center hidden"
+							id="filterError">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+							<strong>Please Choose Any input for filter value</strong>
+						</div>
+						<div class="control-group col-md-12">
+						
+						<div class="col-md-2">
+								<label class="control-label">Firm Name</label>
+								<div class="controls">
+									<select class="form-control" name="indoorSerialNo"
+										id="indoorSerialNo">
+										<option value="">--Select--</option>
+										<option value="Yes">Yes</option>
+										<option value="No">No</option>
+									</select>
+								</div>
+						</div>
+							
+							<div class="col-md-2">
+								<label class="control-label">Brand</label>
+								<div class="controls">
+									<select class="form-control" name="serialNo" id="serialNo">
+										<option value="">--Select--</option>
+										<option value="Yes">Yes</option>
+										<option value="No">No</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-md-2">
+								<label class="control-label">Model Number</label>
+								<div class="controls">
+									<select class="form-control" name="indoorSerialNo"
+										id="indoorSerialNo">
+										<option value="">--Select--</option>
+										<option value="Yes">Yes</option>
+										<option value="No">No</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="col-md-2">
+								<label class="control-label">Size</label>
+								<div class="controls">
+									<select class="form-control" name="indoorSerialNo"
+										id="indoorSerialNo">
+										<option value="">--Select--</option>
+										<option value="Yes">Yes</option>
+										<option value="No">No</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="col-md-2">
+								<label class="control-label">Star</label>
+								<div class="controls">
+									<select class="form-control" name="indoorSerialNo"
+										id="indoorSerialNo">
+										<option value="">--Select--</option>
+										<option value="Yes">Yes</option>
+										<option value="No">No</option>
+									</select>
+								</div>
+							</div>
+								<div class="col-md-1 clearfix">
+								<label class="control-label"> </label>
+								<div class="controls">
+									<button type="button" class="btn btn-success btn-pass "
+										id="search" value="Search">Search</button>
+								</div>
+							</div>
+							
+							<div class="col-md-1 clearfix">
+								<label class="control-label"> </label>
+								<div class="controls">
+									<button type="button" class="btn btn-success btn-pass"
+										id="search" value="Search">Download Excel</button>
+								</div>
+							</div>
+						</div>
+						<div class="control-group col-md-12">
+							<div class="col-md-3 pull-right">
+								<label class="control-label"> </label>
+								<div class="controls">
+									<button type="button" class="btn btn-success btn-pass"
+										id="search" value="Search">Search</button>
+								</div>
+							</div>
+							
+							<div class="col-md-3 pull-right">
+								<label class="control-label"> </label>
+								<div class="controls">
+									<button type="button" class="btn btn-success btn-pass"
+										id="search" value="Search">Search</button>
+								</div>
+							</div>
+
+						</div>
+					</form>
+				</div> -->
 				<div class="col-xs-12">
 					<!-- /.box -->
 
 					<div class="box">
 						<div class="box-header">
-							<h3 class="box-title">Data Table With Full Features</h3>
+							<h3 class="box-title"><a href="/dashboard/getFilterRecord"
+							class="btn btn-info"><span
+							class="glyphicon glyphicon-arrow-down"></span> Record By Filter</a></h3>
 						</div>
 						<!-- /.box-header -->
 						<a href="/dashboard/downloadStockReport"

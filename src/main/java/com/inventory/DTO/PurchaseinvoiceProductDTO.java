@@ -18,6 +18,7 @@ public class PurchaseinvoiceProductDTO {
 	private long supplierId;
 	private double taxPercent;
 	private double taxAmount;
+	private Long firmId;
 	List<ProductDTO> productsArray;
 	public String getInvoiceNumber() {
 		return invoiceNumber;
@@ -92,8 +93,11 @@ public class PurchaseinvoiceProductDTO {
 	public void setTaxAmount(double taxAmount) {
 		this.taxAmount = taxAmount;
 	}
-	
-	
-	
+	public Long getFirmId() {
+		return firmId;
+	}
+	public void setFirmId(Long firmId) {
+		this.firmId = firmId;
+	}
 	
 }

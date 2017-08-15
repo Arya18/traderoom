@@ -50,6 +50,10 @@ public class ProductSaleInvoice {
 	@Column(name="cmpyPurchaseinvoiceNoForIndoor")
 	private String cmpyPurchaseinvoiceNoForIndoor;
 	
+	@ManyToOne
+	@JoinColumn(name = "firm_id")
+	private Firms firm;
+	
 	public long getId() {
 		return id;
 	}
@@ -130,7 +134,13 @@ public class ProductSaleInvoice {
 			String cmpyPurchaseinvoiceNoForIndoor) {
 		this.cmpyPurchaseinvoiceNoForIndoor = cmpyPurchaseinvoiceNoForIndoor;
 	}
+	public Firms getFirm() {
+		return firm;
+	}
+	public void setFirm(Firms firm) {
+		this.firm = firm;
+	}
 	
-	
+
 	
 }

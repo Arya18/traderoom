@@ -8,9 +8,11 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.inventory.model.Firms;
 import com.inventory.model.Product;
 import com.inventory.model.ProductPurchaseInvoice;
 import com.inventory.model.ProductSaleInvoice;
+import com.inventory.model.Supplier;
 
 @Repository
 public class DashboardDao {
@@ -127,6 +129,55 @@ public class DashboardDao {
 		session.close();
 		return products;
 	}
+
+	public List<Firms> findallFirms() {
+		session = sessionFactory.openSession();
+		@SuppressWarnings("unchecked")
+		List<Firms> firms=session.createQuery("From Firms").list();
+		session.close();
+		return firms;
+	}
+
+	public Firms getFirmByName(String name) {
+		session = sessionFactory.openSession();
+		
+		@SuppressWarnings("unchecked")
+		List<Firms> firms = session.createQuery("FROM Firms WHERE name=:n").setParameter("n",name).list();
+		session.close();
+		if(firms!=null &&!firms.isEmpty()){
+			return firms.get(0);
+		}
+		return null;
+	}
+
+		public boolean addOrUpdateFirm(Firms firm) {
+			boolean flag = false;
+		    try{    
+		    	session = sessionFactory.openSession();
+				Transaction tx = session.beginTransaction();
+				session.saveOrUpdate(firm);
+				tx.commit();
+				session.close();
+				flag = true;
+		    }catch(Exception e){
+		    	e.printStackTrace();
+		    }
+			return flag;	
+		}
+
+		public Firms getFirmById(long firmId) {
+			session = sessionFactory.openSession();
+			
+			@SuppressWarnings("unchecked")
+			List<Firms> firms = session.createQuery("FROM Firms WHERE id=:id").setParameter("id",firmId).list();
+			session.close();
+			if(firms!=null &&!firms.isEmpty()){
+				return firms.get(0);
+			}
+			return null;
+		}
+		
+	
 
 	/*public Product findproductInfoByModelAndSerialNo(String brandName,
 			String modelNumber, String serialNo) {

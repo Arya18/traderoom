@@ -63,7 +63,7 @@
 								class="fa fa-angle-double-right"></i> Customers</a></li>
 						<c:if
 							test="${HTTP_SESSION_USER.role=='Checker'|| HTTP_SESSION_USER.role=='Maker' || HTTP_SESSION_USER.role=='Admin'}">
-							<!--  <li><a href="#"><i class="fa fa-angle-double-right"></i> Retailers</a></li> -->
+							  <li><a href="/dashboard/firms"><i class="fa fa-angle-double-right"></i> Firms</a></li> 
 						</c:if>
 					</ul></li>
 				<li class="treeview"><a href="#"> <i class="fa fa-edit"></i>
