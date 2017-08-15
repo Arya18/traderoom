@@ -161,6 +161,7 @@
 						</table>
 					</div>
 					<input type="button" value="Print" onclick="window.print()" />
+					<input type="button" value="Edit" onclick="" />
 				</div>
 				<!-- /.col -->
 			</div>

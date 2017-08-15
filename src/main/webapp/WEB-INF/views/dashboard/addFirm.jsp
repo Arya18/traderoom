@@ -91,7 +91,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="address">State</label>
-                                            <input type="text" placeholder="Address" name=state id="state" class="form-control">
+                                            <input type="text" placeholder="Address" name="state" id="state" class="form-control">
                                         </div>
                                     </div>
                                     </div>
@@ -137,14 +137,118 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
             </body>
-            
+
             <script>
+            /* To set the shortname of a firm */
             $("#name").change(function(){
-            	var str=$("#name").val();
-            	var matches = str.match(/\b(\w)/g);              
-            	var shortName = matches.join(''); 
-            	$("#shortName").val(shortName);
+                var str=$("#name").val();
+                var matches = str.match(/\b(\w)/g);              
+                var shortName = matches.join(''); 
+                $("#shortName").val(shortName);
             });
+            $(document)
+            .ready(
+                    function() {
+                        console.log("started")
+                        $('#addFirmForm')
+                                .bootstrapValidator(
+                                        {
+
+                                            message : 'This value is not valid',
+                                            feedbackIcons : {
+
+                                            },
+                                            fields : {
+                                                name : {
+                                                    message : 'The name is not valid',
+                                                    validators : {
+                                                        notEmpty : {
+                                                            message : 'The name is required and cannot be empty'
+                                                        }
+                                                    
+                                                        /* regexp : {
+                                                            regexp : /^[a-zA-Z0-9_]+$/,
+                                                            message : 'The username can only consist of alphabetical, number and underscore'
+                                                        } */
+                                                    }
+                                                },
+                                                shortName : {
+                                                    message : 'The Short Name is not valid',
+                                                    validators : {
+                                                        notEmpty : {
+                                                            message : 'The Short name is required and cannot be empty'
+                                                        }
+                                                    }
+                                                },
+                                                contactNo : {
+                                                    message : 'The contact number is not valid',
+                                                    validators : {
+                                                        notEmpty : {
+                                                            message : 'The contact number is required and cannot be empty'
+                                                        },
+                                                        regexp : {
+                                                            regexp : /^[0-9_\.]+$/,
+                                                            message : 'Contact number consist of only numeric values.'
+                                                        } ,
+                                                        stringLength : {
+                                                            min : 10,
+                                                            max : 10,
+                                                            message : 'Contact number should be of 10 digits.'
+                                                        }
+                                                    }
+                                                },
+                                                email : {
+                                                    message : 'The email is not valid',
+                                                    validators : {
+                                                        notEmpty : {
+                                                            message : 'The email is required and cannot be empty'
+                                                        }
+                                                    }
+                                                },
+                                                addresLine1 : {
+                                                    message : 'The address line 1 is not valid',
+                                                    validators : {
+                                                        notEmpty : {
+                                                            message : 'The address line 1 is required and cannot be empty'
+                                                        }
+                                                    }
+                                                },
+                                                city : {
+                                                    message : 'The city is not valid',
+                                                    validators : {
+                                                        notEmpty : {
+                                                            message : 'The city is required and cannot be empty'
+                                                        }
+                                                    }
+                                                },
+
+                                                state : {
+                                                    message : 'The state is not valid',
+                                                    validators : {
+                                                        notEmpty : {
+                                                            message : 'The state is required and cannot be empty'
+                                                        }
+                                                    }
+                                                },
+                                                tinNumber : {
+                                                    message : 'The Tin Number is not valid',
+                                                    validators : {
+                                                        notEmpty : {
+                                                            message : 'The Tin Number is required and cannot be empty'
+                                                        }
+                                                    }
+                                                },
+                                                gstNumber : {
+                                                    message : 'The GST number is not valid',
+                                                    validators : {
+                                                        notEmpty : {
+                                                            message : 'The GST number is required and cannot be empty'
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                        });
+                    });
             </script>
-            
           
