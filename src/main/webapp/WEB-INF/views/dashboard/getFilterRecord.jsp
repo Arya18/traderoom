@@ -34,6 +34,13 @@
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Please Choose Any input for filter value</strong>
 						</div>
+							<c:if test="${hasError eq true}">
+
+								<div class="alert alert-danger text-center">
+									<a href="#" class="close" data-dismiss="alert"
+										aria-label="close">&times;</a> <strong>${message}</strong>
+								</div>
+							</c:if>
 						<div class="control-group col-md-12">
 						
 						<div class="col-md-2">
@@ -128,7 +135,7 @@
 								<label class="control-label"> </label>
 								<div class="controls">
 									<input type="submit" class="btn btn-success btn-pass "
-										id="search" value="Search">Search</button>
+										id="search" value="Search"/>
 								</div>
 							</div>
 							

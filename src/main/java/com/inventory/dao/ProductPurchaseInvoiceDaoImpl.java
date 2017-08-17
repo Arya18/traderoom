@@ -253,37 +253,37 @@ public class ProductPurchaseInvoiceDaoImpl implements ProductPurchaseInvoiceDao{
 		if(location!=null && !location.trim().isEmpty()){
 			if(location.equals("IUG")){
 				if(flag){
-					queryString.append(" AND ps.indoorLocation='Godown");
+					queryString.append(" AND ps.indoor_location='Godown'");
 				}
 				else{
-					queryString.append(" where ps.indoorLocation='Godown");
+					queryString.append(" where ps.indoor_location='Godown'");
 				}
 				flag=true;
 		}
 			else if(location.equals("IUS")){
 				if(flag){
-					queryString.append(" AND ps.indoorLocation='Shop");
+					queryString.append(" AND ps.indoor_location='Shop'");
 				}
 				else{
-					queryString.append(" where ps.indoorLocation='Shop");
+					queryString.append(" where ps.indoor_location='Shop'");
 				}
 				flag=true;
 		}
 			else if(location.equals("UG")){
 				if(flag){
-					queryString.append(" AND ps.location='Shop");
+					queryString.append(" AND ps.outer_location='Godown'");
 				}
 				else{
-					queryString.append(" where ps.location='Shop");
+					queryString.append(" where ps.outer_location='Godown'");
 				}
 				flag=true;
 		}
 			else if(location.equals("US")){
 				if(flag){
-					queryString.append(" AND ps.location='Shop");
+					queryString.append(" AND ps.outer_location='Shop'");
 				}
 				else{
-					queryString.append(" where ps.location='Shop");
+					queryString.append(" where ps.outer_location='Shop'");
 				}
 				flag=true;
 		}

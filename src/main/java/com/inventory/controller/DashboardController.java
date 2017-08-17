@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1335,7 +1336,6 @@ public class DashboardController extends BaseController {
 					ppi.setUnitPrice(product.getUnitPrice());
 					ppi.setDiscountedAmount(product.getDiscountedAmount());
 					ppi.setLocation(product.getLocation());
-					ppi.setIndoorLocation(product.getIndoorLocation());
 					ppi.setRebateDiscount(product.getRebateDiscount());
 					ppi.setTradeDiscount(product.getTradeDiscount());
 					ppi.setBillAmount(product.getBillAmount());
@@ -1347,6 +1347,7 @@ public class DashboardController extends BaseController {
 					if(product.getIndoorModelNumber().trim().length()>0){
 						ppi.setIndoorSerialNo(product.getIndoorModelNumber());
 						ppi.setIndoorsale(0);
+						ppi.setIndoorLocation(product.getIndoorLocation());
 					}
 					//ppi.setUnitPriceBeforeDiscount(product.getUnitPriceBeforeDiscount());
 					
@@ -2548,20 +2549,13 @@ public class DashboardController extends BaseController {
 			@RequestParam(value="brandName") String brandName,@RequestParam(value="modelnumber") String modelnumber,
 			@RequestParam(value="size") String size,@RequestParam(value="starName") String starName,
 			@RequestParam(value="location") String location){
-		List<Object[]> objects=productPurchaseInvoiceService.getRecordByFilter(firmName,unit,brandName,modelnumber,size,starName,location);
-		List<FilterStockReport> list=new CopyOnWriteArrayList<FilterStockReport>();
-		for (Object[] obj : objects) {
-			list.add(transformObject(obj));
-		}
-		List<FilterStockReport> finalStockReportList=finalFilterRecords(list);
-		model.addAttribute("finalStock", finalStockReportList);
 		
 		List<Firms> firms=dashboardService.findallFirms();
 		Set<String> firmsName=new HashSet<>();
 		for (Firms firm : firms) {
 			firmsName.add(firm.getName());
 		}
-		model.addAttribute("firmName", firmName);
+		model.addAttribute("firmName", firmsName);
 		List<Product> products=productServices.getAllProducts();
 		Set<String> brandsName=new HashSet<>();
 		Set<String> modelnumbers=new HashSet<>();
@@ -2578,6 +2572,19 @@ public class DashboardController extends BaseController {
 		model.addAttribute("modelnumber", modelnumbers);
 		model.addAttribute("size", sizes);
 		model.addAttribute("star", stars);
+		
+		List<Object[]> objects=productPurchaseInvoiceService.getRecordByFilter(firmName,unit,brandName,modelnumber,size,starName,location);
+		if(objects==null || objects.size()==0 ||objects.isEmpty()){
+			setError(model, "No Record Found for corressponding criteria");
+			return "get-filter-record";
+		}
+		List<FilterStockReport> list=new CopyOnWriteArrayList<FilterStockReport>();
+		for (Object[] obj : objects) {
+			list.add(transformObject(obj));
+		}
+		List<FilterStockReport> finalStockReportList=finalFilterRecords(list);
+		model.addAttribute("finalStock", finalStockReportList);
+		
 		return "get-filter-record";
 	}
 	
@@ -2586,7 +2593,7 @@ public class DashboardController extends BaseController {
 		filterStockReport.setBrandName(getSafeString(obj[0]));
 		filterStockReport.setModelNumber(getSafeString(obj[1]));
 		//filterStockReport.setQuantity(getSafeInteger(obj[2]));
-		filterStockReport.setQuantity(0);
+		filterStockReport.setQuantity(1);
 		filterStockReport.setFirmName(getSafeString(obj[3]));
 		filterStockReport.setIndoorSerialNo(getSafeString(obj[4]));
 		filterStockReport.setSerialNo(getSafeString(obj[5]));
@@ -2602,7 +2609,30 @@ public class DashboardController extends BaseController {
 	
 	private List<FilterStockReport> finalFilterRecords(List<FilterStockReport> list){
 		List<FilterStockReport> finalFilterRecord=new CopyOnWriteArrayList<>();
-		for (FilterStockReport filterStockReport : list) {
+		HashSet<FilterStockReport> set=new LinkedHashSet<>();
+		if(list!=null){
+		finalFilterRecord.add(list.get(0));
+		set.add(list.get(0));
+		}
+		for(FilterStockReport finalRecord:finalFilterRecord){
+			boolean counterFlag=false;
+			for (FilterStockReport filterStockReport : list) {
+				if(finalRecord.equals(filterStockReport)){
+					if(counterFlag){
+					finalRecord.setQuantity(finalRecord.getQuantity()+1);
+					finalRecord.setUnitPrice(finalRecord.getUnitPrice()+filterStockReport.getUnitPrice());
+					}
+					counterFlag=true;
+				}
+				else{
+					if(!finalFilterRecord.contains(filterStockReport)){
+					finalFilterRecord.add(filterStockReport);
+					set.add(filterStockReport);
+					}
+				}
+			}
+		}
+	/*	for (FilterStockReport filterStockReport : list) {
 			if(finalFilterRecord.isEmpty()){
 				finalFilterRecord.add(filterStockReport);
 				FilterStockReport fsr=new FilterStockReport();
@@ -2614,13 +2644,15 @@ public class DashboardController extends BaseController {
 						fsr.setUnitPrice(fsr.getUnitPrice()+filterStockReport.getUnitPrice());
 					}
 					else{
+						filterStockReport.setQuantity(filterStockReport.getQuantity()+1);
 						finalFilterRecord.add(filterStockReport);
 					}
 				}
 			}
 			
-		}
-		return finalFilterRecord;
+		}*/
+		ArrayList<FilterStockReport> lt=new ArrayList<>(set);
+		return lt;
 	}
 	private List<FilterStockReport> transformProductPurchaseinvoice(List<ProductPurchaseInvoice> productPurchaseInvoices){
 		List<FilterStockReport> filterList=new CopyOnWriteArrayList<>();
@@ -2631,7 +2663,7 @@ public class DashboardController extends BaseController {
 			filterStockReport.setSize(productPurchaseInvoice.getProduct().getSize());
 			filterStockReport.setStar(productPurchaseInvoice.getProduct().getStar());
 			//filterStockReport.setQuantity(getSafeInteger(obj[2]));
-			filterStockReport.setQuantity(0);
+			filterStockReport.setQuantity(1);
 			filterStockReport.setFirmName(productPurchaseInvoice.getFirm().getName());
 			filterStockReport.setIndoorSerialNo(productPurchaseInvoice.getIndoorSerialNo());
 			filterStockReport.setSerialNo(productPurchaseInvoice.getSerialNo());
