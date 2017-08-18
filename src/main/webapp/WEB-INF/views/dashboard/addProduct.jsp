@@ -109,21 +109,18 @@
 									<div class="col-md-4">
 										<div class="form-group">
 										<label for="CGST">CGST</label>
-											<input type="checkbox" name="cgstCheck" id="cgstCheck">
 											<input type="text" name="cgstValue" id="cgstValue">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 										<label for="IGST">IGST</label>
-											<input type="checkbox" name="igstCheck" id="igstCheck">
 											<input type="text" name="igstValue" id="igstValue">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 										<label for="SGST">SGST</label>
-											<input type="checkbox" name="sgstCheck" id="sgstCheck">
 											<input type="text" name="sgstValue" id="sgstValue">
 										</div>
 									</div>
