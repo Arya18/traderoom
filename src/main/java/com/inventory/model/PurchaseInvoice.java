@@ -89,9 +89,6 @@ public class PurchaseInvoice implements Serializable{
 	@OneToMany(mappedBy="purchaseInvoice",fetch=FetchType.EAGER)
 	private Set<ProductPurchaseInvoice> productPurchaseInvoice=new HashSet<ProductPurchaseInvoice>();
 	
-	@Column(name = "taxPercent")
-	private Double taxPercent;
-	
 	@Column(name = "taxAmount")
 	private Double taxAmount;
 	
@@ -243,14 +240,6 @@ public class PurchaseInvoice implements Serializable{
 
 	public void setDate(Date date) {
 		this.date = date;
-	}
-
-	public Double getTaxPercent() {
-		return taxPercent;
-	}
-
-	public void setTaxPercent(Double taxPercent) {
-		this.taxPercent = taxPercent;
 	}
 
 	public Double getTaxAmount() {

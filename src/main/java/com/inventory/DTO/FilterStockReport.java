@@ -122,6 +122,18 @@ public class FilterStockReport {
 	}
 	
 	
-	
+	@Override
+	public boolean  equals (Object object) {
+	    boolean result = false;
+	    if (object == null || object.getClass() != getClass()) {
+	        result = false;
+	    } else {
+	    	FilterStockReport filterStockReport = (FilterStockReport) object;
+	        if (this.productId.equals(filterStockReport.getProductId()) && this.firmName.equals(filterStockReport.getFirmName())) {
+	            result = true;
+	        }
+	    }
+	    return result;
+	}
 	
 }

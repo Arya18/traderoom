@@ -186,10 +186,6 @@
 										</div>
 									</div>
 									<div>
-										<input type="hidden" name="discountRate" id="discountRate1"
-											value="0" id="discount" class="form-control" required>
-									</div>
-									<div>
 										<input type="hidden" id="discountedAmount1"
 											name="discountedAmount" value="0"
 											placeholder="Discounted amount" class="form-control" required>
@@ -199,28 +195,29 @@
 									<div class="col-md-2">
 											<div class="form-group">
 												<label for="cgst">CGST</label> 
-												<input class="form-control cgst_tax" value="0" name="cgst"
-													id="cgst_tax1" required />
+
+												<input class="form-control cgst_tax" name="cgst"
+													id="cgst_tax1" value="0" required />
 											</div>
 									</div>
 									<div class="col-md-2">
 											<div class="form-group">
 												<label for="igst">IGST</label> 
-												<input class="form-control igst_tax" value="0" name="igst"
-													id="igst_tax1" required />
+												<input class="form-control igst_tax" name="igst"
+													id="igst_tax1" required value="0" />
 											</div>
 									</div>
 									<div class="col-md-2">
 											<div class="form-group">
 												<label for="sgst">SGST</label> 
-												<input class="form-control sgst_tax" value="0" name="sgst"
-													id="sgst_tax1" required />
+												<input class="form-control sgst_tax" name="sgst"
+													id="sgst_tax1" required value="0" />
 											</div>
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="unitPrice">Tax amount</label> <input type="text"
-												name="singleUnitTax" placeholder="Taxable amount" value=""
+												name="singleUnitTax" placeholder="Tax Amount" value=""
 												id="singleUnitTax1" class="form-control singleUnitTax" required>
 										</div>
 									</div>
@@ -836,14 +833,20 @@
 										if (response.exists) {
 											jQuery(".error_container").html("");
 
-											/* $('#unitPrice' + currentDivPos)
-													.val(response.unitPrice); */
-											/* globalUnitPrice=response.unitPrice;
-											globalAvailableQuantity=response.availableQuantity; */
-											 /* $('#discountRate' + currentDivPos)
-													.val(response.discountRate); */
 											$('#id' + currentDivPos)
 													.val(response.productId);
+											if(response.hsnCode!=null)
+											$('#hsnCode' + currentDivPos)
+											.val(response.hsnCode);
+											if(response.hsnCode!=null)
+											$('#cgst_tax' + currentDivPos)
+											.val(response.cgst);
+											if(response.igst!=null)
+											$('#igst_tax' + currentDivPos)
+											.val(response.igst);
+											if(response.sgst!=null)
+											$('#sgst_tax' + currentDivPos)
+											.val(response.sgst);
 
 										} else {
 											jQuery(".error_container")
@@ -1132,17 +1135,6 @@
 										notEmpty : {
 											message : 'Select star rating please.'
 										}
-									}
-								},
-								'discountRate': {
-									validators : {
-										notEmpty : {
-											message : 'Select discount rate please.'
-										},
-										regexp : {
-                                            regexp : /^[0-9_\.]+$/,
-                                            message : 'Only numbers'
-                                        }
 									}
 								},
 								'discountedAmount': {

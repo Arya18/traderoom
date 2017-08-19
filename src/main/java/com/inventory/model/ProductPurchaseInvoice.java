@@ -71,6 +71,9 @@ public class ProductPurchaseInvoice {
 	@Column(name="indoorsale")
 	private int indoorsale;
 	
+	@Column(name="singleUnitTax")
+	private Double singleUnitTax;
+	
 	@ManyToOne
 	@JoinColumn(name = "firm_id")
 	private Firms firm;
@@ -224,6 +227,14 @@ public class ProductPurchaseInvoice {
 
 	public void setFirm(Firms firm) {
 		this.firm = firm;
+	}
+
+	public Double getSingleUnitTax() {
+		return singleUnitTax;
+	}
+
+	public void setSingleUnitTax(Double singleUnitTax) {
+		this.singleUnitTax = singleUnitTax;
 	}
 	
 }

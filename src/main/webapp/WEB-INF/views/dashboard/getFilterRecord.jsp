@@ -34,6 +34,13 @@
 							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 							<strong>Please Choose Any input for filter value</strong>
 						</div>
+							<c:if test="${hasError eq true}">
+
+								<div class="alert alert-danger text-center">
+									<a href="#" class="close" data-dismiss="alert"
+										aria-label="close">&times;</a> <strong>${message}</strong>
+								</div>
+							</c:if>
 						<div class="control-group col-md-12">
 						
 						<div class="col-md-2">
@@ -124,14 +131,22 @@
 									</select>
 								</div>
 							</div>
-								<div class="col-md-2 clearfix">
+								<div class="col-md-1 clearfix">
 								<label class="control-label"> </label>
 								<div class="controls">
 									<input type="submit" class="btn btn-success btn-pass "
-										id="search" value="Search">Search</button>
+										id="search" value="Search"/>
 								</div>
 							</div>
 							
+								<div class="col-md-2 clearfix">
+								<label class="control-label"> </label>
+								<div class="controls">
+									<a href="/dashboard/downloadFilterStockReport"
+							class="btn btn-success pull-right"><span
+							class="glyphicon glyphicon-arrow-down"></span> Download Excel</a>
+								</div>
+							</div>
 							
 						</div>
 					</form>
@@ -144,7 +159,7 @@
 							<h3 class="box-title"> Record By Filter</h3>
 						</div>
 						<!-- /.box-header -->
-						<a href="/dashboard/downloadStockReport"
+						<a href="/dashboard/downloadFilterStockReport"
 							class="btn btn-success pull-right downloadbutton"><span
 							class="glyphicon glyphicon-arrow-down"></span> Download Excel</a>
 						<div class="box-body table-responsive">

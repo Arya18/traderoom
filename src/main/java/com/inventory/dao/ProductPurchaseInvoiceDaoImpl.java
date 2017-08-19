@@ -2,6 +2,8 @@ package com.inventory.dao;
 
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -166,12 +168,16 @@ public class ProductPurchaseInvoiceDaoImpl implements ProductPurchaseInvoiceDao{
 	}
 
 	@Override
-	public List<ProductPurchaseInvoice> getAllProductPurchaseInvoice() {
+	public List<Object[]> getAllStockProductPurchaseInvoice() {
 		session = sessionFactory.openSession();
+		tx = session.beginTransaction();
+		SQLQuery query = (SQLQuery) session.createSQLQuery("select p.brand,p.modelNumber,p.size,p.starRating,fr.name as frimName,p.id as productId,count(*) as quantity,sum(ps.unit_price) as unitPrice from product p "+
+		"inner join product_supplier ps on p.id=ps.product_id inner join firms fr on fr.id=ps.firm_id where ps.sale=0 group by fr.id, p.id");
 		@SuppressWarnings("unchecked")
-		List<ProductPurchaseInvoice> ppis= session.createQuery("FROM ProductPurchaseInvoice p WHERE p.sale=0").list();
+		List<Object[]> rows = query.list();
+		tx.commit();
 		session.close();
-		return ppis;
+		return rows;
 	}
 
 	@Override
@@ -180,8 +186,8 @@ public class ProductPurchaseInvoiceDaoImpl implements ProductPurchaseInvoiceDao{
 		session = sessionFactory.openSession();
 		tx = session.beginTransaction();
 		
-		String joinQuery="select p.brand,p.modelNumber,p.quantity,fr.name,ps.indoorSerialNo,ps.serialNo,ps.indoor_location,ps.outer_location,ps.unit_price,p.id,p.size,p.starRating from product p "+ 
-					"left join product_supplier ps on p.id=ps.product_id left join firms fr on ps.firm_id=fr.id";
+		String joinQuery="select p.brand,p.modelNumber,p.size,p.starRating,fr.name as frimName,p.id as productId,count(*) as quantity,sum(ps.unit_price) as unitPrice from product p "+ 
+					"inner join product_supplier ps on p.id=ps.product_id inner join firms fr on fr.id=ps.firm_id";
 		StringBuilder queryString=new StringBuilder(joinQuery);
 		boolean flag=false;
 		if(firmName!=null && !firmName.trim().isEmpty()){
@@ -253,42 +259,43 @@ public class ProductPurchaseInvoiceDaoImpl implements ProductPurchaseInvoiceDao{
 		if(location!=null && !location.trim().isEmpty()){
 			if(location.equals("IUG")){
 				if(flag){
-					queryString.append(" AND ps.indoorLocation='Godown");
+					queryString.append(" AND ps.indoor_location='Godown'");
 				}
 				else{
-					queryString.append(" where ps.indoorLocation='Godown");
+					queryString.append(" where ps.indoor_location='Godown'");
 				}
 				flag=true;
 		}
 			else if(location.equals("IUS")){
 				if(flag){
-					queryString.append(" AND ps.indoorLocation='Shop");
+					queryString.append(" AND ps.indoor_location='Shop'");
 				}
 				else{
-					queryString.append(" where ps.indoorLocation='Shop");
+					queryString.append(" where ps.indoor_location='Shop'");
 				}
 				flag=true;
 		}
 			else if(location.equals("UG")){
 				if(flag){
-					queryString.append(" AND ps.location='Shop");
+					queryString.append(" AND ps.outer_location='Godown'");
 				}
 				else{
-					queryString.append(" where ps.location='Shop");
+					queryString.append(" where ps.outer_location='Godown'");
 				}
 				flag=true;
 		}
 			else if(location.equals("US")){
 				if(flag){
-					queryString.append(" AND ps.location='Shop");
+					queryString.append(" AND ps.outer_location='Shop'");
 				}
 				else{
-					queryString.append(" where ps.location='Shop");
+					queryString.append(" where ps.outer_location='Shop'");
 				}
 				flag=true;
 		}
 		
 		}
+		queryString.append(" ").append("group by fr.id, p.id");
 		SQLQuery query = (SQLQuery) session.createSQLQuery(queryString.toString());
 		if(firmName!=null && !firmName.trim().isEmpty()){
 			query.setParameter("name", firmName);

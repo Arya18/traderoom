@@ -85,8 +85,8 @@ public List<ProductPurchaseInvoice> getProductByIndoorOutdoorStatus(
 }
 
 @Override
-public List<ProductPurchaseInvoice> getAllProductPurchaseInvoice() {
-	return productPurchaseInvoiceDao.getAllProductPurchaseInvoice();
+public List<Object[]> getAllStockProductPurchaseInvoice() {
+	return productPurchaseInvoiceDao.getAllStockProductPurchaseInvoice();
 }
 
 @Override

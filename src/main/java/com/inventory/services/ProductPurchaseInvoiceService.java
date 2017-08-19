@@ -36,7 +36,7 @@ public interface ProductPurchaseInvoiceService {
 	List<ProductPurchaseInvoice> getProductByIndoorOutdoorStatus(
 			long productid, int indoorStatus, int outdoorStatus);
 
-	List<ProductPurchaseInvoice> getAllProductPurchaseInvoice();
+	List<Object[]> getAllStockProductPurchaseInvoice();
 
 	List<Object[]> getRecordByFilter(String firmName, String unit, String brandName, String modelnumber, String size,
 			String starName, String location);
