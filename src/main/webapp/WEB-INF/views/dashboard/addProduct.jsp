@@ -10,10 +10,6 @@
 				<!-- <small>Control panel</small> -->
 			</h1>
 			<br />
-			<!-- <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Blank page</li>
-                    </ol> -->
 			<div class="row">
 				<div class="col-md-12">
 					<!-- general form elements -->
@@ -105,12 +101,33 @@
 											<div class="help-block"></div>
 										</div>
 									</div>
-
-									<div class="col-md-6">
-										<div class="form-group"></div>
+								</div>
+								<div class="row"><br/>
+								<div class="col-md-12">
+									<label>GST Taxation</label>
+								</div>
+									<div class="col-md-4">
+										<div class="form-group">
+										<label for="CGST">CGST</label>
+											<input type="checkbox" name="cgstCheck" id="cgstCheck">
+											<input type="text" name="cgstValue" id="cgstValue">
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+										<label for="IGST">IGST</label>
+											<input type="checkbox" name="igstCheck" id="igstCheck">
+											<input type="text" name="igstValue" id="igstValue">
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+										<label for="SGST">SGST</label>
+											<input type="checkbox" name="sgstCheck" id="sgstCheck">
+											<input type="text" name="sgstValue" id="sgstValue">
+										</div>
 									</div>
 								</div>
-
 							</div>
 							<!-- /.box-body -->
 							<div class="clearfix">

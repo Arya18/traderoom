@@ -38,7 +38,7 @@
 						<!-- /.box-header -->
 						<a href="/dashboard/addcustomer"
 							class="btn btn-primary btn-info pull-right addbutton"><span
-							class="glyphicon glyphicon-plus"></span> Add Customer</a>
+							class="glyphicon glyphicon-plus"> Add Customer </span></a>
 
 						<c:if test="${param.Update_Msg==true}">
 
