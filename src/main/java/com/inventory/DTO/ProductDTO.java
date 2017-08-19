@@ -50,11 +50,11 @@ public class ProductDTO {
 	
 	private String location;
 	
-	private Double cgstValue;
+	private Double cgst;
 	
-	private Double igstValue;
+	private Double igst;
 	
-	private Double sgstValue;
+	private Double sgst;
 	
 	private String hsnCode;
 
@@ -219,28 +219,29 @@ public class ProductDTO {
 		this.indoorLocation = indoorLocation;
 	}
 
-	public Double getCgstValue() {
-		return cgstValue;
+	
+	public Double getCgst() {
+		return cgst;
 	}
 
-	public void setCgstValue(Double cgstValue) {
-		this.cgstValue = cgstValue;
+	public void setCgst(Double cgst) {
+		this.cgst = cgst;
 	}
 
-	public Double getIgstValue() {
-		return igstValue;
+	public Double getIgst() {
+		return igst;
 	}
 
-	public void setIgstValue(Double igstValue) {
-		this.igstValue = igstValue;
+	public void setIgst(Double igst) {
+		this.igst = igst;
 	}
 
-	public Double getSgstValue() {
-		return sgstValue;
+	public Double getSgst() {
+		return sgst;
 	}
 
-	public void setSgstValue(Double sgstValue) {
-		this.sgstValue = sgstValue;
+	public void setSgst(Double sgst) {
+		this.sgst = sgst;
 	}
 
 	public String getHsnCode() {
