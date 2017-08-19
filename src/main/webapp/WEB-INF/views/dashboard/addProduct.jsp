@@ -117,19 +117,19 @@
 									<div class="col-md-4">
 										<div class="form-group">
 										<label for="CGST">CGST</label>
-											<input type="text" name="cgstValue" id="cgstValue">
+											<input type="text" name="cgstValue" id="cgstValue" value="0">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 										<label for="IGST">IGST</label>
-											<input type="text" name="igstValue" id="igstValue">
+											<input type="text" name="igstValue" id="igstValue" value="0">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 										<label for="SGST">SGST</label>
-											<input type="text" name="sgstValue" id="sgstValue">
+											<input type="text" name="sgstValue" id="sgstValue" value="0">
 										</div>
 									</div>
 								</div>

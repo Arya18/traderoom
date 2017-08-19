@@ -77,8 +77,12 @@
 								<th>Brand</th>
 								<th>Description</th>
 								<th>Unit Price(in Rs)</th>
-								<th>Discount Rate</th>
-								<th>Unit price After Discount(in Rs)</th>
+								<th>Trade Discount</th>
+								<th>Rebate Discount</th> 
+								<th>HSN Code</th>
+								<th>Bill Amount</th>
+								<th>Tax Amount</th>
+								<th>Basic Amount</th>
 								<th>Serial Number</th>
 
 							</tr>
@@ -92,8 +96,12 @@
 									<td>model No ${productDetail.model } ,size
 										${productDetail.size}</td>
 									<td>${productDetail.unitPrice }</td>
-									<td>${productDetail.discountRate}</td>
-									<td>${productDetail.unitPrice-((productDetail.unitPrice*productDetail.discountRate)/100)}</td>
+									<td>${productDetail.tradeDiscount }</td>
+									<td>${productDetail.rebateDiscount }</td>
+									<td>${productDetail.hsnCode }</td>
+									<td>${productDetail.billAmount}</td>
+									<td>${productDetail.billAmount-productDetail.singleUnitTax}</td>
+									<td>${productDetail.singleUnitTax (cgst(productDetail.cgst)%,sgst(productDetail.cgst)%,igst(productDetail.igst)%)</td>
 									<td>${productDetail.serialNo}<c:if
 											test="${not empty productDetail.indoorSerialNo}">
                                          >>Indoor Serial No:${productDetail.indoorSerialNo}
@@ -118,11 +126,7 @@
 
 
 							<tr>
-								<th>Total Discounted Amount:</th>
-								<td>${purchaseInvoice.discountAmount}</td>
-							</tr>
-							<tr>
-								<th>Total Taxable Amount:(${purchaseInvoice.taxPercent} %)</th>
+								<th>Total Taxable Amount:</th>
 								<td>${purchaseInvoice.taxAmount}</td>
 							</tr>
 

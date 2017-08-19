@@ -22,7 +22,7 @@
 		<section class="content">
 			<div class="row">
 
-				<div class="col-md-12" style="margin-bottom: 10px;">
+			<!-- 	<div class="col-md-12" style="margin-bottom: 10px;">
 					<form id="frm1" method="post" enctype="multipart/form-data"
 						action="/dashboard/uploadSaleinvoice">
 						<div class="control-group">
@@ -41,7 +41,7 @@
 							</div>
 						</div>
 					</form>
-				</div>
+				</div> -->
 				<div class="col-md-12 error_msg"></div>
 				<div class="col-md-12">
 					<!-- general form elements -->

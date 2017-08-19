@@ -16,7 +16,6 @@ public class PurchaseinvoiceProductDTO {
 	private String comments="ok";
 	private Date date;
 	private long supplierId;
-	private double taxPercent;
 	private double taxAmount;
 	private Long firmId;
 	List<ProductDTO> productsArray;
@@ -80,12 +79,6 @@ public class PurchaseinvoiceProductDTO {
 	}
 	public void setFinalAmount(double finalAmount) {
 		this.finalAmount = finalAmount;
-	}
-	public double getTaxPercent() {
-		return taxPercent;
-	}
-	public void setTaxPercent(double taxPercent) {
-		this.taxPercent = taxPercent;
 	}
 	public double getTaxAmount() {
 		return taxAmount;

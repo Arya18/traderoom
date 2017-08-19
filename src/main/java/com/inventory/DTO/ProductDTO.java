@@ -18,8 +18,6 @@ public class ProductDTO {
 	
 	private long quantity;
 	
-	private double unitPriceBeforeDiscount;
-	
 	private String starRating;
 	
 	private String indoorPurchaseInvoiceNo;
@@ -28,17 +26,17 @@ public class ProductDTO {
 	
 	private double unitPrice;
 	
-	private double rebateDiscount;
+	private Double rebateDiscount;
 	
-	private double tradeDiscount;
+	private Double tradeDiscount;
 	
-	private double billAmount;
+	private Double billAmount;
 	
 	private String indoorLocation;
 	
-	private double discountRate;
-	
 	private double discountedAmount;
+	
+	private Double singleUnitTax;
 	
 	private String size;
 	
@@ -51,6 +49,14 @@ public class ProductDTO {
 	private String serialNumber;
 	
 	private String location;
+	
+	private Double cgstValue;
+	
+	private Double igstValue;
+	
+	private Double sgstValue;
+	
+	private String hsnCode;
 
 	public long getId() {
 		return id;
@@ -100,14 +106,6 @@ public class ProductDTO {
 		this.unitPrice = unitPrice;
 	}
 
-	public double getDiscountRate() {
-		return discountRate;
-	}
-
-	public void setDiscountRate(double discountRate) {
-		this.discountRate = discountRate;
-	}
-
 	public String getSessionId() {
 		return sessionId;
 	}
@@ -122,14 +120,6 @@ public class ProductDTO {
 
 	public void setSize(String size) {
 		this.size = size;
-	}
-
-	public double getUnitPriceBeforeDiscount() {
-		return unitPriceBeforeDiscount;
-	}
-
-	public void setUnitPriceBeforeDiscount(double unitPriceBeforeDiscount) {
-		this.unitPriceBeforeDiscount = unitPriceBeforeDiscount;
 	}
 
 	public double getDiscountedAmount() {
@@ -196,27 +186,28 @@ public class ProductDTO {
 		this.indoorModelNumber = indoorModelNumber;
 	}
 
-	public double getRebateDiscount() {
+	
+	public Double getRebateDiscount() {
 		return rebateDiscount;
 	}
 
-	public void setRebateDiscount(double rebateDiscount) {
+	public void setRebateDiscount(Double rebateDiscount) {
 		this.rebateDiscount = rebateDiscount;
 	}
 
-	public double getTradeDiscount() {
+	public Double getTradeDiscount() {
 		return tradeDiscount;
 	}
 
-	public void setTradeDiscount(double tradeDiscount) {
+	public void setTradeDiscount(Double tradeDiscount) {
 		this.tradeDiscount = tradeDiscount;
 	}
 
-	public double getBillAmount() {
+	public Double getBillAmount() {
 		return billAmount;
 	}
 
-	public void setBillAmount(double billAmount) {
+	public void setBillAmount(Double billAmount) {
 		this.billAmount = billAmount;
 	}
 
@@ -227,5 +218,46 @@ public class ProductDTO {
 	public void setIndoorLocation(String indoorLocation) {
 		this.indoorLocation = indoorLocation;
 	}
+
+	public Double getCgstValue() {
+		return cgstValue;
+	}
+
+	public void setCgstValue(Double cgstValue) {
+		this.cgstValue = cgstValue;
+	}
+
+	public Double getIgstValue() {
+		return igstValue;
+	}
+
+	public void setIgstValue(Double igstValue) {
+		this.igstValue = igstValue;
+	}
+
+	public Double getSgstValue() {
+		return sgstValue;
+	}
+
+	public void setSgstValue(Double sgstValue) {
+		this.sgstValue = sgstValue;
+	}
+
+	public String getHsnCode() {
+		return hsnCode;
+	}
+
+	public void setHsnCode(String hsnCode) {
+		this.hsnCode = hsnCode;
+	}
+
+	public Double getSingleUnitTax() {
+		return singleUnitTax;
+	}
+
+	public void setSingleUnitTax(Double singleUnitTax) {
+		this.singleUnitTax = singleUnitTax;
+	}
+	
 	
 }

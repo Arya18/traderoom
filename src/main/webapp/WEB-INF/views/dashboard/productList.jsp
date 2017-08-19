@@ -60,6 +60,7 @@
 							<table id="example1" class="table table-bordered table-striped">
 								<thead>
 									<tr>
+										
 										<th>Brand</th>
 										<th>Product Type</th>
 										<th>Model Number</th>
@@ -67,6 +68,10 @@
 										<th>Available Quantity</th>
 										<th>Reorder Point</th>
 										<th>Star</th>
+										<th>HSN Code</th>
+										<th>CGST</th>
+										<th>IGST</th>
+										<th>SGST</th>
 										<th>Create date</th>
 										<th>Action</th>
 									</tr>
@@ -83,6 +88,10 @@
 											<td>${product.quantity}</td>
 											<td>${product.reorderPoint}</td>
 											<td>${product.star}</td>
+											<td>${product.hsnCode}</td>
+											<td>${product.cgstValue}</td>
+											<td>${product.igstValue}</td>
+											<td>${product.sgstValue}</td>
 											<td>${product.created}</td>
 
 											<td><a href="/dashboard/update-product/${product.id}"

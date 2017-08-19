@@ -51,7 +51,8 @@ public class StockReportDaoImpl implements StockReportDao{
 		
 		Object result=c.uniqueResult();
 		stockReport = (StockReport)result;
-		
+		tx.commit();
+		session.close();
 		return stockReport;
 	}
 

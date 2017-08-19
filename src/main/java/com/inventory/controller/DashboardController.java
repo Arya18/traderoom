@@ -1,5 +1,10 @@
 package com.inventory.controller;
 
+import static com.inventory.utility.ConversionUtils.getSafeDouble;
+import static com.inventory.utility.ConversionUtils.getSafeInteger;
+import static com.inventory.utility.ConversionUtils.getSafeLong;
+import static com.inventory.utility.ConversionUtils.getSafeString;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -12,12 +17,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +34,6 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.taglibs.standard.lang.jstl.OrOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,14 +48,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import au.com.bytecode.opencsv.CSVReader;
-
 import com.inventory.DTO.FilterStockReport;
 import com.inventory.DTO.ProductDTO;
 import com.inventory.DTO.PurchaseinvoiceProductDTO;
 import com.inventory.DTO.SaleInvoiceProductDTO;
 import com.inventory.common.service.DashboardService;
-import com.inventory.dao.ProductPurchaseInvoiceDao;
 import com.inventory.model.Admin;
 import com.inventory.model.Checker;
 import com.inventory.model.Customer;
@@ -87,10 +86,8 @@ import com.inventory.services.SupplierServices;
 import com.inventory.services.TaxInvoiceServices;
 import com.inventory.utility.CommonUtils;
 import com.inventory.utility.SessionUser;
-import static com.inventory.utility.ConversionUtils.getSafeString;
-import static com.inventory.utility.ConversionUtils.getSafeInteger;
-import static com.inventory.utility.ConversionUtils.getSafeDouble;
-import static com.inventory.utility.ConversionUtils.getSafeLong;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 @Controller
 @RequestMapping(value = "/dashboard")
@@ -447,7 +444,6 @@ public class DashboardController extends BaseController {
 					responseMap.put("purchaseInvoiceDate", purchaseInvoice.getDate());
 					responseMap.put("purchaseInvoiceUnitPrice", ppi.getUnitPrice());
 					responseMap.put("purchaseInvoiceDiscountedAmount", ppi.getDiscountedAmount());
-					responseMap.put("purchaseinvoiceDiscountRate", ppi.getDiscountRate());
 				}
 			}
 		}
@@ -459,7 +455,6 @@ public class DashboardController extends BaseController {
 			responseMap.put("purchaseInvoiceDate", "Some Error Occured");
 			responseMap.put("purchaseInvoiceUnitPrice", "Some Error Occured");
 			responseMap.put("purchaseInvoiceDiscountedAmount", "Some Error Occured");
-			responseMap.put("purchaseinvoiceDiscountRate", "Some Error Occured");
 			return new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.OK);
@@ -521,8 +516,11 @@ public class DashboardController extends BaseController {
 			if (product != null) {
 				responseMap.put("exists", true);
 				responseMap.put("productId", product.getId());
-				responseMap.put("discountRate", product.getDiscountRate());
 				responseMap.put("availableQuantity", product.getQuantity());
+				responseMap.put("hsnCode", product.getHsnCode());
+				responseMap.put("cgst", product.getCgstValue());
+				responseMap.put("igst", product.getIgstValue());
+				responseMap.put("sgst", product.getSgstValue());
 
 				Set<String> serialNo = new HashSet<String>();
 				List<ProductPurchaseInvoice> ppi = productPurchaseInvoiceService.getProductByProductId(product.getId());
@@ -551,7 +549,6 @@ public class DashboardController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			responseMap.remove("exists");
-			responseMap.put("discountRate", "Some Error Occured");
 			responseMap.put("unitPrice", "Some Error Occured");
 			responseMap.put("availableQuantity", "Some Error Occured");
 			responseMap.put("productSerialNo", "Some Error Occured");
@@ -669,6 +666,10 @@ public class DashboardController extends BaseController {
 			setError(model, "Size cannot be empty");
 			return "add-product";
 		}
+		if (product.getHsnCode() == null) {
+			setError(model, "HSN code cannot be empty");
+			return "add-product";
+		}
 
 		if (product.getModelNumber() == null || product.getModelNumber().trim().length() == 0) {
 			setError(model, "Model number cannot be empty");
@@ -737,37 +738,31 @@ public class DashboardController extends BaseController {
 			return "update-product";
 		}
 
+		if (product.getHsnCode() == null) {
+			setError(model, "HSN code cannot be empty");
+			return "add-product";
+		}
+
 		if (product.getModelNumber() == null || product.getModelNumber().trim().length() == 0) {
 			setError(model, "Model number cannot be empty");
 			return "update-product";
 		}
-
-		/*
-		 * Product pro=null; if(product.getStar()!=null ||
-		 * product.getStar().trim().length()>0)
-		 * pro=dashboardService.findproductInfo(product.getBrand(),
-		 * product.getProductType(), product.getModelNumber(),
-		 * product.getSize(), product.getStar());
-		 * 
-		 * else pro=dashboardService.findproductInfoExcludeStarRating(product.
-		 * getBrand(), product.getProductType(), product.getModelNumber(),
-		 * product.getSize());
-		 * 
-		 * if(pro!=null){ setError(model,
-		 * "Product with this configuration already exist"); return
-		 * "update-product"; }
-		 */
-
+		
+		
 		SessionUser currentUser = SessionUser.getHttpSessionUser(httpSession);
 
 		productFromDb.setBrand(product.getBrand());
-		productFromDb.setProductType(product.getProductType());
-		productFromDb.setModelNumber(product.getModelNumber());
-		productFromDb.setSize(product.getSize());
-		productFromDb.setQuantity(product.getQuantity());
-		productFromDb.setStar(product.getStar());
-		productFromDb.setReorderPoint(product.getReorderPoint());
+		productFromDb.setProductType(getSafeString(product.getProductType()));
+		productFromDb.setModelNumber(getSafeString(product.getModelNumber()));
+		productFromDb.setSize(getSafeString(product.getSize()));
+		productFromDb.setQuantity(getSafeLong(product.getQuantity()));
+		productFromDb.setStar(getSafeString(product.getStar()));
+		productFromDb.setReorderPoint(getSafeLong(product.getReorderPoint()));
 		productFromDb.setUpdated(new Date());
+		productFromDb.setCgstValue(getSafeDouble(product.getCgstValue()));
+		productFromDb.setSgstValue(getSafeDouble(product.getSgstValue()));
+		productFromDb.setIgstValue(getSafeDouble(product.getIgstValue()));
+		productFromDb.setHsnCode(getSafeString(product.getHsnCode()));
 		productFromDb.setUpdatedby(currentUser.getId());
 		productServices.addOrUpdateProduct(productFromDb);
 		StockReport stockReport = stockReportServices.getStockReportByProductId(productFromDb.getId());
@@ -1114,7 +1109,6 @@ public class DashboardController extends BaseController {
 				psi.setComment(sipd.getComments());
 				psi.setQuantity(product.getQuantity());
 				psi.setUnitPrice(product.getUnitPrice());
-				psi.setDiscountRate(product.getDiscountRate());
 				psi.setCmpyPurchaseInvoiceNo(product.getPurchaseInvoiceNo());
 				psi.setSerialNumber(product.getSerialNumber());
 				psi.setFirm(firm);
@@ -1189,7 +1183,6 @@ public class DashboardController extends BaseController {
 					map.put("purchaseInvoiceNo", productSaleInvoice.getCmpyPurchaseInvoiceNo());
 					map.put("quantity", productSaleInvoice.getQuantity());
 					map.put("unitPrice", productSaleInvoice.getUnitPrice());
-					map.put("discountRate", productSaleInvoice.getDiscountRate());
 					map.put("indoorSerialNo", productSaleInvoice.getIndoorSerialNo());
 					listmap.add(map);
 				}
@@ -1221,12 +1214,18 @@ public class DashboardController extends BaseController {
 					map.put("brand", product.getBrand());
 					map.put("productType", product.getProductType());
 					map.put("model", product.getModelNumber());
+					map.put("cgst", product.getCgstValue());
+					map.put("sgst", product.getSgstValue());
+					map.put("igst", product.getIgstValue());
 					map.put("size", product.getSize());
 					map.put("serialNo", productPurchsaseInvoice.getSerialNo());
 					map.put("quantity", productPurchsaseInvoice.getQuantity());
 					map.put("unitPrice", productPurchsaseInvoice.getUnitPrice());
-					map.put("discountRate", productPurchsaseInvoice.getDiscountRate());
-					map.put("indoorSerialNo", productPurchsaseInvoice.getIndoorSerialNo());
+					map.put("rebateDiscount", productPurchsaseInvoice.getRebateDiscount());
+					map.put("tradeDiscount", productPurchsaseInvoice.getTradeDiscount());
+					map.put("billAmount", productPurchsaseInvoice.getBillAmount());
+					map.put("singleUnitTax", productPurchsaseInvoice.getSingleUnitTax());
+					map.put("hsnCode", product.getHsnCode());
 					listmap.add(map);
 				}
 				Firms firm = productPurchaseInvoices.iterator().next().getFirm();
@@ -1321,9 +1320,6 @@ public class DashboardController extends BaseController {
 			purchaseInvoice.setFinalAmount(purchaseInvoiceProductDTO.getFinalAmount());
 			purchaseInvoice.setSupplier(supplier);
 			purchaseInvoice.setPaymentMode(purchaseInvoiceProductDTO.getPaymentMode());
-			purchaseInvoice.setTaxAmount(purchaseInvoiceProductDTO.getTaxAmount());
-			purchaseInvoice.setTaxPercent(purchaseInvoiceProductDTO.getTaxPercent());
-
 			if (purchaseInvoiceProductDTO.getDate() == null)
 				purchaseInvoice.setDate(new Date());
 			else
@@ -1367,7 +1363,6 @@ public class DashboardController extends BaseController {
 				stockReport.setUnits(pro.getQuantity());
 				stockReportServices.createOrUpdateStockReport(stockReport);
 
-				ppi.setDiscountRate(product.getDiscountRate());
 				ppi.setQuantity(product.getQuantity());
 				ppi.setPurchaseInvoice(purchaseInvoice);
 				ppi.setProduct(pro);
@@ -1376,6 +1371,7 @@ public class DashboardController extends BaseController {
 				ppi.setLocation(product.getLocation());
 				ppi.setRebateDiscount(product.getRebateDiscount());
 				ppi.setTradeDiscount(product.getTradeDiscount());
+				ppi.setSingleUnitTax(product.getSingleUnitTax());
 				ppi.setBillAmount(product.getBillAmount());
 				ppi.setSale(0);
 				ppi.setSerialNo(product.getSerialNumber());
@@ -1782,7 +1778,7 @@ public class DashboardController extends BaseController {
 			psi.setComment("not given");
 			psi.setQuantity(1);
 			psi.setUnitPrice(Double.parseDouble(unitPrice));
-			psi.setDiscountRate(0);
+
 			psi.setSerialNumber(serialNumber);
 			psi.setCmpyPurchaseInvoiceNo(purchaseInvoiceNumber);
 			// psi.setPurchaseInvoiceDate(purchaseInvoiceDate);
@@ -2020,7 +2016,6 @@ public class DashboardController extends BaseController {
 				}
 
 				ProductPurchaseInvoice productPurchaseInvoice = new ProductPurchaseInvoice();
-				productPurchaseInvoice.setDiscountRate(0.0);
 				productPurchaseInvoice.setQuantity(1);
 				productPurchaseInvoice.setPurchaseInvoice(purchaseInvoice);
 				productPurchaseInvoice.setProduct(product);
@@ -2217,8 +2212,8 @@ public class DashboardController extends BaseController {
 			map.put("id", productPurchaseInvoice.getId());
 			map.put("cmpyPurchaseInvoiceNo", productPurchaseInvoice.getPurchaseInvoice().getCmpyPurchaseInvoiceNo());
 			map.put("unitPrice", productPurchaseInvoice.getUnitPrice());
-			map.put("discountRate", productPurchaseInvoice.getDiscountRate());
 			map.put("rebateDiscount", productPurchaseInvoice.getRebateDiscount());
+			map.put("singleUnitTax", productPurchaseInvoice.getSingleUnitTax());
 			map.put("tradeDiscount", productPurchaseInvoice.getTradeDiscount());
 			map.put("serialNo", productPurchaseInvoice.getSerialNo());
 			map.put("sale", productPurchaseInvoice.getSale());
@@ -2296,7 +2291,6 @@ public class DashboardController extends BaseController {
 		// SessionUser currentUser=SessionUser.getHttpSessionUser(httpSession);
 
 		productPurchaseInvoiceFromDb.setUnitPrice(productPurchaseInvoice.getUnitPrice());
-		productPurchaseInvoiceFromDb.setDiscountRate(productPurchaseInvoice.getDiscountRate());
 		productPurchaseInvoiceFromDb.setSerialNo(productPurchaseInvoice.getSerialNo());
 		// productPurchaseInvoiceFromDb.setSale(productPurchaseInvoice.getSale());
 		if (productPurchaseInvoice.getIndoorSerialNo() != null || productPurchaseInvoice.getIndoorSerialNo() == "") {
@@ -2442,8 +2436,8 @@ public class DashboardController extends BaseController {
 			map.put("id", productPurchaseInvoice.getId());
 			map.put("cmpyPurchaseInvoiceNo", productPurchaseInvoice.getPurchaseInvoice().getCmpyPurchaseInvoiceNo());
 			map.put("unitPrice", productPurchaseInvoice.getUnitPrice());
-			map.put("discountRate", productPurchaseInvoice.getDiscountRate());
 			map.put("rebateDiscount", productPurchaseInvoice.getRebateDiscount());
+			map.put("singleUnitTax", productPurchaseInvoice.getTradeDiscount());
 			map.put("tradeDiscount", productPurchaseInvoice.getTradeDiscount());
 			map.put("serialNo", productPurchaseInvoice.getSerialNo());
 			map.put("sale", productPurchaseInvoice.getSale());
@@ -2627,10 +2621,10 @@ public class DashboardController extends BaseController {
 			stars.add(product.getStar());
 
 		}
-	     stars.removeAll(Arrays.asList(null,""));
-	     brandsName.removeAll(Arrays.asList(null,""));
-	     modelnumbers.removeAll(Arrays.asList(null,""));
-	     sizes.removeAll(Arrays.asList(null,""));
+		stars.removeAll(Arrays.asList(null, ""));
+		brandsName.removeAll(Arrays.asList(null, ""));
+		modelnumbers.removeAll(Arrays.asList(null, ""));
+		sizes.removeAll(Arrays.asList(null, ""));
 		model.addAttribute("brandName", brandsName);
 		model.addAttribute("modelnumber", modelnumbers);
 		model.addAttribute("size", sizes);
@@ -2664,9 +2658,9 @@ public class DashboardController extends BaseController {
 		}
 		return filterList;
 	}
-	
+
 	@RequestMapping(value = "/downloadFilterStockReport", method = RequestMethod.GET)
-	public String downloadStockReport(HttpServletResponse response) {
-		
+	public String downloadFilterStockReport(HttpServletResponse response) {
+		return null;
 	}
 }

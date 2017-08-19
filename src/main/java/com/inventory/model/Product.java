@@ -70,6 +70,17 @@ public class Product implements Serializable{
 	
 	private long updatedby;
 	
+	@Column(name ="cgst")
+	private Double cgstValue;
+	
+	@Column(name ="igst")
+	private Double igstValue;
+	
+	@Column(name ="sgst")
+	private Double sgstValue;
+	
+	private String hsnCode;
+	
 	@OneToMany(mappedBy = "product")
 	private List<ProductSaleInvoice> productSaleInvoices=new ArrayList<ProductSaleInvoice>();
 	
@@ -89,7 +100,6 @@ public class Product implements Serializable{
 		this.modelNumber = productDTO.getModelNumber();
 		this.productType = productDTO.getProductType();
 		this.quantity = productDTO.getQuantity();
-		this.discountRate = productDTO.getDiscountRate();
 	}
 	
 	public long getId() {
@@ -214,6 +224,38 @@ public class Product implements Serializable{
 
 	public void setStar(String star) {
 		this.star = star;
+	}
+
+	public Double getCgstValue() {
+		return cgstValue;
+	}
+
+	public void setCgstValue(Double cgstValue) {
+		this.cgstValue = cgstValue;
+	}
+
+	public Double getIgstValue() {
+		return igstValue;
+	}
+
+	public void setIgstValue(Double igstValue) {
+		this.igstValue = igstValue;
+	}
+
+	public Double getSgstValue() {
+		return sgstValue;
+	}
+
+	public void setSgstValue(Double sgstValue) {
+		this.sgstValue = sgstValue;
+	}
+
+	public String getHsnCode() {
+		return hsnCode;
+	}
+
+	public void setHsnCode(String hsnCode) {
+		this.hsnCode = hsnCode;
 	}
 	
 	

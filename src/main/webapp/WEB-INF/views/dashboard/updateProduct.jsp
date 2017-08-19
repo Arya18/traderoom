@@ -110,7 +110,7 @@
 										<div class="form-group">
 											<label for="star">HSN code</label> <input type="text"
 												placeholder="Enter HSN code" id="hsnCode"
-												name="hsnCode" class="form-control">
+												name="hsnCode" value="${product.hsnCode}" class="form-control">
 											<div class="help-block"></div>
 										</div>
 									</div>
@@ -122,22 +122,19 @@
 									<div class="col-md-4">
 										<div class="form-group">
 										<label for="CGST">CGST</label>
-											<input type="checkbox" name="cgstCheck" id="cgstCheck">
-											<input type="text" name="cgstValue" id="cgstValue">
+											<input type="text" name="cgstValue" value="${product.cgstValue}" id="cgstValue">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 										<label for="IGST">IGST</label>
-											<input type="checkbox" name="igstCheck" id="igstCheck">
-											<input type="text" name="igstValue" id="igstValue">
+											<input type="text" name="igstValue" value="${product.igstValue}" id="igstValue">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 										<label for="SGST">SGST</label>
-											<input type="checkbox" name="sgstCheck" id="sgstCheck">
-											<input type="text" name="sgstValue" id="sgstValue">
+											<input type="text" name="sgstValue" value="${product.sgstValue}" id="sgstValue">
 										</div>
 									</div>
 								</div>
