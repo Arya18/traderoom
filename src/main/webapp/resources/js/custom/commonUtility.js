@@ -39,11 +39,12 @@ function validateFileInput(oInput) {
 	
 	var calculation = function(event) {
 		var proId = $(event).attr('id');
-		// console.log("hgkghk", proId) 
+		// console.log(proId)
 		proNum = proId.replace(/\D/g, '');
 		var totalDiscountedAmount = 0;
 		var totalAmount = 0;
-		var billAmount = 0;
+		var finalBillAmount = 0;
+		var totalTaxableAmount= 0;
 		var addProductsDivs = $("#productsForm").children(".clonedDiv");
 		// console.log(addProductsDivs)
 		// var noOfProductsDivs = addProductsDivs.length;
@@ -55,19 +56,39 @@ function validateFileInput(oInput) {
 					// console.log(formId);
 					i = i + 1
 					
-					var totalUnitPrice = ($("#unitPrice" + i).val() * $("#quantity" + i).val()) - ($("#rebate_discount" + i).val() + $("#trade_discount" + i).val()) ;
-					console.log("totalUnitPrice" + totalUnitPrice);
-					totalAmount = parseFloat(totalAmount, 2) + parseFloat(totalUnitPrice, 2);
-					// console.log("totalAmount" + totalAmount);
+					var unitPrice = parseFloat($("#unitPrice" + i).val()) * parseFloat($("#quantity" + i).val());
+					var discountValue = parseFloat($("#rebate_discount" + i).val()) + parseFloat($("#trade_discount" + i).val());
+					console.log("discountValue", discountValue);
+					console.log("unitPrice" + unitPrice);
+					var billAmount = unitPrice - discountValue;
+					console.log("totalUnitPrice", billAmount);
+					$("#bill_amount"+i).val(parseFloat(billAmount, 2));
+					totalAmount = parseFloat(totalAmount, 2) + parseFloat(billAmount, 2);
+					var cgstTaxValue = $("#cgst_tax" + i ).val();
+					var igstTaxValue = $("#igst_tax" + i).val() ;
+					var sgstTaxValue = $("#sgst_tax"+ i ).val() ;
+					var totalTaxValue = parseFloat(sgstTaxValue, 2) + parseFloat(cgstTaxValue, 2) + parseFloat(igstTaxValue, 2);
+					console.log("totalTaxValue " + totalTaxValue);
+					var gstTaxAmount = (billAmount * totalTaxValue) / (100 + totalTaxValue);
+					console.log(gstTaxAmount);
+					$("#singleUnitTax"+i).val(parseFloat(gstTaxAmount, 2));
 //					var discountedPercentage = $("#discountedPercent").val();
-					var totalDiscountedAmount = $("#totalDiscountedAmount").val(); 
+					// totalDiscountedAmount = $("#totalDiscountedAmount").val(); 
 					var finalAmount = parseInt(totalAmount)	- parseInt(totalDiscountedAmount);
+					finalBillAmount = parseFloat(finalBillAmount) + parseFloat(billAmount);
+					console.log("finalBillAmount  ===== ", finalBillAmount);
+					console.log($("#finalAmount"));
+					$("#finalAmount").val(parseFloat(finalBillAmount,2));
+					totalTaxableAmount = totalTaxableAmount + gstTaxAmount;
+					$("#taxableAmount").val(parseFloat(totalTaxableAmount, 2));
+					totalDiscountedAmount = totalDiscountedAmount + discountValue;
+					$("#totalDiscountedAmount").val(parseFloat(totalDiscountedAmount, 2));
 					/*var leftBalance = finalAmount
 							- parseFloat($("#amountPaid").val(), 2);*/
 					// console.log("noOfProductsDivs: "+ $("#discountedAmount"+i).val());
 					
 					
-					$("#finalAmount").val(parseFloat(finalAmount, 2));
+					// $("#finalAmount").val(parseFloat(finalAmount, 2));
 					/*$("#balanceLeft").val(leftBalance);
 					
 					if($("#balanceLeft").val() == "NaN"){
@@ -81,17 +102,17 @@ function validateFileInput(oInput) {
 					}
 					
 					/*if(formId == "supplierForm"){*/
-						var taxPercentage = $("#taxPercentage").val();
-						var taxableAmount = (taxPercentage/100) * (finalAmount);
-						var totalAmt = taxableAmount + finalAmount;						
-						leftBalance = totalAmt - parseFloat($("#amountPaid").val(), 2);
+						// var taxPercentage = $("#taxPercentage").val();
+						// var taxableAmount = (taxPercentage/100) * (finalAmount);
+						// var totalAmt = taxableAmount + finalAmount;						
+						leftBalance = finalBillAmount - parseFloat($("#amountPaid").val(), 2);
 						// console.log("totalDiscountedAmount "
-								+ totalDiscountedAmount + "finalAmount "
-								+ finalAmount + "balanceleft: " + leftBalance + "taxPercentage " + taxPercentage + "taxableAmount "+ taxableAmount);
+						// 		+ totalDiscountedAmount + "finalAmount "
+						// 		+ finalAmount + "balanceleft: " + leftBalance + "taxPercentage " + taxPercentage + "taxableAmount "+ taxableAmount);
 						
 						$("#balanceLeft").val(leftBalance);
-						$("#taxableAmount").val(taxableAmount);
-						$("#finalAmount").val(totalAmt);
+						// $("#taxableAmount").val(taxableAmount);
+						// $("#finalAmount").val(totalAmt);
 						if($("#balanceLeft").val() == "NaN"){
 							$("#balanceLeft").val('');
 						}

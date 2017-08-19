@@ -98,7 +98,6 @@
 											</select>
 										</div>
 									</div>
-
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="serialNumber">Serial number </label> <input
@@ -196,6 +195,7 @@
 									<div class="col-md-2">
 											<div class="form-group">
 												<label for="cgst">CGST</label> 
+
 												<input class="form-control cgst_tax" name="cgst"
 													id="cgst_tax1" value="0" required />
 											</div>
@@ -505,6 +505,8 @@
 			showInputs : false
 		});
 	});
+	
+	
 
 	$('body')
 			.on(
@@ -913,8 +915,8 @@
 					var Name = $(this).attr('name');
 					var newName = Name.replace(/[0-9]/g, '');
 					$(this).attr({
-						id : newId + cloneCount,
-						name : newName + cloneCount
+						id : newId + cloneCount
+						// name : newName + cloneCount
 					});
 					validator.addField($(this));
 				});
@@ -1029,11 +1031,11 @@
 				console.log($(this))
 				var Id = $(this).attr('id');
 				var newId = Id.replace(/[0-9]/g, '');
-				//var Name = $(this).attr('name');
+				var Name = $(this).attr('name');
 				var newName = Name.replace(/[0-9]/g, '');
 				$(this).attr({
-					id : newId + i,
-					name : newName + i
+					id : newId + i
+					// name : newName + i
 				});
 
 			});
@@ -1232,6 +1234,15 @@
                                             message : 'Reorder point consist of only numeric values'
                                         }
 									}
+								},
+								"singleUnitTax":{
+									notEmpty : {
+											message : 'Enter cgst tax value'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Reorder point consist of only numeric values'
+                                        }
 								}
 							}
 							
@@ -1326,6 +1337,13 @@
 								}
 							},
 							'purchaseInvoicedate': {
+								validators : {
+									notEmpty : {
+										message : 'Select date please.'
+									}
+								}
+							},
+							"taxAmount": {
 								validators : {
 									notEmpty : {
 										message : 'Select date please.'
