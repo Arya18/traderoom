@@ -131,7 +131,7 @@
 									</select>
 								</div>
 							</div>
-								<div class="col-md-2 clearfix">
+								<div class="col-md-1 clearfix">
 								<label class="control-label"> </label>
 								<div class="controls">
 									<input type="submit" class="btn btn-success btn-pass "
@@ -139,6 +139,14 @@
 								</div>
 							</div>
 							
+								<div class="col-md-2 clearfix">
+								<label class="control-label"> </label>
+								<div class="controls">
+									<a href="/dashboard/downloadFilterStockReport"
+							class="btn btn-success pull-right"><span
+							class="glyphicon glyphicon-arrow-down"></span> Download Excel</a>
+								</div>
+							</div>
 							
 						</div>
 					</form>
@@ -151,7 +159,7 @@
 							<h3 class="box-title"> Record By Filter</h3>
 						</div>
 						<!-- /.box-header -->
-						<a href="/dashboard/downloadStockReport"
+						<a href="/dashboard/downloadFilterStockReport"
 							class="btn btn-success pull-right downloadbutton"><span
 							class="glyphicon glyphicon-arrow-down"></span> Download Excel</a>
 						<div class="box-body table-responsive">
