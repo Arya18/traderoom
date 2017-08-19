@@ -101,9 +101,16 @@
 
 									<div class="col-md-2">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Serial number </label> <input
+											<label for="serialNumber">Serial number </label> <input
 												class="form-control" required type="text" id="serialNumber1"
 												name="serialNumber" />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="hsnCode">HSN code </label> <input
+												class="form-control" required type="text" id="hsnCode1"
+												name="hsnCode" />
 										</div>
 									</div>
 
@@ -123,21 +130,14 @@
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
-											<label for="unitPrice">Unit Price</label> <input type="text"
-												name="unitPrice" placeholder="Unit Price" value=""
-												id="unitPrice1" class="form-control unitPrice" required>
-										</div>
-									</div>
-									</div>
-									<div class="row">
-									<div class="col-md-2">
-										<div class="form-group">
 											<label for="rebate_discount">Rebate/Cash Discount</label> <input
 												type="text" name="rebateDiscount"
 												placeholder="Rebate Discount" value="0"
 												id="rebate_discount1" class="form-control rebate_discount">
 										</div>
 									</div>
+									</div>
+									<div class="row">
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="trade_discount">Trade Discount</label> <input
@@ -148,12 +148,18 @@
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
+											<label for="unitPrice">Unit Price</label> <input type="text"
+												name="unitPrice" placeholder="Unit Price" value=""
+												id="unitPrice1" class="form-control unitPrice" required>
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
 											<label for="bill_amount">Bill Amount</label> <input
 												type="text" name="billAmount" placeholder="Bill Amount"
 												value="0" id="bill_amount1" class="form-control bill_amount">
 										</div>
 									</div>
-
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="outdoor_location">Unit Location</label> <select
@@ -175,11 +181,6 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-md-2" style="margin-top: 30px;">
-										<p>
-											<a href="#" class="deleteRow" name="deleteRow">Delete</a>
-										</p>
-									</div>
 									<div class="">
 										<div class="form-group">
 											<input type="hidden" name="id1" id="id1" class="form-control">
@@ -193,6 +194,41 @@
 										<input type="hidden" id="discountedAmount1"
 											name="discountedAmount" value="0"
 											placeholder="Discounted amount" class="form-control" required>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-2">
+											<div class="form-group">
+												<label for="cgst">CGST</label> 
+												<input class="form-control cgst_tax" name="cgst"
+													id="cgst_tax1" required />
+											</div>
+									</div>
+									<div class="col-md-2">
+											<div class="form-group">
+												<label for="igst">IGST</label> 
+												<input class="form-control igst_tax" name="igst"
+													id="igst_tax1" required />
+											</div>
+									</div>
+									<div class="col-md-2">
+											<div class="form-group">
+												<label for="sgst">SGST</label> 
+												<input class="form-control sgst_tax" name="sgst"
+													id="sgst_tax1" required />
+											</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="unitPrice">Tax amount</label> <input type="text"
+												name="unitPrice" placeholder="Unit Price" value=""
+												id="unitPrice1" class="form-control unitPrice" required>
+										</div>
+									</div>
+									<div class="col-md-2" style="margin-top: 30px;">
+										<p>
+											<a href="#" class="deleteRow" name="deleteRow">Delete</a>
+										</p>
 									</div>
 								</div>
 							</div>
@@ -284,16 +320,16 @@
 										</div>
 									</div>
 
-									<div class="col-md-2">
+									<!-- <div class="col-md-2">
 										<div class="form-group">
 											<label for="taxPercent">Tax %</label> <input type="text"
 												placeholder="% tax" id="taxPercentage" name="taxPercent"
 												class="form-control" required>
 										</div>
-									</div>
+									</div> -->
 									<div class="col-md-2">
 										<div class="form-group">
-											<label for="taxAmount">Tax amount</label> <input type="text"
+											<label for="taxAmount">Total Tax amount</label> <input type="text"
 												placeholder="Tax amount" id="taxableAmount" name="taxAmount"
 												class="form-control" required>
 										</div>
@@ -609,15 +645,19 @@
 			  $("#indoor_location"+currentDivPos).parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
 		  }else{
 		  $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
+		  $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
+		  // console.log("##################" , $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2"]').children());
 		  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').removeClass("hide",1000);
 		  $("#indoor_location"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
+		  $("#indoor_location"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 		  }
          
          if(productType.replace(" ", "").toLowerCase().indexOf("ac") ==-1){
        	  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
-			  
+		  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");	  
 		  }else{
 			  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2 hide"]').addClass("hide",1000);
+			  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 		  }
          var brandName=$('#brand'+currentDivPos).val();
          $("#star_rating"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
@@ -1122,6 +1162,28 @@
 										}
 									}
 								},
+								'rebateDiscount':{
+									validators : {
+										notEmpty : {
+											message : 'Select outdoor unit location please.'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Only numbers are allowed'
+                                        }
+									}
+								},
+								'tradeDiscount':{
+									validators : {
+										notEmpty : {
+											message : 'Select outdoor unit location please.'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Only numbers are allowed'
+                                        }
+									}
+								},
 								'indoorLocation': {
 									validators : {
 										notEmpty : {
@@ -1129,11 +1191,55 @@
 										}
 									}
 								},
+								'billAmount':{
+									validators : {
+										notEmpty : {
+											message : 'Select outdoor unit location please.'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Only numbers are allowed'
+                                        }
+									}
+								},
 								'serialNumber': {
 									validators : {
 										notEmpty : {
 											message : 'Select serial number please'
 										}
+									}
+								},
+								'sgst': {
+									validators : {
+										notEmpty : {
+											message : 'Enter sgst tax value'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Reorder point consist of only numeric values'
+                                        }
+									}
+								},
+								'igst': {
+									validators : {
+										notEmpty : {
+											message : 'Enter igst tax value'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Reorder point consist of only numeric values'
+                                        }
+									}
+								},
+								'cgst': {
+									validators : {
+										notEmpty : {
+											message : 'Enter cgst tax value'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Reorder point consist of only numeric values'
+                                        }
 									}
 								}
 							}

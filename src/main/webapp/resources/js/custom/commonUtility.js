@@ -39,10 +39,11 @@ function validateFileInput(oInput) {
 	
 	var calculation = function(event) {
 		var proId = $(event).attr('id');
-		console.log(proId)
+		// console.log("hgkghk", proId) 
 		proNum = proId.replace(/\D/g, '');
 		var totalDiscountedAmount = 0;
 		var totalAmount = 0;
+		var billAmount = 0;
 		var addProductsDivs = $("#productsForm").children(".clonedDiv");
 		// console.log(addProductsDivs)
 		// var noOfProductsDivs = addProductsDivs.length;
@@ -51,14 +52,13 @@ function validateFileInput(oInput) {
 		$(addProductsDivs).each(
 				function(i, v) {
 					var formId = $(event).closest("form").attr("id");
-					console.log(formId);
+					// console.log(formId);
 					i = i + 1
 					
-					var totalUnitPrice = $("#unitPrice" + i).val()
-							* $("#quantity" + i).val();
+					var totalUnitPrice = ($("#unitPrice" + i).val() * $("#quantity" + i).val()) - ($("#rebate_discount" + i).val() + $("#trade_discount" + i).val()) ;
 					console.log("totalUnitPrice" + totalUnitPrice);
 					totalAmount = parseFloat(totalAmount, 2) + parseFloat(totalUnitPrice, 2);
-					console.log("totalAmount" + totalAmount);
+					// console.log("totalAmount" + totalAmount);
 //					var discountedPercentage = $("#discountedPercent").val();
 					var totalDiscountedAmount = $("#totalDiscountedAmount").val(); 
 					var finalAmount = parseInt(totalAmount)	- parseInt(totalDiscountedAmount);
@@ -85,7 +85,7 @@ function validateFileInput(oInput) {
 						var taxableAmount = (taxPercentage/100) * (finalAmount);
 						var totalAmt = taxableAmount + finalAmount;						
 						leftBalance = totalAmt - parseFloat($("#amountPaid").val(), 2);
-						console.log("totalDiscountedAmount "
+						// console.log("totalDiscountedAmount "
 								+ totalDiscountedAmount + "finalAmount "
 								+ finalAmount + "balanceleft: " + leftBalance + "taxPercentage " + taxPercentage + "taxableAmount "+ taxableAmount);
 						
