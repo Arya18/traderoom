@@ -101,9 +101,16 @@
 
 									<div class="col-md-2">
 										<div class="form-group">
-											<label for="exampleInputEmail1">Serial number </label> <input
+											<label for="serialNumber">Serial number </label> <input
 												class="form-control" required type="text" id="serialNumber1"
 												name="serialNumber" />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="hsnCode">HSN code </label> <input
+												class="form-control" required type="text" id="hsnCode1"
+												name="hsnCode" />
 										</div>
 									</div>
 
@@ -141,16 +148,16 @@
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
-											<label for="bill_amount">Bill Amount</label> <input
-												type="text" name="billAmount" placeholder="Bill Amount"
-												value="0" id="bill_amount1" class="form-control bill_amount">
+											<label for="unitPrice">Unit Price</label> <input type="text"
+												name="unitPrice" placeholder="Unit Price" value=""
+												id="unitPrice1" class="form-control unitPrice" required>
 										</div>
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
-											<label for="unitPrice">Unit Price</label> <input type="text"
-												name="unitPrice" placeholder="Unit Price" value=""
-												id="unitPrice1" class="form-control unitPrice" required>
+											<label for="bill_amount">Bill Amount</label> <input
+												type="text" name="billAmount" placeholder="Bill Amount"
+												value="0" id="bill_amount1" class="form-control bill_amount">
 										</div>
 									</div>
 									<div class="col-md-2">
@@ -210,6 +217,13 @@
 												<input class="form-control sgst_tax" name="sgst"
 													id="sgst_tax1" required />
 											</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="unitPrice">Tax amount</label> <input type="text"
+												name="unitPrice" placeholder="Unit Price" value=""
+												id="unitPrice1" class="form-control unitPrice" required>
+										</div>
 									</div>
 									<div class="col-md-2" style="margin-top: 30px;">
 										<p>
@@ -306,16 +320,16 @@
 										</div>
 									</div>
 
-									<div class="col-md-2">
+									<!-- <div class="col-md-2">
 										<div class="form-group">
 											<label for="taxPercent">Tax %</label> <input type="text"
 												placeholder="% tax" id="taxPercentage" name="taxPercent"
 												class="form-control" required>
 										</div>
-									</div>
+									</div> -->
 									<div class="col-md-2">
 										<div class="form-group">
-											<label for="taxAmount">Tax amount</label> <input type="text"
+											<label for="taxAmount">Total Tax amount</label> <input type="text"
 												placeholder="Tax amount" id="taxableAmount" name="taxAmount"
 												class="form-control" required>
 										</div>
@@ -1148,11 +1162,44 @@
 										}
 									}
 								},
+								'rebateDiscount':{
+									validators : {
+										notEmpty : {
+											message : 'Select outdoor unit location please.'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Only numbers are allowed'
+                                        }
+									}
+								},
+								'tradeDiscount':{
+									validators : {
+										notEmpty : {
+											message : 'Select outdoor unit location please.'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Only numbers are allowed'
+                                        }
+									}
+								},
 								'indoorLocation': {
 									validators : {
 										notEmpty : {
 											message : 'Select indoor unit location please.'
 										}
+									}
+								},
+								'billAmount':{
+									validators : {
+										notEmpty : {
+											message : 'Select outdoor unit location please.'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Only numbers are allowed'
+                                        }
 									}
 								},
 								'serialNumber': {
