@@ -1320,6 +1320,7 @@ public class DashboardController extends BaseController {
 			purchaseInvoice.setFinalAmount(purchaseInvoiceProductDTO.getFinalAmount());
 			purchaseInvoice.setSupplier(supplier);
 			purchaseInvoice.setPaymentMode(purchaseInvoiceProductDTO.getPaymentMode());
+			purchaseInvoice.setTaxAmount(purchaseInvoiceProductDTO.getTaxAmount());
 			if (purchaseInvoiceProductDTO.getDate() == null)
 				purchaseInvoice.setDate(new Date());
 			else

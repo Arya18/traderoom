@@ -101,7 +101,7 @@
 									<td>${productDetail.hsnCode }</td>
 									<td>${productDetail.billAmount}</td>
 									<td>${productDetail.billAmount-productDetail.singleUnitTax}</td>
-									<td>${productDetail.singleUnitTax (cgst(productDetail.cgst)%,sgst(productDetail.cgst)%,igst(productDetail.igst)%)</td>
+									<td>${productDetail.singleUnitTax} </td><!-- (cgst(productDetail.cgst)%,sgst(productDetail.cgst)%,igst(productDetail.igst)%)}</td> -->
 									<td>${productDetail.serialNo}<c:if
 											test="${not empty productDetail.indoorSerialNo}">
                                          >>Indoor Serial No:${productDetail.indoorSerialNo}
