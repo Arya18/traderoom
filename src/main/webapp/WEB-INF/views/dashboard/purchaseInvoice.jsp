@@ -98,7 +98,6 @@
 											</select>
 										</div>
 									</div>
-
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="serialNumber">Serial number </label> <input
@@ -200,29 +199,29 @@
 									<div class="col-md-2">
 											<div class="form-group">
 												<label for="cgst">CGST</label> 
-												<input class="form-control cgst_tax" name="cgst"
+												<input class="form-control cgst_tax" value="0" name="cgst"
 													id="cgst_tax1" required />
 											</div>
 									</div>
 									<div class="col-md-2">
 											<div class="form-group">
 												<label for="igst">IGST</label> 
-												<input class="form-control igst_tax" name="igst"
+												<input class="form-control igst_tax" value="0" name="igst"
 													id="igst_tax1" required />
 											</div>
 									</div>
 									<div class="col-md-2">
 											<div class="form-group">
 												<label for="sgst">SGST</label> 
-												<input class="form-control sgst_tax" name="sgst"
+												<input class="form-control sgst_tax" value="0" name="sgst"
 													id="sgst_tax1" required />
 											</div>
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="unitPrice">Tax amount</label> <input type="text"
-												name="unitPrice" placeholder="Unit Price" value=""
-												id="unitPrice1" class="form-control unitPrice" required>
+												name="singleUnitTax" placeholder="Taxable amount" value=""
+												id="singleUnitTax1" class="form-control singleUnitTax" required>
 										</div>
 									</div>
 									<div class="col-md-2" style="margin-top: 30px;">
@@ -509,6 +508,8 @@
 			showInputs : false
 		});
 	});
+	
+	
 
 	$('body')
 			.on(
@@ -911,8 +912,8 @@
 					var Name = $(this).attr('name');
 					var newName = Name.replace(/[0-9]/g, '');
 					$(this).attr({
-						id : newId + cloneCount,
-						name : newName + cloneCount
+						id : newId + cloneCount
+						// name : newName + cloneCount
 					});
 					validator.addField($(this));
 				});
@@ -1027,11 +1028,11 @@
 				console.log($(this))
 				var Id = $(this).attr('id');
 				var newId = Id.replace(/[0-9]/g, '');
-				//var Name = $(this).attr('name');
+				var Name = $(this).attr('name');
 				var newName = Name.replace(/[0-9]/g, '');
 				$(this).attr({
-					id : newId + i,
-					name : newName + i
+					id : newId + i
+					// name : newName + i
 				});
 
 			});
@@ -1241,6 +1242,15 @@
                                             message : 'Reorder point consist of only numeric values'
                                         }
 									}
+								},
+								"singleUnitTax":{
+									notEmpty : {
+											message : 'Enter cgst tax value'
+										},
+										regexp : {
+                                            regexp : /^[0-9_\.]+$/,
+                                            message : 'Reorder point consist of only numeric values'
+                                        }
 								}
 							}
 							
@@ -1335,6 +1345,13 @@
 								}
 							},
 							'purchaseInvoicedate': {
+								validators : {
+									notEmpty : {
+										message : 'Select date please.'
+									}
+								}
+							},
+							"taxAmount": {
 								validators : {
 									notEmpty : {
 										message : 'Select date please.'
