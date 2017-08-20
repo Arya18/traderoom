@@ -51,7 +51,7 @@
 						</div>
 						<!-- /.box-header -->
 						<!-- form start -->
-						<form role="form" id="productsForm">
+						<form role="form" id="saleProductsForm">
 							<div class="box-body clonedDiv" id="addProducts1">
 								<div class="row">
 									<div class="col-md-2">
@@ -133,6 +133,14 @@
 												id="quantity1" class="form-control" required>
 										</div>
 									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="trade_discount">Trade Discount</label> <input
+												type="text" name="tradeDiscount"
+												placeholder="Trade Discount" value="0" id="trade_discount1"
+												class="form-control trade_discount">
+										</div>
+									</div>
 									<div>
 
 										<input type="hidden" name="discountRate" id="discountRate1"
@@ -151,7 +159,44 @@
 												class="form-control" required>
 										</div>
 									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="bill_amount">Bill Amount</label> <input
+												type="text" name="billAmount" placeholder="Bill Amount"
+												value="0" id="bill_amount1" class="form-control bill_amount">
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-2">
+											<div class="form-group">
+												<label for="cgst">CGST</label> 
 
+												<input class="form-control cgst_tax" name="cgst"
+													id="cgst_tax1" value="0" required />
+											</div>
+									</div>
+									<div class="col-md-2">
+											<div class="form-group">
+												<label for="igst">IGST</label> 
+												<input class="form-control igst_tax" name="igst"
+													id="igst_tax1" required value="0" />
+											</div>
+									</div>
+									<div class="col-md-2">
+											<div class="form-group">
+												<label for="sgst">SGST</label> 
+												<input class="form-control sgst_tax" name="sgst"
+													id="sgst_tax1" required value="0" />
+											</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="unitPrice">Tax amount</label> <input type="text"
+												name="singleUnitTax" placeholder="Tax Amount" value=""
+												id="singleUnitTax1" class="form-control singleUnitTax" required>
+										</div>
+									</div>
 									<div class="col-md-2" style="margin-top: 30px;">
 										<p>
 											<a href="#" class="deleteRow" name="deleteRow">Delete</a>
@@ -227,13 +272,13 @@
 										</div>
 									</div>
 
-									<div class="col-md-2">
+									<!-- <div class="col-md-2">
 										<div class="form-group">
 											<label for="taxPercent">Tax %</label> <input type="text"
 												placeholder="% tax" id="taxPercentage" name="taxPercent"
 												class="form-control" required>
 										</div>
-									</div>
+									</div> -->
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="taxAmount">Tax amount</label> <input type="text"
@@ -257,6 +302,36 @@
 												<option>Cheque</option>
 												<option>CASH</option>
 											</select>
+										</div>
+									</div>
+									<div class="col-md-2 hide">
+										<div class="form-group">
+											<label for="chequeNumber">Cheque Number</label> 
+											<input
+												type="text" name="chequeNumber " placeholder="Cheque number"
+												id="chequeNumber" class="form-control" required />
+										</div>
+									</div>
+									<div class="col-md-2 hide">
+										<div class="form-group">
+											<label for="bankName">Bank Name</label> 
+											<input
+												type="text" name="bankName" placeholder="Bank name"
+												id="bankName" class="form-control" required />
+										</div>
+									</div>
+									<div class="col-md-2 hide">
+										<div class="form-group">
+											<label>Cheque Date:</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-calendar"></i>
+												</div>
+												<input type="text" id="chequeDate"
+													data-inputmask="'alias': 'yyyy-mm-dd'" data-mask
+													class="form-control invoicedate" name="chequeDate" required>
+											</div>
+											<!-- /.input group -->
 										</div>
 									</div>
 									<div class="col-md-2">
@@ -362,9 +437,8 @@
 	<!-- /.right-side -->
 
 	<script type="text/javascript">
- 
- 
-                            
+ 		
+
 		 $(function() {
 		     //Datemask dd/mm/yyyy
 		     $("#datemask").inputmask("yyyy/mm/dd", {
@@ -430,6 +504,20 @@
 				         showInputs: false
 				     });
 				 });
+	
+		$('body').on('change', '#paymentModeContainer', function() {
+			var paymentType = $(this).val();
+			console.log(paymentType); 
+			if(paymentType == "Cheque"){
+				$("#chequeNumber").parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
+				$("#chequeDate").parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
+				$("#bankName").parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
+			}else{
+				$("#chequeNumber").parents('div[class^="col-md-2"]').addClass("hide",1000);
+				$("#chequeDate").parents('div[class^="col-md-2"]').addClass("hide",1000);
+				$("#bankName").parents('div[class^="col-md-2"]').addClass("hide",1000);
+			}
+		});
 		 
 		 $('body').on('change', '.brand_type', function() {
 			 var brandName = $(this).val();
@@ -554,10 +642,12 @@
 			  $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
 		  }else{
 		  $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
+		  $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 		  }
           
           if(productType.replace(" ", "").toLowerCase().indexOf("ac") ==-1){
         	  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
+        	  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 			  
 		  }else{
 			  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
@@ -745,6 +835,16 @@
 										if (response.exists) {
 											jQuery(".error_msg").html("");
 
+											if(response.hsnCode!=null)
+											$('#cgst_tax' + currentDivPos)
+											.val(response.cgst);
+											if(response.igst!=null)
+											$('#igst_tax' + currentDivPos)
+											.val(response.igst);
+											if(response.sgst!=null)
+											$('#sgst_tax' + currentDivPos)
+											.val(response.sgst);
+
 											/* $('#unitPrice' + currentDivPos)
 													.val(response.unitPrice); */
 											/* globalUnitPrice=response.unitPrice;
@@ -810,7 +910,7 @@
 					});
 			
 			function checkAvailableQuantity(response,currentDivPos){
-				var addProductsDivs = $("#productsForm").children(".clonedDiv");
+				var addProductsDivs = $("#saleProductsForm").children(".clonedDiv");
 		        console.log(addProductsDivs)
 		        var duplicateCount;
 		        $(addProductsDivs).each(function(i, v) {
@@ -927,7 +1027,7 @@
 			function clonedValidate(){
 				cloneCount = $(".clonedDiv").length;
 				cloneCount++;
-				$('#productsForm').bootstrapValidator('validate');
+				$('#saleProductsForm').bootstrapValidator('validate');
 				var clonedDiv = $("#addProducts1").clone().attr('id',
 						'addProducts' + cloneCount);
 				if($(".clonedDiv:last").find('.has-error').length>0){ //it's `
@@ -944,7 +1044,7 @@
 				$(".saveButtonDiv").show(1000);
 				cloneCount = $(".clonedDiv").length;
 				cloneCount++;
-				$('#productsForm').bootstrapValidator('validate');
+				$('#saleProductsForm').bootstrapValidator('validate');
 				var clonedDiv = $("#addProducts1").clone().attr('id',
 						'addProducts' + cloneCount);
 				if($(".clonedDiv:last").find('.has-error').length>0){ //it's `
@@ -955,7 +1055,7 @@
 					
 				clonedDiv.insertAfter($('[id^=addProducts]:last')).find(
 						"input[type='text'],input[type='number']").val("");
-				var validator = $('#productsForm').data('bootstrapValidator');
+				var validator = $('#saleProductsForm').data('bootstrapValidator');
 				$(clonedDiv).find("input, select").each(function() {
 					var Id = $(this).attr('id');
 					var newId = Id.replace(/[0-9]/g, '');
@@ -974,7 +1074,7 @@
 		 var saveProduct = function() {
 		        var innerArray = [];
 		        var sumPrice = 0;
-		        var addProductsDivs = $("#productsForm").children(".clonedDiv");
+		        var addProductsDivs = $("#saleProductsForm").children(".clonedDiv");
 		        console.log(addProductsDivs)
 		        $(addProductsDivs).each(function(i, v) {
 		            console.log($(this))
@@ -1095,7 +1195,7 @@
 				saveProduct();
 			});
 
-		    /* $("#productsForm, #customerForm").on('change keyup click',
+		    /* $("#saleProductsForm, #customerForm").on('change keyup click',
 					'input, #amountPaid', function(event) {
 						calculation(this);
 					}); */
@@ -1103,7 +1203,7 @@
 			/* function finalCalculation() {
 				var totalDiscountedAmount = 0;
 				var totalAmount = 0;
-				var addProductsDivs = $("#productsForm").children(".clonedDiv");
+				var addProductsDivs = $("#saleProductsForm").children(".clonedDiv");
 				// console.log(addProductsDivs)
 				// var noOfProductsDivs = addProductsDivs.length;
 				// console.log(noOfProductsDivs)
@@ -1173,7 +1273,7 @@
 			$(document).ready(function(){
 				console.log("started")	
 				$("#customerDiv").hide();
-				$('#productsForm')
+				$('#saleProductsForm')
 						.bootstrapValidator(
 								{
 
