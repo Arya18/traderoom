@@ -31,6 +31,8 @@ import com.inventory.DTO.PurchaseInvoiceDTO;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PurchaseInvoice implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue
 	@Column(name = "invoiceNo")
@@ -56,6 +58,16 @@ public class PurchaseInvoice implements Serializable{
 		
 	@Column(name = "paymentMode")
 	private String paymentMode;
+	
+	@Column(name = "chequeNumber")
+	private String chequeNumber;
+	
+	@Column(name = "bankName")
+	private String bankName;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "chequeDate")
+	private Date chequeDate;
 	
 	
 	private double amountPaid;
@@ -248,6 +260,30 @@ public class PurchaseInvoice implements Serializable{
 
 	public void setTaxAmount(Double taxAmount) {
 		this.taxAmount = taxAmount;
+	}
+
+	public String getChequeNumber() {
+		return chequeNumber;
+	}
+
+	public void setChequeNumber(String chequeNumber) {
+		this.chequeNumber = chequeNumber;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public Date getChequeDate() {
+		return chequeDate;
+	}
+
+	public void setChequeDate(Date chequeDate) {
+		this.chequeDate = chequeDate;
 	}
 
 	

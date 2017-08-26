@@ -50,6 +50,12 @@ public class ProductSaleInvoice {
 	@Column(name="cmpyPurchaseinvoiceNoForIndoor")
 	private String cmpyPurchaseinvoiceNoForIndoor;
 	
+	@Column(name = "trade_discount")
+	private Double tradeDiscount;
+	
+	@Column(name="bill_amount")
+	private Double billAmount;
+	
 	@ManyToOne
 	@JoinColumn(name = "firm_id")
 	private Firms firm;
@@ -140,7 +146,19 @@ public class ProductSaleInvoice {
 	public void setFirm(Firms firm) {
 		this.firm = firm;
 	}
+	public Double getTradeDiscount() {
+		return tradeDiscount;
+	}
+	public void setTradeDiscount(Double tradeDiscount) {
+		this.tradeDiscount = tradeDiscount;
+	}
+	public Double getBillAmount() {
+		return billAmount;
+	}
+	public void setBillAmount(Double billAmount) {
+		this.billAmount = billAmount;
+	}
 	
-
+	
 	
 }

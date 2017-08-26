@@ -1040,6 +1040,12 @@ public class DashboardController extends BaseController {
 				saleinvoice.setInvoiceDate(sipd.getDate());
 			saleinvoice.setAmountPaid(sipd.getAmountPaid());
 			saleinvoice.setPaymentMode(sipd.getPaymentMode());
+			if(sipd.getPaymentMode().equalsIgnoreCase("Cheque")){
+				saleinvoice.setBankName(sipd.getBankName());
+				saleinvoice.setChequeNumber(sipd.getChequeNumber());
+				saleinvoice.setChequeDate(sipd.getChequeDate());
+			}
+			
 			saleinvoice.setBalanceLeft(sipd.getBalanceLeft());
 			saleinvoice.setTaxAmount(sipd.getTaxAmount());
 			saleinvoice.setTaxPercent(sipd.getTaxPercent());
@@ -1111,7 +1117,10 @@ public class DashboardController extends BaseController {
 				psi.setUnitPrice(product.getUnitPrice());
 				psi.setCmpyPurchaseInvoiceNo(product.getPurchaseInvoiceNo());
 				psi.setSerialNumber(product.getSerialNumber());
+				psi.setTradeDiscount(product.getTradeDiscount());
+				psi.setBillAmount(product.getBillAmount());
 				psi.setFirm(firm);
+				
 
 				psi.setIndoorSerialNo("");
 				if (product.getIndoorModelNumber() != null || product.getIndoorModelNumber().trim().length() > 0) {
@@ -1320,6 +1329,11 @@ public class DashboardController extends BaseController {
 			purchaseInvoice.setFinalAmount(purchaseInvoiceProductDTO.getFinalAmount());
 			purchaseInvoice.setSupplier(supplier);
 			purchaseInvoice.setPaymentMode(purchaseInvoiceProductDTO.getPaymentMode());
+			if(purchaseInvoiceProductDTO.getPaymentMode().equalsIgnoreCase("Cheque")){
+				purchaseInvoice.setChequeNumber(purchaseInvoiceProductDTO.getChequeNumber());
+				purchaseInvoice.setChequeDate(purchaseInvoiceProductDTO.getChequeDate());
+				purchaseInvoice.setBankName(purchaseInvoiceProductDTO.getBankName());
+			}
 			purchaseInvoice.setTaxAmount(purchaseInvoiceProductDTO.getTaxAmount());
 			if (purchaseInvoiceProductDTO.getDate() == null)
 				purchaseInvoice.setDate(new Date());

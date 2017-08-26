@@ -32,7 +32,7 @@ function validateFileInput(oInput) {
     return true;
 }
 
-	$("#productsForm, #customerForm, #supplierForm").on('change keyup click',
+	$("#productsForm, #customerForm, #supplierForm, #saleProductsForm").on('change keyup click',
 		'input, #amountPaid', function(event) {
 			calculation(this);
 		});
@@ -45,25 +45,38 @@ function validateFileInput(oInput) {
 		var totalAmount = 0;
 		var finalBillAmount = 0;
 		var totalTaxableAmount= 0;
-		var addProductsDivs = $("#productsForm").children(".clonedDiv");
+		var billAmount = 0;
+		var formId = $(event).closest("form").attr("id");
+		// console.log(formId);
+		if(formId == "supplierForm"){
+			var addProductsDivs = $("#" +formId).children("#suppliers");
+		}
+		else if(formId == "customerForm") {
+			var addProductsDivs = $("#" +formId).children("#customers");
+		}
+		else{
+			var addProductsDivs = $("#" +formId).children(".clonedDiv");
+		}
 		// console.log(addProductsDivs)
 		// var noOfProductsDivs = addProductsDivs.length;
 		// console.log(noOfProductsDivs)
 		// totalDiscount = 0;
 		$(addProductsDivs).each(
 				function(i, v) {
-					var formId = $(event).closest("form").attr("id");
-					// console.log(formId);
-					i = i + 1
-					
+					i = i + 1;
 					var unitPrice = parseFloat($("#unitPrice" + i).val()) * parseFloat($("#quantity" + i).val());
 					var discountValue = parseFloat($("#rebate_discount" + i).val()) + parseFloat($("#trade_discount" + i).val());
 					console.log("discountValue", discountValue);
 					console.log("unitPrice" + unitPrice);
-					var billAmount = unitPrice - discountValue;
+					if(formId == 'productsForm' || formId == "supplierForm"){
+						 billAmount = unitPrice - discountValue;
+					}else{
+						var discountValue = parseFloat($("#trade_discount" + i).val());
+						 billAmount = unitPrice - discountValue ;
+					}
 					console.log("totalUnitPrice", billAmount);
 					$("#bill_amount"+i).val(parseFloat(billAmount, 2));
-					totalAmount = parseFloat(totalAmount, 2) + parseFloat(billAmount, 2);
+					// totalAmount = parseFloat(totalAmount, 2) + parseFloat(billAmount, 2);
 					var cgstTaxValue = $("#cgst_tax" + i ).val();
 					var igstTaxValue = $("#igst_tax" + i).val() ;
 					var sgstTaxValue = $("#sgst_tax"+ i ).val() ;
@@ -72,9 +85,9 @@ function validateFileInput(oInput) {
 					var gstTaxAmount = (billAmount * totalTaxValue) / (100 + totalTaxValue);
 					console.log(gstTaxAmount);
 					$("#singleUnitTax"+i).val(parseFloat(gstTaxAmount, 2));
-//					var discountedPercentage = $("#discountedPercent").val();
+					//var discountedPercentage = $("#discountedPercent").val();
 					// totalDiscountedAmount = $("#totalDiscountedAmount").val(); 
-					var finalAmount = parseInt(totalAmount)	- parseInt(totalDiscountedAmount);
+					// var finalAmount = parseInt(totalAmount)	- parseInt(totalDiscountedAmount);
 					finalBillAmount = parseFloat(finalBillAmount) + parseFloat(billAmount);
 					console.log("finalBillAmount  ===== ", finalBillAmount);
 					console.log($("#finalAmount"));

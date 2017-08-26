@@ -342,12 +342,42 @@
 											<label for="paymentMode">Payment Mode</label> <select
 												class="form-control" name="paymentMode"
 												id="paymentModeContainer" required>
-												<option value="">--Select--</option>
-												<option value="Cheque">Cheque</option>
-												<option value="CASH">CASH</option>
+												<option>--Select--</option>
+												<option>Cheque</option>
+												<option>CASH</option>
 											</select>
 										</div>
 									</div>
+								<!-- 	<div class="col-md-2 hide">
+										<div class="form-group">
+											<label for="chequeNumber">Cheque Number</label> 
+											<input
+												type="text" name="chequeNumber " placeholder="Cheque number"
+												id="chequeNumber" class="form-control" required />
+										</div>
+									</div>
+									<div class="col-md-2 hide">
+										<div class="form-group">
+											<label for="bankName">Bank Name</label> 
+											<input
+												type="text" name="bankName" placeholder="Bank name"
+												id="bankName" class="form-control" required />
+										</div>
+									</div>
+									<div class="col-md-2 hide">
+										<div class="form-group">
+											<label>Cheque Date:</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-calendar"></i>
+												</div>
+												<input type="text" id="chequeDate"
+													data-inputmask="'alias': 'yyyy-mm-dd'" data-mask
+													class="form-control invoicedate" name="chequeDate" required>
+											</div>
+											/.input group
+										</div>
+									</div> -->
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="amountPaid">Amount Paid</label> <input
@@ -627,6 +657,20 @@
 	 
 });
 
+/* 	$('body').on('change', '#paymentModeContainer', function() {
+			var paymentType = $(this).val();
+			console.log(paymentType); 
+			if(paymentType == "Cheque"){
+				$("#chequeNumber").parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
+				$("#chequeDate").parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
+				$("#bankName").parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
+			}else{
+				$("#chequeNumber").parents('div[class^="col-md-2"]').addClass("hide",1000);
+				$("#chequeDate").parents('div[class^="col-md-2"]').addClass("hide",1000);
+				$("#bankName").parents('div[class^="col-md-2"]').addClass("hide",1000);
+			}
+		}); */
+
 	 $('body').on('change', '.product_type', function() {
 		
 		  var productType = $(this).val();
@@ -650,13 +694,13 @@
 		  $("#indoor_location"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 		  }
          
-         if(productType.replace(" ", "").toLowerCase().indexOf("ac") ==-1){
-       	  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
-		  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");	  
-		  }else{
-			  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2 hide"]').addClass("hide",1000);
-			  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
-		  }
+    //      if(productType.replace(" ", "").toLowerCase().indexOf("ac") ==-1){
+    //    	  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
+		  // $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");	  
+		  // }else{
+			 //  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2 hide"]').addClass("hide",1000);
+			 //  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
+		  // }
          var brandName=$('#brand'+currentDivPos).val();
          $("#star_rating"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
          $("#modelContainer"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
