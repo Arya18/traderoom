@@ -16,4 +16,6 @@ public interface ProductServices {
 	List<Product> getAllReorderProducts();
 	Product getProductByBrand(String brand);
 	Product getProductByModelNumber(String modelNumber);
+	List<Object[]> getTop5SaleProdcut();
+	List<Object[]> getTop5PurchaseProduct();
 }

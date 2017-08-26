@@ -69,5 +69,15 @@ public class ProductServicesImpl implements ProductServices {
 	public Product getProductByModelNumber(String modelNumber) {
 		return productDao.getProductByModelNumber(modelNumber);
 	}
+
+	@Override
+	public List<Object[]> getTop5SaleProdcut() {
+		return productDao.getTop5SaleProdcut();
+	}
+
+	@Override
+	public List<Object[]> getTop5PurchaseProduct() {
+		return productDao.getTop5PurchaseProduct();
+	}
 	
 }

@@ -133,6 +133,12 @@ public class DashboardController extends BaseController {
 		model.addAttribute("payDueCustomerCount", payDueCustomerCount);
 		BigInteger payDueSupplierCount = purchaseInvoiceServices.paymentDueCountOfSuppliers();
 		model.addAttribute("payDueSupplierCount", payDueSupplierCount);
+		List<Object[]> top5saleProduct=productServices.getTop5SaleProdcut();
+		List<Map<String, Object>> top5SalesProductMap=prepareTopProductMap(top5saleProduct);
+		model.addAttribute("top5SalesProductMap", top5SalesProductMap);
+		List<Object[]> top5purchaseProduct=productServices.getTop5PurchaseProduct();
+		List<Map<String, Object>> top5purchaseProductMap=prepareTopProductMap(top5purchaseProduct);
+		model.addAttribute("top5purchaseProductMap", top5purchaseProductMap);
 		return "dashboard";
 	}
 
@@ -2677,5 +2683,26 @@ public class DashboardController extends BaseController {
 	@RequestMapping(value = "/downloadFilterStockReport", method = RequestMethod.GET)
 	public String downloadFilterStockReport(HttpServletResponse response) {
 		return null;
+	}
+	
+	private List<Map<String, Object>> prepareTopProductMap(List<Object[]> objects){
+		List<Map<String, Object>> listmap = new ArrayList<Map<String, Object>>();
+	
+		try{
+		for(Object[] obj:objects){
+		Map<String,Object> map=new HashMap<>();
+		map.put("totalSale",getSafeLong(obj[0]));
+		map.put("brand", getSafeString(obj[2]));
+		map.put("modelNumber", getSafeString(obj[3]));
+		map.put("productType", getSafeString(obj[4]));
+		map.put("size", getSafeString(obj[5]));
+		map.put("quantity", getSafeLong(obj[6]));
+		listmap.add(map);
+		}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return listmap;
 	}
 }

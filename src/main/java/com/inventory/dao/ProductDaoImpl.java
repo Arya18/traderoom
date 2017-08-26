@@ -175,5 +175,33 @@ public class ProductDaoImpl implements ProductDao{
 		session.close();
 		return product;
 	}
+
+	@Override
+	public List<Object[]> getTop5SaleProdcut() {
+		session = sessionFactory.openSession();
+		tx = session.beginTransaction();
+		
+		SQLQuery query = (SQLQuery) session.createSQLQuery("select sum(si.unitPrice) as totalPrice,si.product_id,p.brand,p.modelNumber,p.productType,p.size,"+
+		"count(*) as quantity from product_saleinvoice si inner join product p on si.product_id=p.id group by  si.product_id order by totalPrice desc limit 5");
+		@SuppressWarnings("unchecked")
+		List<Object[]> rows = query.list();
+		tx.commit();
+		session.close();
+		return rows;
+	}
+	
+	@Override
+	public List<Object[]> getTop5PurchaseProduct() {
+		session = sessionFactory.openSession();
+		tx = session.beginTransaction();
+		
+		SQLQuery query = (SQLQuery) session.createSQLQuery("select sum(ps.unit_price) as totalPrice,ps.product_id,p.brand,p.modelNumber,p.productType,p.size,"+
+		"count(*) as quantity from product_supplier ps inner join product p on ps.product_id=p.id where ps.sale=0 group by  ps.product_id order by totalPrice desc limit 5");
+		@SuppressWarnings("unchecked")
+		List<Object[]> rows = query.list();
+		tx.commit();
+		session.close();
+		return rows;
+	}
 	
 }
