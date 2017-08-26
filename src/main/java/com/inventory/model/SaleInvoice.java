@@ -19,15 +19,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Proxy;
 
 
 @Entity
 @Table(name = "saleinvoice")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SaleInvoice implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
@@ -62,6 +61,16 @@ public class SaleInvoice implements Serializable{
 	
 	@Column(name = "taxAmount")
 	private Double taxAmount=0.0;
+	
+	@Column(name = "chequeNumber")
+	private String chequeNumber;
+	
+	@Column(name = "bankName")
+	private String bankName;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "chequeDate")
+	private Date chequeDate;
 	
 	@OneToMany(mappedBy = "saleinvoice",fetch=FetchType.EAGER)
 	private List<ProductSaleInvoice> productSaleInvoices=new ArrayList<ProductSaleInvoice>();
@@ -229,6 +238,30 @@ public class SaleInvoice implements Serializable{
 
 	public void setTaxAmount(Double taxAmount) {
 		this.taxAmount = taxAmount;
+	}
+
+	public String getChequeNumber() {
+		return chequeNumber;
+	}
+
+	public void setChequeNumber(String chequeNumber) {
+		this.chequeNumber = chequeNumber;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public Date getChequeDate() {
+		return chequeDate;
+	}
+
+	public void setChequeDate(Date chequeDate) {
+		this.chequeDate = chequeDate;
 	}
 
 	

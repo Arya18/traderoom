@@ -342,13 +342,13 @@
 											<label for="paymentMode">Payment Mode</label> <select
 												class="form-control" name="paymentMode"
 												id="paymentModeContainer" required>
-												<option value="">--Select--</option>
-												<option value="Cheque">Cheque</option>
-												<option value="CASH">CASH</option>
+												<option>--Select--</option>
+												<option>Cheque</option>
+												<option>CASH</option>
 											</select>
 										</div>
 									</div>
-									<div class="col-md-2 hide">
+								<!-- 	<div class="col-md-2 hide">
 										<div class="form-group">
 											<label for="chequeNumber">Cheque Number</label> 
 											<input
@@ -375,9 +375,9 @@
 													data-inputmask="'alias': 'yyyy-mm-dd'" data-mask
 													class="form-control invoicedate" name="chequeDate" required>
 											</div>
-											<!-- /.input group -->
+											/.input group
 										</div>
-									</div>
+									</div> -->
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="amountPaid">Amount Paid</label> <input
@@ -657,7 +657,7 @@
 	 
 });
 
-	$('body').on('change', '#paymentModeContainer', function() {
+/* 	$('body').on('change', '#paymentModeContainer', function() {
 			var paymentType = $(this).val();
 			console.log(paymentType); 
 			if(paymentType == "Cheque"){
@@ -669,7 +669,7 @@
 				$("#chequeDate").parents('div[class^="col-md-2"]').addClass("hide",1000);
 				$("#bankName").parents('div[class^="col-md-2"]').addClass("hide",1000);
 			}
-		});
+		}); */
 
 	 $('body').on('change', '.product_type', function() {
 		

@@ -18,6 +18,9 @@ public class PurchaseinvoiceProductDTO {
 	private long supplierId;
 	private double taxAmount;
 	private Long firmId;
+	private String chequeNumber;
+	private String bankName;
+	private Date chequeDate;
 	List<ProductDTO> productsArray;
 	public String getInvoiceNumber() {
 		return invoiceNumber;
@@ -92,5 +95,24 @@ public class PurchaseinvoiceProductDTO {
 	public void setFirmId(Long firmId) {
 		this.firmId = firmId;
 	}
+	public String getChequeNumber() {
+		return chequeNumber;
+	}
+	public void setChequeNumber(String chequeNumber) {
+		this.chequeNumber = chequeNumber;
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+	public Date getChequeDate() {
+		return chequeDate;
+	}
+	public void setChequeDate(Date chequeDate) {
+		this.chequeDate = chequeDate;
+	}
+	
 	
 }
