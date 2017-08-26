@@ -1138,21 +1138,21 @@
 								'modelNumber': {
 									validators : {
 										notEmpty : {
-											message : 'Select role please.'
+											message : 'Select model number please.'
 										}
 									}
 								},
 								'brand': {
 									validators : {
 										notEmpty : {
-											message : 'Select role please.'
+											message : 'Select brand please.'
 										}
 									}
 								},
 								'quantity': {
 									validators : {
 										notEmpty : {
-											message : 'Select role please.'
+											message : 'Select quantity please.'
 										}
 									}
 								},
@@ -1195,14 +1195,14 @@
 								'location': {
 									validators : {
 										notEmpty : {
-											message : 'Select outdoor unit location please.'
+											message : 'Select location please.'
 										}
 									}
 								},
 								'rebateDiscount':{
 									validators : {
 										notEmpty : {
-											message : 'Select outdoor unit location please.'
+											message : 'Enter a value or enter 0 if none'
 										},
 										regexp : {
                                             regexp : /^[0-9_\.]+$/,
@@ -1213,7 +1213,7 @@
 								'tradeDiscount':{
 									validators : {
 										notEmpty : {
-											message : 'Select outdoor unit location please.'
+											message : 'Enter a value or enter 0 if none.'
 										},
 										regexp : {
                                             regexp : /^[0-9_\.]+$/,
@@ -1231,7 +1231,7 @@
 								'billAmount':{
 									validators : {
 										notEmpty : {
-											message : 'Select outdoor unit location please.'
+											message : 'Enter bill amount'
 										},
 										regexp : {
                                             regexp : /^[0-9_\.]+$/,
@@ -1249,7 +1249,7 @@
 								'sgst': {
 									validators : {
 										notEmpty : {
-											message : 'Enter sgst tax value'
+											message : 'Enter a value or enter 0 if none.'
 										},
 										regexp : {
                                             regexp : /^[0-9_\.]+$/,
@@ -1260,7 +1260,7 @@
 								'igst': {
 									validators : {
 										notEmpty : {
-											message : 'Enter igst tax value'
+											message : 'Enter a value or enter 0 if none.'
 										},
 										regexp : {
                                             regexp : /^[0-9_\.]+$/,
@@ -1271,7 +1271,7 @@
 								'cgst': {
 									validators : {
 										notEmpty : {
-											message : 'Enter cgst tax value'
+											message : 'Enter a value or enter 0 if none.'
 										},
 										regexp : {
                                             regexp : /^[0-9_\.]+$/,
@@ -1281,7 +1281,7 @@
 								},
 								"singleUnitTax":{
 									notEmpty : {
-											message : 'Enter cgst tax value'
+											message : 'Enter tax amount, if not getting then click on ant textfield'
 										},
 										regexp : {
                                             regexp : /^[0-9_\.]+$/,
@@ -1312,7 +1312,7 @@
 							'totalDiscount' : {
 								validators : {
 									notEmpty : {
-										message : 'Cannot be empty'
+										message : 'Cannot be empty, if not getting then click on ant textfield'
 									},
 									regexp : {
                                         regexp : /^[0-9_\.]+$/,
@@ -1323,7 +1323,7 @@
 							'finalAmount': {
 								validators : {
 									notEmpty : {
-										message : 'Cannot be empty'
+										message : 'Cannot be empty, if not getting then click on ant textfield'
 									},
 									regexp : {
                                         regexp : /^[0-9_\.]+$/,
@@ -1334,7 +1334,7 @@
 							'paymentMode': {
 								validators : {
 									notEmpty : {
-										message : 'Select mode of payment'
+										message : 'Select mode of payment, if not getting then click on ant textfield'
 									}
 								}
 							},
@@ -1373,13 +1373,13 @@
                                     }
 								}
 							},
-							'comments': {
-								validators : {
-									notEmpty : {
-										message : 'Add comments, cannot be empty'
-									}
-								}
-							},
+							// 'comments': {
+							// 	validators : {
+							// 		notEmpty : {
+							// 			message : 'Add comments, cannot be empty'
+							// 		}
+							// 	}
+							// },
 							'purchaseInvoicedate': {
 								validators : {
 									notEmpty : {
@@ -1390,7 +1390,7 @@
 							"taxAmount": {
 								validators : {
 									notEmpty : {
-										message : 'Select date please.'
+										message : 'Enter tax amount, if not getting then click on ant textfield.'
 									}
 								}
 							}

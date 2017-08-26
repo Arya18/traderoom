@@ -44,35 +44,43 @@ function validateFileInput(oInput) {
 		var totalDiscountedAmount = 0;
 		var totalAmount = 0;
 		var finalBillAmount = 0;
+		// var discountValue = 0;
 		var totalTaxableAmount= 0;
 		var billAmount = 0;
 		var formId = $(event).closest("form").attr("id");
 		// console.log(formId);
-		if(formId == "supplierForm"){
-			var addProductsDivs = $("#" +formId).children("#suppliers");
-		}
-		else if(formId == "customerForm") {
-			var addProductsDivs = $("#" +formId).children("#customers");
-		}
-		else{
+		// if(formId == "supplierForm"){
+		// 	var addProductsDivs = $("#" +formId).children("#suppliers");
+		// }
+		// else if(formId == "customerForm") {
+		// 	var addProductsDivs = $("#" +formId).children("#customers");
+		// }
+		// else{
 			var addProductsDivs = $("#" +formId).children(".clonedDiv");
-		}
-		// console.log(addProductsDivs)
+		// }
+		
 		// var noOfProductsDivs = addProductsDivs.length;
 		// console.log(noOfProductsDivs)
 		// totalDiscount = 0;
+		if(formId == "productsForm" || formId == "saleProductsForm"){
 		$(addProductsDivs).each(
 				function(i, v) {
 					i = i + 1;
 					var unitPrice = parseFloat($("#unitPrice" + i).val()) * parseFloat($("#quantity" + i).val());
-					var discountValue = parseFloat($("#rebate_discount" + i).val()) + parseFloat($("#trade_discount" + i).val());
+					if(formId == 'productsForm' || formId == "supplierForm"){
+						var discountsValue = parseFloat($("#rebate_discount" + i).val()) + parseFloat($("#trade_discount" + i).val());
+					}
+					else{
+						var discountsValue = parseFloat($("#trade_discount" + i).val());
+					}
+					var discountValue = discountValue + discountsValue;
 					console.log("discountValue", discountValue);
 					console.log("unitPrice" + unitPrice);
 					if(formId == 'productsForm' || formId == "supplierForm"){
-						 billAmount = unitPrice - discountValue;
+						 billAmount = unitPrice - discountsValue;
 					}else{
-						var discountValue = parseFloat($("#trade_discount" + i).val());
-						 billAmount = unitPrice - discountValue ;
+						var tradeDiscountValue = parseFloat($("#trade_discount" + i).val());
+						billAmount = unitPrice - tradeDiscountValue ;
 					}
 					console.log("totalUnitPrice", billAmount);
 					$("#bill_amount"+i).val(parseFloat(billAmount, 2));
@@ -84,60 +92,31 @@ function validateFileInput(oInput) {
 					console.log("totalTaxValue " + totalTaxValue);
 					var gstTaxAmount = (billAmount * totalTaxValue) / (100 + totalTaxValue);
 					console.log(gstTaxAmount);
+
 					$("#singleUnitTax"+i).val(parseFloat(gstTaxAmount, 2));
-					//var discountedPercentage = $("#discountedPercent").val();
-					// totalDiscountedAmount = $("#totalDiscountedAmount").val(); 
-					// var finalAmount = parseInt(totalAmount)	- parseInt(totalDiscountedAmount);
+					
 					finalBillAmount = parseFloat(finalBillAmount) + parseFloat(billAmount);
 					console.log("finalBillAmount  ===== ", finalBillAmount);
-					console.log($("#finalAmount"));
+					
 					$("#finalAmount").val(parseFloat(finalBillAmount,2));
 					totalTaxableAmount = totalTaxableAmount + gstTaxAmount;
 					$("#taxableAmount").val(parseFloat(totalTaxableAmount, 2));
-					totalDiscountedAmount = totalDiscountedAmount + discountValue;
+					totalDiscountedAmount = totalDiscountedAmount + discountsValue;
 					$("#totalDiscountedAmount").val(parseFloat(totalDiscountedAmount, 2));
-					/*var leftBalance = finalAmount
-							- parseFloat($("#amountPaid").val(), 2);*/
-					// console.log("noOfProductsDivs: "+ $("#discountedAmount"+i).val());
 					
-					
-					// $("#finalAmount").val(parseFloat(finalAmount, 2));
-					/*$("#balanceLeft").val(leftBalance);
-					
-					if($("#balanceLeft").val() == "NaN"){
-						$("#balanceLeft").val('');
-					}*/
 					if($("#finalAmount").val() == "NaN"){
 						$("#finalAmount").val('');
 					}
 					if($("#totalDiscountedAmount").val() == "NaN"){
 						$("#totalDiscountedAmount").val('');
 					}
-					
-					/*if(formId == "supplierForm"){*/
-						// var taxPercentage = $("#taxPercentage").val();
-						// var taxableAmount = (taxPercentage/100) * (finalAmount);
-						// var totalAmt = taxableAmount + finalAmount;						
-						leftBalance = finalBillAmount - parseFloat($("#amountPaid").val(), 2);
-						// console.log("totalDiscountedAmount "
-						// 		+ totalDiscountedAmount + "finalAmount "
-						// 		+ finalAmount + "balanceleft: " + leftBalance + "taxPercentage " + taxPercentage + "taxableAmount "+ taxableAmount);
-						
-						$("#balanceLeft").val(leftBalance);
-						// $("#taxableAmount").val(taxableAmount);
-						// $("#finalAmount").val(totalAmt);
-						if($("#balanceLeft").val() == "NaN"){
-							$("#balanceLeft").val('');
-						}
-						/*if($("#taxableAmount").val() == "NaN"){
-							$("#balanceLeft").val('');
-						}
-						if($("#totalAmount").val() == "NaN"){
-							$("#balanceLeft").val('');
-						}*/
-					/*}*/
-
 				});
+			}
+			leftBalance = parseFloat($("#finalAmount").val(), 2) - parseFloat($("#amountPaid").val(), 2);
+			$("#balanceLeft").val(leftBalance);
+			if($("#balanceLeft").val() == "NaN"){
+				$("#balanceLeft").val('');
+			}
 	};
 
 //printable JS
