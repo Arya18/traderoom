@@ -81,7 +81,7 @@
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="quantity">Avalible Quantity</label> <input
+											<label for="quantity">Available Quantity</label> <input
 												type="number" placeholder="Available Quantity" id="quantity"
 												min="0" name="quantity" value="${product.quantity}"
 												class="form-control">
