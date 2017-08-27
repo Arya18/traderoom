@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <style>
 .table {
 	width: 35%;
@@ -72,6 +73,80 @@
 
 				</tbody>
 			</table>
+			
+						<!-- Table row -->
+						Top 5 sale product
+			<div class="row">
+				<div class="col-xs-12 table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+
+								<th>Product Type</th>
+								<th>Brand</th>
+								<th>Model Number</th>
+								<th>Size</th>
+								<th>Total Sale Price</th>
+								<th>Total Quantity</th>
+								
+
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="top5SalesProduct" items="${top5SalesProductMap}">
+								<tr>
+									<td>${top5SalesProduct.productType}</td>
+									<td>${top5SalesProduct.brand}</td>
+									<td>${top5SalesProduct.modelNumber }</td>
+									<td>${top5SalesProduct.size}</td>
+									<td>${top5SalesProduct.totalSale }</td>
+									<td>${top5SalesProduct.quantity}</td>
+									
+								</tr>
+							</c:forEach>
+
+						</tbody>
+					</table>
+				</div>
+				<!-- /.col -->
+			</div>
+			
+			<!-- Table row -->
+						Top 5 purchase product
+			<div class="row">
+				<div class="col-xs-12 table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+
+								<th>Product Type</th>
+								<th>Brand</th>
+								<th>Model Number</th>
+								<th>Size</th>
+								<th>Total Sale Price</th>
+								<th>Total Quantity</th>
+								
+
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="top5purchaseProduct" items="${top5purchaseProductMap}">
+								<tr>
+									<td>${top5purchaseProduct.productType}</td>
+									<td>${top5purchaseProduct.brand}</td>
+									<td>${top5purchaseProduct.modelNumber }</td>
+									<td>${top5purchaseProduct.size}</td>
+									<td>${top5purchaseProduct.totalSale }</td>
+									<td>${top5purchaseProduct.quantity}</td>
+									
+								</tr>
+							</c:forEach>
+
+						</tbody>
+					</table>
+				</div>
+				<!-- /.col -->
+			</div>
 
 
 		</aside>
