@@ -47,7 +47,7 @@
 								<label class="control-label">Firm Name</label>
 								<div class="controls">
 									<select class="form-control" name="firmName"
-										id="indoorSerialNo">
+										id="firmName">
 										<option value="">--Select--</option>
 										<c:forEach items="${firmName}" var="firmName">
 										<option value="${firmName}">${firmName}</option>
@@ -96,7 +96,7 @@
 								<label class="control-label">Size</label>
 								<div class="controls">
 									<select class="form-control" name="size"
-										id="indoorSerialNo">
+										id="size">
 										<option value="">--Select--</option>
 										<c:forEach items="${size}" var="size">
 										<option value="${size}">${size}</option>
@@ -139,15 +139,13 @@
 								</div>
 							</div>
 							
-								<div class="col-md-2 clearfix">
+							<div class="col-md-1 clearfix">
 								<label class="control-label"> </label>
 								<div class="controls">
-									<a href="/dashboard/downloadFilterStockReport"
-							class="btn btn-success pull-right"><span
-							class="glyphicon glyphicon-arrow-down"></span> Download Excel</a>
+									<button type="button" onclick="downlaodExcel();" class="btn btn-success btn-pass "
+										id="search" value="Downlaod Excel">Download Excel</button>
 								</div>
 							</div>
-							
 						</div>
 					</form>
 				</div> 
@@ -159,9 +157,6 @@
 							<h3 class="box-title"> Record By Filter</h3>
 						</div>
 						<!-- /.box-header -->
-						<a href="/dashboard/downloadFilterStockReport"
-							class="btn btn-success pull-right downloadbutton"><span
-							class="glyphicon glyphicon-arrow-down"></span> Download Excel</a>
 						<div class="box-body table-responsive">
 							<table id="example1" class="table table-bordered table-striped">
 								<thead>
@@ -218,6 +213,19 @@
                 });
                 //$("#filterForm").submit();
             });
+        function downlaodExcel(){
+        	
+        	var firmName=$("#firmName").val();
+        	var unit=$("#unit").val();
+        	var brandName=$("#brandName").val();
+        	var modelnumber=$("#modelnumber").val();
+        	var size=$("#size").val();
+        	var starName=$("#starName").val();
+        	var location=$("#location").val();
+        	
+        	var urlParam="firmName="+firmName+"&unit="+unit+"&brandName="+brandName+"&modelnumber="+modelnumber+"&size="+size+"&starName="+starName+"&location="+location;
+        	window.location.href="/dashboard/downloadFilterStockReport?"+urlParam;
+        }
         </script>
 </body>
 

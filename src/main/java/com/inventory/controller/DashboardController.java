@@ -133,11 +133,11 @@ public class DashboardController extends BaseController {
 		model.addAttribute("payDueCustomerCount", payDueCustomerCount);
 		BigInteger payDueSupplierCount = purchaseInvoiceServices.paymentDueCountOfSuppliers();
 		model.addAttribute("payDueSupplierCount", payDueSupplierCount);
-		List<Object[]> top5saleProduct=productServices.getTop5SaleProdcut();
-		List<Map<String, Object>> top5SalesProductMap=prepareTopProductMap(top5saleProduct);
+		List<Object[]> top5saleProduct = productServices.getTop5SaleProdcut();
+		List<Map<String, Object>> top5SalesProductMap = prepareTopProductMap(top5saleProduct);
 		model.addAttribute("top5SalesProductMap", top5SalesProductMap);
-		List<Object[]> top5purchaseProduct=productServices.getTop5PurchaseProduct();
-		List<Map<String, Object>> top5purchaseProductMap=prepareTopProductMap(top5purchaseProduct);
+		List<Object[]> top5purchaseProduct = productServices.getTop5PurchaseProduct();
+		List<Map<String, Object>> top5purchaseProductMap = prepareTopProductMap(top5purchaseProduct);
 		model.addAttribute("top5purchaseProductMap", top5purchaseProductMap);
 		return "dashboard";
 	}
@@ -753,8 +753,7 @@ public class DashboardController extends BaseController {
 			setError(model, "Model number cannot be empty");
 			return "update-product";
 		}
-		
-		
+
 		SessionUser currentUser = SessionUser.getHttpSessionUser(httpSession);
 
 		productFromDb.setBrand(product.getBrand());
@@ -1000,14 +999,38 @@ public class DashboardController extends BaseController {
 
 		try {
 			List<ProductDTO> productss = sipd.getProductsArray();
-
+			ArrayList<String> serailNumberList = new ArrayList<String>();
+			ArrayList<String> indoorSerailNumberList = new ArrayList<String>();
 			Map<String, Integer> mapModelNumberCount = new HashMap<String, Integer>();
 			List<String> modelNumber = new ArrayList<String>();
 
 			for (ProductDTO product : productss) {
 				Product pro = productServices.getProductById(product.getId());
 				modelNumber.add(pro.getModelNumber());
+				if (product.getSerialNumber() != null) {
+					serailNumberList.add(product.getSerialNumber());
+				}
+				if (product.getIndoorModelNumber() != null) {
+					indoorSerailNumberList.add(product.getIndoorModelNumber());
+				}
 			}
+
+			if (!serailNumberList.isEmpty()) {
+				Set<String> serailNumberSet = new HashSet<String>(serailNumberList);
+
+				if (serailNumberSet.size() < serailNumberList.size()) {
+					return new ResponseEntity<String>(" Duplicate serial number not allowed", HttpStatus.BAD_REQUEST);
+				}
+			}
+
+			if (!indoorSerailNumberList.isEmpty()) {
+				Set<String> indoorSerailNumberSet = new HashSet<String>(indoorSerailNumberList);
+				if (indoorSerailNumberSet.size() < indoorSerailNumberList.size()) {
+					return new ResponseEntity<String>(" Duplicate indoor serial number not allowed",
+							HttpStatus.BAD_REQUEST);
+				}
+			}
+
 			for (String str : modelNumber) {
 				Integer count = mapModelNumberCount.get(str);
 				mapModelNumberCount.put(str, (count == null) ? 1 : count + 1);
@@ -1046,12 +1069,12 @@ public class DashboardController extends BaseController {
 				saleinvoice.setInvoiceDate(sipd.getDate());
 			saleinvoice.setAmountPaid(sipd.getAmountPaid());
 			saleinvoice.setPaymentMode(sipd.getPaymentMode());
-			if(sipd.getPaymentMode().equalsIgnoreCase("Cheque")){
+			if (sipd.getPaymentMode().equalsIgnoreCase("Cheque")) {
 				saleinvoice.setBankName(sipd.getBankName());
 				saleinvoice.setChequeNumber(sipd.getChequeNumber());
 				saleinvoice.setChequeDate(sipd.getChequeDate());
 			}
-			
+
 			saleinvoice.setBalanceLeft(sipd.getBalanceLeft());
 			saleinvoice.setTaxAmount(sipd.getTaxAmount());
 			saleinvoice.setTaxPercent(sipd.getTaxPercent());
@@ -1126,7 +1149,6 @@ public class DashboardController extends BaseController {
 				psi.setTradeDiscount(product.getTradeDiscount());
 				psi.setBillAmount(product.getBillAmount());
 				psi.setFirm(firm);
-				
 
 				psi.setIndoorSerialNo("");
 				if (product.getIndoorModelNumber() != null || product.getIndoorModelNumber().trim().length() > 0) {
@@ -1287,21 +1309,27 @@ public class DashboardController extends BaseController {
 				return new ResponseEntity<String>("Supplier does not exits", HttpStatus.BAD_REQUEST);
 
 			List<ProductDTO> prods = purchaseInvoiceProductDTO.getProductsArray();
-
+			ArrayList<String> serailNumberList = new ArrayList<String>();
+			ArrayList<String> indoorSerailNumberList = new ArrayList<String>();
 			for (ProductDTO productDto : prods) {
 
 				Product prodtl = productServices.getProductById(productDto.getId());
 				if (prodtl == null) {
 					return new ResponseEntity<String>("Product detals not available", HttpStatus.BAD_REQUEST);
 				}
-				ProductPurchaseInvoice productPurchaseInv = productPurchaseInvoiceService
-						.findProductPurchaseInvoiceBySerialNo(productDto.getSerialNumber());
-				if (productPurchaseInv != null)
-					return new ResponseEntity<String>(productDto.getSerialNumber() + " serial number already exists",
-							HttpStatus.BAD_REQUEST);
+				if (productDto.getSerialNumber() != null) {
+					serailNumberList.add(productDto.getSerialNumber());
+					ProductPurchaseInvoice productPurchaseInv = productPurchaseInvoiceService
+							.findProductPurchaseInvoiceBySerialNo(productDto.getSerialNumber());
+					if (productPurchaseInv != null)
+						return new ResponseEntity<String>(
+								productDto.getSerialNumber() + " serial number already exists", HttpStatus.BAD_REQUEST);
+
+				}
 
 				if (productDto.getIndoorModelNumber() != null
 						&& productDto.getIndoorModelNumber().trim().length() > 0) {
+					indoorSerailNumberList.add(productDto.getIndoorModelNumber());
 					ProductPurchaseInvoice productPurchaseInvForIndoor = productPurchaseInvoiceService
 							.findProductPurchaseInvoiceByIndoorSerialNo(productDto.getIndoorModelNumber());
 					if (productPurchaseInvForIndoor != null)
@@ -1309,8 +1337,24 @@ public class DashboardController extends BaseController {
 								productDto.getIndoorModelNumber() + " indoor serial number already exists",
 								HttpStatus.BAD_REQUEST);
 				}
+
 			}
 
+			if (!serailNumberList.isEmpty()) {
+				Set<String> serailNumberSet = new HashSet<String>(serailNumberList);
+
+				if (serailNumberSet.size() < serailNumberList.size()) {
+					return new ResponseEntity<String>(" Duplicate serial number not allowed", HttpStatus.BAD_REQUEST);
+				}
+			}
+
+			if (!indoorSerailNumberList.isEmpty()) {
+				Set<String> indoorSerailNumberSet = new HashSet<String>(indoorSerailNumberList);
+				if (indoorSerailNumberSet.size() < indoorSerailNumberList.size()) {
+					return new ResponseEntity<String>(" Duplicate indoor serial number not allowed",
+							HttpStatus.BAD_REQUEST);
+				}
+			}
 			PurchaseInvoice purchaseInv = purchaseInvoiceServices
 					.getpurchaseInvoiceByInvoiceNumber(purchaseInvoiceProductDTO.getInvoiceNumber());
 			if (purchaseInv != null)
@@ -1335,7 +1379,7 @@ public class DashboardController extends BaseController {
 			purchaseInvoice.setFinalAmount(purchaseInvoiceProductDTO.getFinalAmount());
 			purchaseInvoice.setSupplier(supplier);
 			purchaseInvoice.setPaymentMode(purchaseInvoiceProductDTO.getPaymentMode());
-			if(purchaseInvoiceProductDTO.getPaymentMode().equalsIgnoreCase("Cheque")){
+			if (purchaseInvoiceProductDTO.getPaymentMode().equalsIgnoreCase("Cheque")) {
 				purchaseInvoice.setChequeNumber(purchaseInvoiceProductDTO.getChequeNumber());
 				purchaseInvoice.setChequeDate(purchaseInvoiceProductDTO.getChequeDate());
 				purchaseInvoice.setBankName(purchaseInvoiceProductDTO.getBankName());
@@ -2619,10 +2663,10 @@ public class DashboardController extends BaseController {
 	}
 
 	@RequestMapping(value = "/getStockByFilterRecord", method = RequestMethod.GET)
-	public String getStockByFilterRecord(Model model, @RequestParam(value = "firmName") String firmName,
-			@RequestParam(value = "unit") String unit, @RequestParam(value = "brandName") String brandName,
-			@RequestParam(value = "modelnumber") String modelnumber, @RequestParam(value = "size") String size,
-			@RequestParam(value = "starName") String starName, @RequestParam(value = "location") String location) {
+	public String getStockByFilterRecord(Model model, @RequestParam(value = "firmName",required=false) String firmName,
+			@RequestParam(value = "unit",required=false) String unit, @RequestParam(value = "brandName",required=false) String brandName,
+			@RequestParam(value = "modelnumber",required=false) String modelnumber, @RequestParam(value = "size",required=false) String size,
+			@RequestParam(value = "starName",required=false) String starName, @RequestParam(value = "location",required=false) String location) {
 
 		List<Firms> firms = dashboardService.findallFirms();
 		Set<String> firmsName = new HashSet<>();
@@ -2681,26 +2725,105 @@ public class DashboardController extends BaseController {
 	}
 
 	@RequestMapping(value = "/downloadFilterStockReport", method = RequestMethod.GET)
-	public String downloadFilterStockReport(HttpServletResponse response) {
-		return null;
+	public String downloadFilterStockReport(HttpServletResponse response, Model model,
+			@RequestParam(value = "firmName") String firmName, @RequestParam(value = "unit") String unit,
+			@RequestParam(value = "brandName") String brandName,
+			@RequestParam(value = "modelnumber") String modelnumber, @RequestParam(value = "size") String size,
+			@RequestParam(value = "starName") String starName, @RequestParam(value = "location") String location) {
+
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFSheet sheet = workbook.createSheet("Filter_Stock_Report");
+
+		// create style for header cells
+		CellStyle style = workbook.createCellStyle();
+		Font font = workbook.createFont();
+		font.setFontName("Arial");
+		style.setFillForegroundColor(HSSFColor.BLUE.index);
+		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		font.setColor(HSSFColor.WHITE.index);
+		style.setFont(font);
+
+		// create header row
+		Row rowheader = sheet.createRow(0);
+
+		rowheader.createCell(0).setCellValue("Brand");
+		rowheader.getCell(0).setCellStyle(style);
+
+		rowheader.createCell(1).setCellValue("Model Number");
+		rowheader.getCell(1).setCellStyle(style);
+
+		rowheader.createCell(2).setCellValue("Size");
+		rowheader.getCell(2).setCellStyle(style);
+
+		rowheader.createCell(3).setCellValue("Star");
+		rowheader.getCell(3).setCellStyle(style);
+
+		rowheader.createCell(4).setCellValue("Quantity");
+		rowheader.getCell(4).setCellStyle(style);
+
+		rowheader.createCell(5).setCellValue("Price");
+		rowheader.getCell(5).setCellStyle(style);
+
+		rowheader.createCell(6).setCellValue("Firm Name");
+		rowheader.getCell(6).setCellStyle(style);
+
+		List<Object[]> rows = productPurchaseInvoiceService.getRecordByFilter(firmName, unit, brandName, modelnumber,
+				size, starName, location);
+		List<FilterStockReport> finalStockReportList = transformProductPurchaseinvoice(rows);
+		int rowCount = 0;
+		for (FilterStockReport filterStockReport : finalStockReportList) {
+			Row row = sheet.createRow(++rowCount);
+
+			Cell cell0 = row.createCell(0);
+			cell0.setCellValue(filterStockReport.getBrandName());
+			Cell cell1 = row.createCell(1);
+			cell1.setCellValue(filterStockReport.getModelNumber());
+			Cell cell2 = row.createCell(2);
+			cell2.setCellValue(filterStockReport.getSize());
+			Cell cell3 = row.createCell(3);
+			cell3.setCellValue(filterStockReport.getStar());
+			Cell cell4 = row.createCell(4);
+			cell4.setCellValue(filterStockReport.getQuantity());
+			Cell cell5 = row.createCell(5);
+			cell5.setCellValue(filterStockReport.getUnitPrice());
+			Cell cell6 = row.createCell(6);
+			cell6.setCellValue(filterStockReport.getFirmName());
+
+		}
+
+		try {
+			response.setContentType("application/vnd.ms-excel");
+			response.setHeader("Content-Disposition", "attachment; filename=Filter_Stock_Report.xlsx");
+
+			workbook.write(response.getOutputStream()); // Write workbook to
+														// response.
+			response.getOutputStream().close();
+			workbook.close();
+
+			System.out.println("Excel written successfully..");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "get-filter-record";
 	}
-	
-	private List<Map<String, Object>> prepareTopProductMap(List<Object[]> objects){
+
+	private List<Map<String, Object>> prepareTopProductMap(List<Object[]> objects) {
 		List<Map<String, Object>> listmap = new ArrayList<Map<String, Object>>();
-	
-		try{
-		for(Object[] obj:objects){
-		Map<String,Object> map=new HashMap<>();
-		map.put("totalSale",getSafeLong(obj[0]));
-		map.put("brand", getSafeString(obj[2]));
-		map.put("modelNumber", getSafeString(obj[3]));
-		map.put("productType", getSafeString(obj[4]));
-		map.put("size", getSafeString(obj[5]));
-		map.put("quantity", getSafeLong(obj[6]));
-		listmap.add(map);
-		}
-		}
-		catch(Exception e){
+
+		try {
+			for (Object[] obj : objects) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("totalSale", getSafeLong(obj[0]));
+				map.put("brand", getSafeString(obj[2]));
+				map.put("modelNumber", getSafeString(obj[3]));
+				map.put("productType", getSafeString(obj[4]));
+				map.put("size", getSafeString(obj[5]));
+				map.put("quantity", getSafeLong(obj[6]));
+				listmap.add(map);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return listmap;

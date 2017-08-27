@@ -233,6 +233,7 @@
 						<div class="box-header">
 							<h3 class="box-title">Generate Invoice</h3>
 						</div>
+						<div class="col-md-12 error_msg"></div>
 						<!-- /.box-header -->
 						<!-- form start -->
 						<form role="form" id="customerForm">
@@ -1142,9 +1143,8 @@
                         $('#ajax_loader').hide();
                       },
                     error : function(response, status, code){
-                   	 /* alert("error "+response.responseText);
                    	 $(".error_msg").html("<div class='alert alert-danger text-center'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>"+response.responseText+"</strong></div>");
-                       */   
+                       
                     }
                 });   
 				}
