@@ -80,7 +80,7 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-md-2 hide">
+									<div class="col-md-2">
 										<div class="form-group">
 											<label for="exampleInputEmail1">Star rating</label> <select
 												class="form-control star_rating" name="starRating"
@@ -607,6 +607,7 @@
 	
 	 $('body').on('change', '.star_rating', function() {
 		  var starRating = $(this).val();
+		  if(starRating!="None"){
          var currentDivID = $(this).closest(".clonedDiv").attr("id");
          var regex = /\d+/g;
 		  var currentDivPos = currentDivID.match(regex);
@@ -654,7 +655,7 @@
       jQuery(".error_container").html("Some error unknown error occurred.");
        }
      });
-	 
+		 }
 });
 
 /* 	$('body').on('change', '#paymentModeContainer', function() {
@@ -683,13 +684,13 @@
          if(productType.replace(" ", "").toLowerCase() == "splitac"){
 			  //show both units
 			  $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
-			  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
+			  //$("#star_rating"+currentDivPos).parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
 			  $("#indoor_location"+currentDivPos).parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
 		  }else{
 		  $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
 		  $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 		  // console.log("##################" , $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2"]').children());
-		  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').removeClass("hide",1000);
+		 //$("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').removeClass("hide",1000);
 		  $("#indoor_location"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
 		  $("#indoor_location"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 		  }
@@ -758,50 +759,52 @@
     	  var productType=$('#productTypeContainer'+currentDivPos).val();
     	  
     	 $("#sizeContainer"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
-    	 $("#star_rating"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
+    	 $("#star_rating"+currentDivPos).find('option').remove().end().append('<option value="None">--Select--</option>');
     	 $('#ajax_loader').show();
-    	  url = null;
-    	  
-    	  if((productType.replace(" ", "").toLowerCase().indexOf("ac") !=-1)){
-    		 url="/dashboard/getStar/"+brandName+"/"+productType+"/"+modelNumber+"/";
-    		 
-    	      $.ajax({
-                 url : url,
-                  dataType : "json",
-                  cache: false,
-                  async: false,
-                 success: function(response, status, code){
-            
-                   if(response.exists){
-                       jQuery(".error_container").html("");
-                       for( var index = 0; index < response.star.length; index ++){
-                       	if(response.star[index] != null){
-                               StarContainer ="<option value='"+ response.star[index] +"'>"+response.star[index]+"</option>";
-                               jQuery("#star_rating"+currentDivPos).append(StarContainer);
-                          }
-                       }
-                           
-                       StarContainer ="</select></div></div>";
-                           
-                           jQuery("#star_rating"+currentDivPos).append(StarContainer); 
-                           $(".error_msg").html("");
-                        }
-                   else{
-                	   $(".error_msg").html("<div class='alert alert-danger text-center'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>No record for this model</strong></div>");
-                   }
-        
-                 }, 
-                 complete: function(){
-                     $('#ajax_loader').hide();
-                   },  
-                 error: function(response, status, code){
-
-                jQuery(".error_container").html("Some error unknown error occurred.");
+    	  var starFlag=false;
+  		 url="/dashboard/getStar/"+brandName+"/"+productType+"/"+modelNumber+"/";
+  	      $.ajax({
+               url : url,
+                dataType : "json",
+                cache: false,
+                async: false,
+               success: function(response, status, code){
+          
+                 if(response.exists){
+                     jQuery(".error_container").html("");
+                     for( var index = 0; index < response.star.length; index ++){
+                     	if(response.star[index]==null || response.star[index]=='undefined' || response.star[index].trim().length==0){
+                     		continue;
+                     	}
+                     	else{
+                             StarContainer ="<option value='"+ response.star[index] +"'>"+response.star[index]+"</option>";
+                             jQuery("#star_rating"+currentDivPos).append(StarContainer);
+                             starFlag=true;
+                     	}
+                        
+                     }
+                         if(starFlag){
+                     StarContainer ="</select></div></div>";
+                         
+                         jQuery("#star_rating"+currentDivPos).append(StarContainer); 
+                         }
+                         
+                      }
+                 else{
+                     jQuery(".error_container").html("No size for corresponding selected model.");
                  }
-               });
-    	  }
-    	  else{
-     		 url="/dashboard/getsize/"+brandName+"/"+productType+"/"+modelNumber+"/";
+      
+               }, 
+               complete: function(){
+                   $('#ajax_loader').hide();
+                 },  
+               error: function(response, status, code){
+
+              jQuery(".error_container").html("Some error unknown error occurred.");
+               }
+             });
+  		  if(!starFlag){
+       		 url="/dashboard/getsize/"+brandName+"/"+productType+"/"+modelNumber+"/";
     	        
      $.ajax({
         url : url,
@@ -861,7 +864,7 @@
 						var starRating=$('#star_rating' + currentDivPos)
 						.val();
 						url = null;
-						if(starRating==null ||starRating=='undefined' || starRating.trim().length==0){
+						if(starRating==null ||starRating=='undefined' || starRating.trim().length==0 || starRating==='None'){
 							starRating="NA";
 						}
 						url = "/dashboard/getproduct-info/" + brandName + "/"
