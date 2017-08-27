@@ -141,12 +141,7 @@
 												class="form-control trade_discount">
 										</div>
 									</div>
-									<div>
-
-										<input type="hidden" name="discountRate" id="discountRate1"
-											value="0" id="discount" class="form-control" required>
-									</div>
-
+								
 									<div>
 										<input type="hidden" id="discountedAmount1"
 											name="discountedAmount" value="0"
@@ -298,17 +293,17 @@
 											<label for="paymentMode">Payment Mode</label> <select
 												class="form-control" name="paymentMode"
 												id="paymentModeContainer" required>
-												<option>--Select--</option>
-												<option>Cheque</option>
-												<option>CASH</option>
+												<option value="">--Select--</option>
+												<option value="Cheque">Cheque</option>
+												<option value="CASH">CASH</option>
 											</select>
 										</div>
 									</div>
-									<div class="col-md-2 hide">
+							<!-- 		<div class="col-md-2 hide">
 										<div class="form-group">
 											<label for="chequeNumber">Cheque Number</label> 
 											<input
-												type="text" name="chequeNumber " placeholder="Cheque number"
+												type="text" name="chequeNumber" placeholder="Cheque number"
 												id="chequeNumber" class="form-control" required />
 										</div>
 									</div>
@@ -329,11 +324,11 @@
 												</div>
 												<input type="text" id="chequeDate"
 													data-inputmask="'alias': 'yyyy-mm-dd'" data-mask
-													class="form-control invoicedate" name="chequeDate" required>
+													class="form-control " name="chequeDate" required>
 											</div>
-											<!-- /.input group -->
+											/.input group
 										</div>
-									</div>
+									</div> -->
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="amountPaid">Amount Paid</label> <input
@@ -505,7 +500,7 @@
 				     });
 				 });
 	
-		$('body').on('change', '#paymentModeContainer', function() {
+	/* 	$('body').on('change', '#paymentModeContainer', function() {
 			var paymentType = $(this).val();
 			console.log(paymentType); 
 			if(paymentType == "Cheque"){
@@ -517,7 +512,7 @@
 				$("#chequeDate").parents('div[class^="col-md-2"]').addClass("hide",1000);
 				$("#bankName").parents('div[class^="col-md-2"]').addClass("hide",1000);
 			}
-		});
+		}); */
 		 
 		 $('body').on('change', '.brand_type', function() {
 			 var brandName = $(this).val();
@@ -533,7 +528,7 @@
 	         $("#indoorModelNumber"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
              url=null;
              if(brandName!=null){
-                  url="/dashboard/getproductType/"+brandName;
+                  url="/dashboard/getproductType/"+brandName+"/";
              }
              $('#ajax_loader').show();
              $.ajax({
@@ -577,6 +572,7 @@
 		 
 		 $('body').on('change', '.star_rating', function() {
 			  var starRating = $(this).val();
+			  if(starRating!="None"){
 	          var currentDivID = $(this).closest(".clonedDiv").attr("id");
 	          var regex = /\d+/g;
 			  var currentDivPos = currentDivID.match(regex);
@@ -590,7 +586,7 @@
  	          $("#serialNo"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
  	          $("#indoorModelNumber"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
         	 
-        	   var url="/dashboard/getsize/"+brandName+"/"+productType+"/"+modelNumber;
+        	   var url="/dashboard/getsize/"+brandName+"/"+productType+"/"+modelNumber+"/";
         	   $('#ajax_loader').show();
          $.ajax({
             url : url,
@@ -627,6 +623,7 @@
            jQuery(".error_container").html("Some error unknown error occurred.");
             }
           });
+	}
 		 
      });
       
@@ -645,13 +642,13 @@
 		  $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 		  }
           
-          if(productType.replace(" ", "").toLowerCase().indexOf("ac") ==-1){
+         /*  if(productType.replace(" ", "").toLowerCase().indexOf("ac") ==-1){
         	  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
         	  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 			  
 		  }else{
 			  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
-		  }
+		  } */
           var brandName=$('#brand'+currentDivPos).val();
           $("#modelContainer"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
           $("#sizeContainer"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
@@ -660,7 +657,7 @@
 	      $("#indoorModelNumber"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
            url=null;
            if(brandName!=""){
-                url="/dashboard/getModelNumber/"+brandName+"/"+productType;
+                url="/dashboard/getModelNumber/"+brandName+"/"+productType+"/";
            }
            $('#ajax_loader').show();
           $.ajax({
@@ -710,16 +707,13 @@
          	  var productType=$('#productTypeContainer'+currentDivPos).val();
          	  
          	 $("#sizeContainer"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
-         	$("#star_rating"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
+         	$("#star_rating"+currentDivPos).find('option').remove().end().append('<option value="None">--Select--</option>');
 	         $("#serialNo"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
 	         $("#indoorModelNumber"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
 	         
          	 $('#ajax_loader').show();
-         	  url = null;
-         	  
-         	  if((productType.replace(" ", "").toLowerCase().indexOf("ac") !=-1)){
-         		 url="/dashboard/getStar/"+brandName+"/"+productType+"/"+modelNumber;
-         		 
+         	  var starFlag=false;
+         		 url="/dashboard/getStar/"+brandName+"/"+productType+"/"+modelNumber+"/";
          	      $.ajax({
                       url : url,
                        dataType : "json",
@@ -730,16 +724,21 @@
                         if(response.exists){
                             jQuery(".error_container").html("");
                             for( var index = 0; index < response.star.length; index ++){
-                            	if(response.star[index]==null)
+                            	if(response.star[index]==null || response.star[index]=='undefined' || response.star[index].trim().length==0){
                             		continue;
+                            	}
+                            	else{
                                     StarContainer ="<option value='"+ response.star[index] +"'>"+response.star[index]+"</option>";
                                     jQuery("#star_rating"+currentDivPos).append(StarContainer);
+                                    starFlag=true;
+                            	}
                                
                             }
-                                
+                                if(starFlag){
                             StarContainer ="</select></div></div>";
                                 
                                 jQuery("#star_rating"+currentDivPos).append(StarContainer); 
+                                }
                                 
                              }
                         else{
@@ -755,9 +754,9 @@
                      jQuery(".error_container").html("Some error unknown error occurred.");
                       }
                     });
-         	  }
-         	  else{
-          		 url="/dashboard/getsize/"+brandName+"/"+productType+"/"+modelNumber;
+         	  
+          	  if(!starFlag){
+          		 url="/dashboard/getsize/"+brandName+"/"+productType+"/"+modelNumber+"/";
          	        
           $.ajax({
              url : url,
@@ -794,7 +793,7 @@
             jQuery(".error_container").html("Some error unknown error occurred.");
              }
            });
-		 }
+		 } 
       });
 		 
 		 
@@ -819,7 +818,7 @@
 				         $("#indoorModelNumber"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
 						url = null;
 						
-						if(starRating==null ||starRating=='undefined' || starRating.trim().length==0){
+						if(starRating==null ||starRating=='undefined' || starRating.trim().length==0 || starRating==='None'){
 							starRating="NA";
 						}
 							url = "/dashboard/getproduct-info/" + brandName + "/"
@@ -931,10 +930,34 @@
 		        return true;
 			}
 			
-			 $('body').on('change', '.serialNo', function() {
+			function checkDuplicateSerialNum(serialNoId, formId){
+				var productsDivs = $("#" +formId).children(".clonedDiv");
+				var selectedDivIdvalue = $("#" +serialNoId).val();
+				console.log("selectedDivIdvalue", selectedDivIdvalue);
+				$(productsDivs).each(
+				function(i, v) {
+					i = i + 1;
+					var currentSerialNumId = "serialNo" + i;
+					if(currentSerialNumId == serialNoId){
+							return "true";
+						}else{
+							var currentSerialNumValue = $("#serialNo" + i).val();
+						if(currentSerialNumValue == selectedDivIdvalue){
+							return "false";
+						}
+					}
+					return "true";
+				});
+			}			
+
+			 $('body').on('change', '.serialNo', function(e) {
+				  var formId = $(this).closest("form").attr("id");	 		
 				  var serialNo = $(this).val();
+				  var serialNoId = $(this).attr("id");
 				  serialNo=encodeURIComponent(serialNo);
 		          var currentDivID = $(this).closest(".clonedDiv").attr("id");
+		          checkDuplicateSerialNum(serialNoId, formId);
+		          if(checkDuplicateSerialNum == "true"){
 		          var regex = /\d+/g;
 				  var currentDivPos = currentDivID.match(regex);
 		          console.log(currentDivID);
@@ -957,7 +980,7 @@
 	                    $('#unitPrice' + currentDivPos).val(response.purchaseInvoiceUnitPrice); 
 				 globalUnitPrice=response.purchaseInvoiceUnitPrice;
 				//globalAvailableQuantity=response.availableQuantity;
-				 $('#discountRate' + currentDivPos).val(response.purchaseinvoiceDiscountRate);
+				 //$('#discountRate' + currentDivPos).val(response.purchaseinvoiceDiscountRate);
 	                  }
 	               else{
 	                   jQuery(".error_container").html("No data available  for corresponding selected size.");
@@ -972,6 +995,9 @@
 	            jQuery(".error_container").html("Some error unknown error occurred.");
 	             }
 	           });
+			}else{
+				alert("duplicate serial number selected");
+			}
 	          
 	      });
 			 
@@ -1303,13 +1329,13 @@
 												}
 											}
 										},
-										'starRating': {
+									/* 	'starRating': {
 											validators : {
 												notEmpty : {
 													message : 'Select star rating please.'
 												}
 											}
-										},
+										}, */
 										'indoorModelNumber':{
 											validators : {
 												notEmpty : {
@@ -1347,17 +1373,6 @@
 											}
 										},
 										
-										'discountRate': {
-											validators : {
-												notEmpty : {
-													message : 'Select discount rate please.'
-												},
-                                                regexp : {
-                                                    regexp : /^[0-9_\.]+$/,
-                                                    message : 'Only numbers'
-                                                }
-											}
-										},
 										'discountedAmount': {
 											validators : {
 												notEmpty : {
