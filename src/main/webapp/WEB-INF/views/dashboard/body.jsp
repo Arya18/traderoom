@@ -32,68 +32,73 @@
 					<li class="active">Dashboard</li>
 				</ol>
 			</section>
+	<section class="content" >
+		<div class="row">
+    		<div class="col-lg-4 col-xs-6">
+		      <!-- small box -->
+			      <div class="small-box bg-aqua">
+			        <div class="inner">
+			          <h3>${reorderCount}</h3>
+			          <p>Net Reorder Products</p>
+			        </div>
+			        <!-- div class="icon">
+			          <i class="ion ion-bag"></i>
+			        </div> -->
+			        <a href="/dashboard/stockReportReorderProduct" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+			      </div>
+	    	</div>
+        <!-- ./col -->
+			<div class="col-lg-4 col-xs-6">
+	          <!-- small box -->
+	          <div class="small-box bg-green">
+	            <div class="inner">
+	              <h3>${payDueCustomerCount}</h3>
+
+	              <p>Net due payment Sale Invoices</p>
+	            </div>
+	            <!-- <div class="icon">
+	              <i class="ion ion-stats-bars"></i>
+	            </div> -->
+	            <a href="/dashboard/paymentDueSalesInvoice" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+	          </div>
+	        </div>
+	        <!-- ./col -->
+	        <div class="col-lg-4 col-xs-6">
+	          <!-- small box -->
+	          <div class="small-box bg-yellow">
+	            <div class="inner">
+	              <h3>${payDueSupplierCount}</h3>
+
+	              <p>Net due payment Purchase Invoices</p>
+	            </div>
+	            <!-- <div class="icon">
+	              <i class="ion ion-person-add"></i>
+	            </div> -->
+	            <a href="/dashboard/paymentDuePurchaseInvoice" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+	          </div>
+	        </div>
+	        <!-- ./col -->
+	      	</div>
+  	</section>
 
 			<!-- Main content -->
-
+			<div class="col-md-6">
 			<table class="table table-hover table-bordered">
 				<thead>
-					<th colspan="3"><span style="color: red;">Quick Link</span></th>
+					<th colspan="6"><span style="color: red;">Top 5 sale product</span></th>
 				</thead>
-
+				<thead>
+					<tr>
+						<th>Product Type</th>
+						<th>Brand</th>
+						<th>Model Number</th>
+						<th>Size</th>
+						<th>Total Sale Price</th>
+						<th>Total Quantity</th>
+					</tr>
+				</thead>
 				<tbody>
-					<tr>
-						<td>Total Reorder Products</td>
-						<td>${reorderCount}</td>
-						<td><a href="/dashboard/stockReportReorderProduct"
-							class="btn btn-success"><span
-								class="glyphicon glyphicon-arrow-right"></span> Show</a></td>
-					</tr>
-
-					<tr>
-						<td>Total Number of Due payment Sale Invoices</td>
-						<td>${payDueCustomerCount}</td>
-						<td><a href="/dashboard/paymentDueSalesInvoice"
-							class="btn btn-success"><span
-								class="glyphicon glyphicon-arrow-right"></span> Show</a></td>
-					</tr>
-
-					<tr>
-						<td>Total Number of Due payment Purchase Invoices</td>
-						<td>${payDueSupplierCount}</td>
-						<td><a href="/dashboard/paymentDuePurchaseInvoice"
-							class="btn btn-success"><span
-								class="glyphicon glyphicon-arrow-right"></span> Show</a></td>
-					</tr>
-
-					<%-- <tr>
-  <td>Total Number of Due payment Retailer</td>
-  <td>${reorderCount}</td>
-  <td><a href="#" class="btn btn-success"><span class="glyphicon glyphicon-arrow-right"></span> Show</a></td>
-  </tr> --%>
-
-				</tbody>
-			</table>
-			
-						<!-- Table row -->
-						Top 5 sale product
-			<div class="row">
-				<div class="col-xs-12 table-responsive">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-
-								<th>Product Type</th>
-								<th>Brand</th>
-								<th>Model Number</th>
-								<th>Size</th>
-								<th>Total Sale Price</th>
-								<th>Total Quantity</th>
-								
-
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="top5SalesProduct" items="${top5SalesProductMap}">
+					<c:forEach var="top5SalesProduct" items="${top5SalesProductMap}">
 								<tr>
 									<td>${top5SalesProduct.productType}</td>
 									<td>${top5SalesProduct.brand}</td>
@@ -104,29 +109,29 @@
 									
 								</tr>
 							</c:forEach>
-
-						</tbody>
-					</table>
-				</div>
-				<!-- /.col -->
+					<%-- <tr>
+  <td>Total Number of Due payment Retailer</td>
+  <td>${reorderCount}</td>
+  <td><a href="#" class="btn btn-success"><span class="glyphicon glyphicon-arrow-right"></span> Show</a></td>
+  </tr> --%>
+				</tbody>
+			</table>
 			</div>
 			
-			<!-- Table row -->
-						Top 5 purchase product
-			<div class="row">
-				<div class="col-xs-12 table-responsive">
-					<table class="table table-striped">
+						<!-- Table row -->
+						<div class="col-md-6">
+					<table class="table table-hover table-bordered">
+						<thead>
+							<th colspan="6"><span style="color: red;">Top 5 purchase product</span></th>
+						</thead>
 						<thead>
 							<tr>
-
 								<th>Product Type</th>
 								<th>Brand</th>
 								<th>Model Number</th>
 								<th>Size</th>
 								<th>Total Sale Price</th>
 								<th>Total Quantity</th>
-								
-
 							</tr>
 						</thead>
 						<tbody>
@@ -144,12 +149,14 @@
 
 						</tbody>
 					</table>
+					</div>
 				</div>
 				<!-- /.col -->
+				</aside>
 			</div>
-
-
-		</aside>
+			
+			<!-- Table row -->
+		
 		<!-- /.right-side -->
 	</div>
 	<!-- ./wrapper -->
