@@ -572,6 +572,7 @@
 		 
 		 $('body').on('change', '.star_rating', function() {
 			  var starRating = $(this).val();
+			  if(starRating!="None"){
 	          var currentDivID = $(this).closest(".clonedDiv").attr("id");
 	          var regex = /\d+/g;
 			  var currentDivPos = currentDivID.match(regex);
@@ -622,6 +623,7 @@
            jQuery(".error_container").html("Some error unknown error occurred.");
             }
           });
+	}
 		 
      });
       
@@ -640,13 +642,13 @@
 		  $("#indoorModelNumber"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 		  }
           
-          if(productType.replace(" ", "").toLowerCase().indexOf("ac") ==-1){
+         /*  if(productType.replace(" ", "").toLowerCase().indexOf("ac") ==-1){
         	  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').addClass("hide");
         	  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2"]').children().removeClass("has-error");
 			  
 		  }else{
 			  $("#star_rating"+currentDivPos).parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
-		  }
+		  } */
           var brandName=$('#brand'+currentDivPos).val();
           $("#modelContainer"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
           $("#sizeContainer"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
@@ -705,16 +707,13 @@
          	  var productType=$('#productTypeContainer'+currentDivPos).val();
          	  
          	 $("#sizeContainer"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
-         	$("#star_rating"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
+         	$("#star_rating"+currentDivPos).find('option').remove().end().append('<option value="None">--Select--</option>');
 	         $("#serialNo"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
 	         $("#indoorModelNumber"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
 	         
          	 $('#ajax_loader').show();
-         	  url = null;
-         	  
-         	  if((productType.replace(" ", "").toLowerCase().indexOf("ac") !=-1)){
+         	  var starFlag=false;
          		 url="/dashboard/getStar/"+brandName+"/"+productType+"/"+modelNumber+"/";
-         		 
          	      $.ajax({
                       url : url,
                        dataType : "json",
@@ -725,16 +724,21 @@
                         if(response.exists){
                             jQuery(".error_container").html("");
                             for( var index = 0; index < response.star.length; index ++){
-                            	if(response.star[index]==null)
+                            	if(response.star[index]==null || response.star[index]=='undefined' || response.star[index].trim().length==0){
                             		continue;
+                            	}
+                            	else{
                                     StarContainer ="<option value='"+ response.star[index] +"'>"+response.star[index]+"</option>";
                                     jQuery("#star_rating"+currentDivPos).append(StarContainer);
+                                    starFlag=true;
+                            	}
                                
                             }
-                                
+                                if(starFlag){
                             StarContainer ="</select></div></div>";
                                 
                                 jQuery("#star_rating"+currentDivPos).append(StarContainer); 
+                                }
                                 
                              }
                         else{
@@ -750,8 +754,8 @@
                      jQuery(".error_container").html("Some error unknown error occurred.");
                       }
                     });
-         	  }
-         	  else{
+         	  
+          	  if(!starFlag){
           		 url="/dashboard/getsize/"+brandName+"/"+productType+"/"+modelNumber+"/";
          	        
           $.ajax({
@@ -789,7 +793,7 @@
             jQuery(".error_container").html("Some error unknown error occurred.");
              }
            });
-		 }
+		 } 
       });
 		 
 		 
@@ -814,7 +818,7 @@
 				         $("#indoorModelNumber"+currentDivPos).find('option').remove().end().append('<option value="">--Select--</option>');
 						url = null;
 						
-						if(starRating==null ||starRating=='undefined' || starRating.trim().length==0){
+						if(starRating==null ||starRating=='undefined' || starRating.trim().length==0 || starRating==='None'){
 							starRating="NA";
 						}
 							url = "/dashboard/getproduct-info/" + brandName + "/"
@@ -1298,13 +1302,13 @@
 												}
 											}
 										},
-										'starRating': {
+									/* 	'starRating': {
 											validators : {
 												notEmpty : {
 													message : 'Select star rating please.'
 												}
 											}
-										},
+										}, */
 										'indoorModelNumber':{
 											validators : {
 												notEmpty : {
