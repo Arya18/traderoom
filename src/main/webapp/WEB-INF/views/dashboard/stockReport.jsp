@@ -142,7 +142,7 @@
 						<!-- /.box-header -->
 						<a href="/dashboard/downloadStockReport"
 							class="btn btn-success pull-right downloadbutton"><span
-							class="glyphicon glyphicon-arrow-down"></span> Download Excel</a>
+							class="glyphicon glyphicon-arrow-down"> Download Excel</span></a>
 						<div class="box-body table-responsive">
 							<table id="example1" class="table table-bordered table-striped">
 								<thead>

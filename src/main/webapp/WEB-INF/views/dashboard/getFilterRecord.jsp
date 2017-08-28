@@ -23,10 +23,8 @@
 
 		<!-- Main content -->
 		<section class="content">
-			<div class="row">
 			
-					<div class="col-md-12" style="margin-bottom: 10px;">
-
+			
 					<form id="filterForm" method="get"
 						action="/dashboard/getStockByFilterRecord">
 						<div class="alert alert-danger text-center hidden"
@@ -41,8 +39,7 @@
 										aria-label="close">&times;</a> <strong>${message}</strong>
 								</div>
 							</c:if>
-						<div class="control-group col-md-12">
-						
+					<div class="row">
 						<div class="col-md-2">
 								<label class="control-label">Firm Name</label>
 								<div class="controls">
@@ -65,90 +62,85 @@
 										<option value="O">Outdoor unit</option>
 									</select>
 								</div>
-							</div>
+						</div>
 							
-							<div class="col-md-2">
-								<label class="control-label">Brand</label>
-								<div class="controls">
-									<select class="form-control" name="brandName" id="brandName">
-										<option value="">--Select--</option>
-										<c:forEach items="${brandName}" var="brandName">
-										<option value="${brandName}">${brandName}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-
-							<div class="col-md-2">
-								<label class="control-label">Model Number</label>
-								<div class="controls">
-									<select class="form-control" name="modelnumber"
-										id="modelnumber">
-										<option value="">--Select--</option>
-									<c:forEach items="${modelnumber}" var="modelnumber">
-										<option value="${modelnumber}">${modelnumber}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-							
-							<div class="col-md-2">
-								<label class="control-label">Size</label>
-								<div class="controls">
-									<select class="form-control" name="size"
-										id="size">
-										<option value="">--Select--</option>
-										<c:forEach items="${size}" var="size">
-										<option value="${size}">${size}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-							
-							<div class="col-md-2">
-								<label class="control-label">Star</label>
-								<div class="controls">
-									<select class="form-control" name="starName"
-										id="starName">
-										<option value="">--Select--</option>
-										<c:forEach items="${star}" var="starName">
-										<option value="${starName}">${starName}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-							
-							<div class="col-md-2">
-								<label class="control-label">Location</label>
-								<div class="controls">
-									<select class="form-control" name="location"
-										id="location">
-										<option value="">--Select--</option>
-										<option value="IUG">Indoor Unit in Godawn</option>
-										<option value="IUS">Indoor Unit in Shop</option>
-										<option value="UG">Unit in Godown</option>
-										<option value="US">Unit in Shop</option>
-									</select>
-								</div>
-							</div>
-								<div class="col-md-1 clearfix">
-								<label class="control-label"> </label>
-								<div class="controls">
-									<input type="submit" class="btn btn-success btn-pass "
-										id="search" value="Search"/>
-								</div>
-							</div>
-							
-							<div class="col-md-1 clearfix">
-								<label class="control-label"> </label>
-								<div class="controls">
-									<button type="button" onclick="downlaodExcel();" class="btn btn-success btn-pass "
-										id="search" value="Downlaod Excel">Download Excel</button>
-								</div>
+						<div class="col-md-2">
+							<label class="control-label">Brand</label>
+							<div class="controls">
+								<select class="form-control" name="brandName" id="brandName">
+									<option value="">--Select--</option>
+									<c:forEach items="${brandName}" var="brandName">
+									<option value="${brandName}">${brandName}</option>
+									</c:forEach>
+								</select>
 							</div>
 						</div>
-					</form>
-				</div> 
+
+						<div class="col-md-2">
+							<label class="control-label">Model Number</label>
+							<div class="controls">
+								<select class="form-control" name="modelnumber"
+									id="modelnumber">
+									<option value="">--Select--</option>
+								<c:forEach items="${modelnumber}" var="modelnumber">
+									<option value="${modelnumber}">${modelnumber}</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						
+						<div class="col-md-2">
+							<label class="control-label">Size</label>
+							<div class="controls">
+								<select class="form-control" name="size"
+									id="size">
+									<option value="">--Select--</option>
+									<c:forEach items="${size}" var="size">
+									<option value="${size}">${size}</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						
+						<div class="col-md-2">
+							<label class="control-label">Star</label>
+							<div class="controls">
+								<select class="form-control" name="starName"
+									id="starName">
+									<option value="">--Select--</option>
+									<c:forEach items="${star}" var="starName">
+									<option value="${starName}">${starName}</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2">
+							<label class="control-label">Location</label>
+							<div class="controls">
+								<select class="form-control" name="location"
+									id="location">
+									<option value="">--Select--</option>
+									<option value="IUG">Indoor Unit in Godawn</option>
+									<option value="IUS">Indoor Unit in Shop</option>
+									<option value="UG">Unit in Godown</option>
+									<option value="US">Unit in Shop</option>
+								</select>
+							</div>
+						</div>
+						
+					</div><br/>
+					<div class="box-footer">
+									<input type="submit" class="btn btn-success btn-pass "
+										id="search" value="Search"/>
+								
+							
+									<button type="button" onclick="downlaodExcel();" class="btn btn-success btn-pass "
+										id="search" value="Downlaod Excel">Download Excel</button>
+						</div>
+					</form><br/>
+				
 				<div class="col-xs-12">
 					<!-- /.box -->
 
