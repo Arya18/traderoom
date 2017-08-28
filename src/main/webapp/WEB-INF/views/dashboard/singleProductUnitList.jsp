@@ -61,8 +61,7 @@
 							</div>
 
 							<div class="col-md-4">
-								<label class="control-label"> </label>
-								<div class="controls">
+								<div class="controls" style="margin-top:24px;">
 									<button type="button" class="btn btn-success btn-pass"
 										id="search" value="Search">Search</button>
 								</div>
