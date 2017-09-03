@@ -60,7 +60,7 @@
 								<tbody>
 									<c:forEach var="customerReport" items="${customerReports}">
 
-										<tr>
+										<tr id="${customerReport.saleInvoice.saleInvoiceNo}">
 											<td>${customerReport.customer.name}</td>
 											<td>${customerReport.customer.contactNo}</td>
 											<td><a
@@ -72,7 +72,10 @@
 											<td><a
 												href="/dashboard/update-saleInvoice/${customerReport.saleInvoice.saleInvoiceNo}"
 												class="btn btn-sm btn-success"><span
-													class="glyphicon glyphicon-pencil"></span> Edit</a></td>
+													class="glyphicon glyphicon-pencil"></span> Edit</a>
+													<%-- <button type="button" onclick="openDisableModel('${customerReport.saleInvoice.saleInvoiceNo}')"class="btn btn-sm btn-success"><span
+													class="glyphicon glyphicon-pencil"></span> Delete</button> --%>
+													</td>
 
 										</tr>
 									</c:forEach>
@@ -88,6 +91,33 @@
 		</section>
 		<!-- /.content -->
 	</aside>
+	
+	<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title text-center">Are you sure to delete?</h4>
+        
+      </div>
+      <div class="modal-body text-center">
+        <p>If press ok,then your inventory stock is updated automatically.</p>
+      </div>
+      <input type="hidden" id="saleInvoiceId"/>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-sm btn-success" onclick="disableSaleInvoice()" data-dismiss="modal">OK</button>
+         <div class="modal-footer">
+        
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    
 	<!-- /.right-side -->
 	<script type="text/javascript">
         $(document).ready(function() {
@@ -104,6 +134,33 @@
                     "bAutoWidth": false
                 });
             });
+        
+        function openDisableModel(saleinvoiceId){
+        	$("#myModal").modal();
+        	$("#saleInvoiceId").val(saleinvoiceId);
+        	
+        }
+        function disableSaleInvoice(){
+        	var saleinvoiceId=$("#saleInvoiceId").val();
+        	url="/dashboard/disableSaleInvoice/"+saleinvoiceId+"/";
+        	$.ajax({
+        	       url : url,
+        	        dataType : "json",
+        	        cache: false,
+        	        async: false,
+        	       success: function(response, status, code){
+        	    	   if(response.disabled){
+        	    		   $("#"+saleinvoiceId).hide();
+        	    	   }
+        	       }, 
+        	       complete: function(){
+        	           $('#ajax_loader').hide();
+        	         },  
+        	       error: function(response, status, code){
+
+        	       }
+        	     });
+        }
         </script>
 </body>
 

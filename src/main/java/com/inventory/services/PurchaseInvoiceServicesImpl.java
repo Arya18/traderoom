@@ -66,4 +66,9 @@ public class PurchaseInvoiceServicesImpl implements PurchaseInvoiceServices{
 		return purchaseInvoiceDao.getAllDuePurchaseInvoice();
 	}
 
+	@Override
+	public BigInteger getMaxId() {
+		return purchaseInvoiceDao.getMaxId();
+	}
+
 }

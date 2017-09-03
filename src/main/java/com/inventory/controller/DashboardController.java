@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -237,8 +238,17 @@ public class DashboardController extends BaseController {
 		List<CustomerReport> customerReps = customerReportServices.getCustomerReportList();
 		System.out.println("Size:: " + customerReps.size());
 
-		if (!customerReps.isEmpty())
-			model.addAttribute("customerReports", customerReps);
+		if (!customerReps.isEmpty()) {
+			CopyOnWriteArrayList<CustomerReport> customerReports = new CopyOnWriteArrayList<CustomerReport>(
+					customerReps);
+			for (CustomerReport customerReport : customerReports) {
+				if (customerReport.getSaleInvoice().getIsDisable() == 1) {
+					customerReports.remove(customerReport);
+				}
+			}
+			System.out.println("Size After filter" + customerReports.size());
+			model.addAttribute("customerReports", customerReports);
+		}
 		return "customer-report";
 	}
 
@@ -252,6 +262,8 @@ public class DashboardController extends BaseController {
 		model.addAttribute("products", productBrands);
 		List<Firms> firms = dashboardService.findallFirms();
 		model.addAttribute("firms", firms);
+		BigInteger maxId=saleInvoiceServices.getMaxId();
+		model.addAttribute("maxId", maxId);
 		return "sales-invoice";
 	}
 
@@ -1061,6 +1073,8 @@ public class DashboardController extends BaseController {
 			SaleInvoice saleinvoice = new SaleInvoice();
 
 			saleinvoice.setCmpySaleInvoiceNo(sipd.getInvoiceNumber());
+			saleinvoice.setInvoiceSequence(sipd.getInvoiceSequence());
+			saleinvoice.setIsDisable(0);
 			saleinvoice.setTotalDiscountedAmount(sipd.getTotalDiscount());
 			saleinvoice.setFinalAmount(sipd.getFinalAmount());
 			if (sipd.getDate() == null)
@@ -1147,6 +1161,7 @@ public class DashboardController extends BaseController {
 				psi.setCmpyPurchaseInvoiceNo(product.getPurchaseInvoiceNo());
 				psi.setSerialNumber(product.getSerialNumber());
 				psi.setTradeDiscount(product.getTradeDiscount());
+				psi.setSingleUnitTax(product.getSingleUnitTax());
 				psi.setBillAmount(product.getBillAmount());
 				psi.setFirm(firm);
 
@@ -1212,15 +1227,22 @@ public class DashboardController extends BaseController {
 				for (ProductSaleInvoice productSaleInvoice : productSaleInvoices) {
 					Product product = productServices.getProductById(productSaleInvoice.getProduct().getId());
 					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("purchaseInvoiceNo", productSaleInvoice.getCmpyPurchaseInvoiceNo());
+					map.put("indoorSerialNo", productSaleInvoice.getIndoorSerialNo());
 					map.put("brand", product.getBrand());
 					map.put("productType", product.getProductType());
 					map.put("model", product.getModelNumber());
+					map.put("cgst", product.getCgstValue());
+					map.put("sgst", product.getSgstValue());
+					map.put("igst", product.getIgstValue());
 					map.put("size", product.getSize());
 					map.put("serialNo", productSaleInvoice.getSerialNumber());
-					map.put("purchaseInvoiceNo", productSaleInvoice.getCmpyPurchaseInvoiceNo());
 					map.put("quantity", productSaleInvoice.getQuantity());
 					map.put("unitPrice", productSaleInvoice.getUnitPrice());
-					map.put("indoorSerialNo", productSaleInvoice.getIndoorSerialNo());
+					map.put("tradeDiscount", productSaleInvoice.getTradeDiscount());
+					map.put("billAmount", productSaleInvoice.getBillAmount());
+					map.put("singleUnitTax", productSaleInvoice.getSingleUnitTax());
+					map.put("hsnCode", product.getHsnCode());
 					listmap.add(map);
 				}
 				Firms firm = productSaleInvoices.iterator().next().getFirm();
@@ -1293,6 +1315,9 @@ public class DashboardController extends BaseController {
 			productBrands.add(pro.getBrand());
 		}
 		model.addAttribute("products", productBrands);
+		
+		BigInteger maxId=purchaseInvoiceServices.getMaxId();
+		model.addAttribute("maxId", maxId);
 
 		return "purchaseInvoice";
 	}
@@ -1377,6 +1402,7 @@ public class DashboardController extends BaseController {
 			purchaseInvoice.setComments(purchaseInvoiceProductDTO.getComments());
 			purchaseInvoice.setDiscountAmount(purchaseInvoiceProductDTO.getTotalDiscount());
 			purchaseInvoice.setFinalAmount(purchaseInvoiceProductDTO.getFinalAmount());
+			purchaseInvoice.setInvoiceSequence(purchaseInvoiceProductDTO.getInvoiceSequence());
 			purchaseInvoice.setSupplier(supplier);
 			purchaseInvoice.setPaymentMode(purchaseInvoiceProductDTO.getPaymentMode());
 			if (purchaseInvoiceProductDTO.getPaymentMode().equalsIgnoreCase("Cheque")) {
@@ -2663,10 +2689,14 @@ public class DashboardController extends BaseController {
 	}
 
 	@RequestMapping(value = "/getStockByFilterRecord", method = RequestMethod.GET)
-	public String getStockByFilterRecord(Model model, @RequestParam(value = "firmName",required=false) String firmName,
-			@RequestParam(value = "unit",required=false) String unit, @RequestParam(value = "brandName",required=false) String brandName,
-			@RequestParam(value = "modelnumber",required=false) String modelnumber, @RequestParam(value = "size",required=false) String size,
-			@RequestParam(value = "starName",required=false) String starName, @RequestParam(value = "location",required=false) String location) {
+	public String getStockByFilterRecord(Model model,
+			@RequestParam(value = "firmName", required = false) String firmName,
+			@RequestParam(value = "unit", required = false) String unit,
+			@RequestParam(value = "brandName", required = false) String brandName,
+			@RequestParam(value = "modelnumber", required = false) String modelnumber,
+			@RequestParam(value = "size", required = false) String size,
+			@RequestParam(value = "starName", required = false) String starName,
+			@RequestParam(value = "location", required = false) String location) {
 
 		List<Firms> firms = dashboardService.findallFirms();
 		Set<String> firmsName = new HashSet<>();
@@ -2827,5 +2857,59 @@ public class DashboardController extends BaseController {
 			e.printStackTrace();
 		}
 		return listmap;
+	}
+
+	@RequestMapping(value = "/disableSaleInvoice/{saleInvoiceId}/", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> disableSaleinvoice(
+			@PathVariable(value = "saleInvoiceId") Long saleInvoiceId) {
+		Map<String, Object> responseMap = new HashMap<String, Object>(2);
+		responseMap.put("disabled", false);
+		responseMap.put("message", "disable unsuccessfull");
+		boolean updated=false;
+		try {
+			SaleInvoice saleInvoice = saleInvoiceServices.getSaleInvoiceById(saleInvoiceId);
+			if (saleInvoice != null) {
+				saleInvoice.setIsDisable(1);
+				responseMap.put("disabled", true);
+				responseMap.put("message", "disable successfull");
+				
+				List<ProductSaleInvoice> productSaleInvoiceList = saleInvoice.getProductSaleInvoices();
+				for (ProductSaleInvoice productSaleInvoice : productSaleInvoiceList) {
+					ProductPurchaseInvoice productPurchaseInvoice = null;
+					if (productSaleInvoice.getSerialNumber() != null) {
+						productPurchaseInvoice = productPurchaseInvoiceService.getSaledProductPurchaseInvoiceBySerialNo(productSaleInvoice.getSerialNumber());
+					}
+
+					if (productPurchaseInvoice != null) {
+						productPurchaseInvoice.setSale(0);
+						if (productPurchaseInvoice.getIndoorSerialNo() != null) {
+							ProductPurchaseInvoice productPurchaseInvoiceIndoor=productPurchaseInvoiceService.getProductPurchaseInvoiceByIndoorSerialNo(productPurchaseInvoice.getIndoorSerialNo());
+							productPurchaseInvoiceIndoor.setIndoorsale(0);
+							productPurchaseInvoiceService.addOrUpdateProductPurchaseinvoice(productPurchaseInvoiceIndoor);
+						}
+						
+						productPurchaseInvoiceService.addOrUpdateProductPurchaseinvoice(productPurchaseInvoice);
+						Product product = productServices.getProductById(productPurchaseInvoice.getProduct().getId());
+						product.setQuantity(product.getQuantity() + 1);
+						productServices.addOrUpdateProduct(product);
+
+						StockReport stockReport = stockReportServices.getStockReportByProductId(product.getId());
+						stockReport.setUnits(product.getQuantity());
+						stockReportServices.createOrUpdateStockReport(stockReport);
+						updated=true;
+					}
+					
+				}
+				
+				if(updated){
+				saleInvoiceServices.addOrUpdateSaleInvoice(saleInvoice);
+				return new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.OK);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.BAD_REQUEST);
 	}
 }

@@ -4,7 +4,8 @@
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
 			<h1>
-				Invoice <small>${purchaseInvoice.cmpyPurchaseInvoiceNo}</small>
+			Invoice Sequence:<small>${purchaseInvoice.invoiceSequence}</small>
+				Invoice :<small>${purchaseInvoice.cmpyPurchaseInvoiceNo}</small>
 			</h1>
 			<!--  <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -38,7 +39,8 @@
 					To
 					<address>
 						<strong>${firm.name}</strong><br>${firm.addresLine1}<br>
-						${firm.addressLine2}<br> Phone: ${firm.contactNumber}<br /> GST Number:
+						${firm.addressLine2}<br> Phone: ${firm.contactNumber}<br />
+						Email:${firm.email}<br /> GST Number:
 						${firm.gstNumber}<br />Tin Number:${firm.tinNumber}
 					</address>
 				</div>
@@ -56,7 +58,8 @@
 				</div>
 				<!-- /.col -->
 				<div class="col-sm-4 invoice-col">
-					<b>Invoice ${purchaseInvoice.cmpyPurchaseInvoiceNo}</b><br /> <br />
+				<b>Invoice Sequence:${purchaseInvoice.invoiceSequence}</b><br />
+					<b>Invoice/Challan ${purchaseInvoice.cmpyPurchaseInvoiceNo}</b><br /> <br />
 					<!--  <b>Previous Invoice No:</b> #dd84545<br/>
                             <b>Payment Due:</b> 2/22/2014<br/>
                             <b>Payment Amount:Rs1025</b>  -->
@@ -81,8 +84,8 @@
 								<th>Rebate Discount</th> 
 								<th>HSN Code</th>
 								<th>Bill Amount</th>
-								<th>Tax Amount</th>
 								<th>Basic Amount</th>
+								<th>Tax Amount</th>
 								<th>Serial Number</th>
 
 							</tr>
@@ -93,15 +96,19 @@
 									<td>${productDetail.quantity}</td>
 									<td>${productDetail.productType}</td>
 									<td>${productDetail.brand}</td>
-									<td>model No ${productDetail.model } ,size
-										${productDetail.size}</td>
+									<td>model No:${productDetail.model}
+										,size:${productDetail.size}</td>
 									<td>${productDetail.unitPrice }</td>
 									<td>${productDetail.tradeDiscount }</td>
 									<td>${productDetail.rebateDiscount }</td>
 									<td>${productDetail.hsnCode }</td>
 									<td>${productDetail.billAmount}</td>
 									<td>${productDetail.billAmount-productDetail.singleUnitTax}</td>
-									<td>${productDetail.singleUnitTax} </td><!-- (cgst(productDetail.cgst)%,sgst(productDetail.cgst)%,igst(productDetail.igst)%)}</td> -->
+									<td>${productDetail.singleUnitTax} 
+									<c:if test="${not empty productDetail.cgst}">(cgst:${productDetail.cgst}%)
+									</c:if><c:if test="${not empty productDetail.sgst}">,(sgst:${productDetail.sgst}%)
+									</c:if><c:if test="${not empty productDetail.igst}">,(igst:${productDetail.igst}%)
+									</c:if></td> 
 									<td>${productDetail.serialNo}<c:if
 											test="${not empty productDetail.indoorSerialNo}">
                                          >>Indoor Serial No:${productDetail.indoorSerialNo}
@@ -153,7 +160,11 @@
 							</tr>
 							<tr>
 								<th>Payment Mode:(Cash or Cheque)</th>
-								<td>${purchaseInvoice.paymentMode}</td>
+								<td>${purchaseInvoice.paymentMode}
+								<c:if test="${purchaseInvoice.paymentMode eq 'Cheque'}">
+								<br>Cheque Number: ${purchaseInvoice.chequeNumber} <br>Bank Name :${purchaseInvoice.bankName} <br>Cheque Date:${purchaseInvoice.chequeDate}
+								</c:if>
+								</td>
 							</tr>
 						</table>
 					</div>

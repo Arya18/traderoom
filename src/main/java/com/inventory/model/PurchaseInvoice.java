@@ -69,6 +69,8 @@ public class PurchaseInvoice implements Serializable{
 	@Column(name = "chequeDate")
 	private Date chequeDate;
 	
+	@Column(name = "invoiceSequence")
+	private String invoiceSequence;
 	
 	private double amountPaid;
 	
@@ -284,6 +286,14 @@ public class PurchaseInvoice implements Serializable{
 
 	public void setChequeDate(Date chequeDate) {
 		this.chequeDate = chequeDate;
+	}
+
+	public String getInvoiceSequence() {
+		return invoiceSequence;
+	}
+
+	public void setInvoiceSequence(String invoiceSequence) {
+		this.invoiceSequence = invoiceSequence;
 	}
 
 	

@@ -179,5 +179,17 @@ public class PurchaseInvoiceDaoImpl implements PurchaseInvoiceDao{
 		session.close();
 		return purchaseInvoices;
 	}
+	
+	@Override
+	public BigInteger getMaxId() {
+		session = sessionFactory.openSession();
+		tx = session.beginTransaction();
+		
+		SQLQuery query = session.createSQLQuery("select max(invoiceNo) from purchaseinvoice");
+		BigInteger maxId = (BigInteger)query.uniqueResult();
+		tx.commit();
+		session.close();
+		return maxId;
+	}
 
 }

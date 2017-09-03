@@ -68,9 +68,15 @@ public class SaleInvoice implements Serializable{
 	@Column(name = "bankName")
 	private String bankName;
 	
+	@Column(name = "invoiceSequence")
+	private String invoiceSequence;
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "chequeDate")
 	private Date chequeDate;
+	
+	@Column(name = "isDisable")
+	private Integer isDisable;
 	
 	@OneToMany(mappedBy = "saleinvoice",fetch=FetchType.EAGER)
 	private List<ProductSaleInvoice> productSaleInvoices=new ArrayList<ProductSaleInvoice>();
@@ -264,8 +270,21 @@ public class SaleInvoice implements Serializable{
 		this.chequeDate = chequeDate;
 	}
 
-	
+	public Integer getIsDisable() {
+		return isDisable;
+	}
 
+	public void setIsDisable(Integer isDisable) {
+		this.isDisable = isDisable;
+	}
+
+	public String getInvoiceSequence() {
+		return invoiceSequence;
+	}
+
+	public void setInvoiceSequence(String invoiceSequence) {
+		this.invoiceSequence = invoiceSequence;
+	}
 
 	
 }

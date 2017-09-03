@@ -14,4 +14,5 @@ public interface SaleInvoiceDao {
 	BigInteger paymentDueCount();
 	List<SaleInvoice> getAllDueSaleInvoice();
 	SaleInvoice getLastSaleInvoice(long customerId);
+	public BigInteger getMaxId();
 }

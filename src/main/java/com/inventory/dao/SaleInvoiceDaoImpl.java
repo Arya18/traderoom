@@ -79,7 +79,7 @@ public class SaleInvoiceDaoImpl implements SaleInvoiceDao{
 		try{
 			session = sessionFactory.openSession();
 			@SuppressWarnings("unchecked")
-			List<SaleInvoice> saleInvoices = session.createQuery("SELECT s FROM SaleInvoice s WHERE s.cmpySaleInvoiceNo=:sno").setParameter("sno", companySaleInvoiceNo).list();
+			List<SaleInvoice> saleInvoices = session.createQuery("SELECT s FROM SaleInvoice s WHERE s.cmpySaleInvoiceNo=:sno AND s.isDisable=0").setParameter("sno", companySaleInvoiceNo).list();
 			if(!saleInvoices.isEmpty()){
 				saleInvoice= saleInvoices.get(0);
 			}
@@ -96,7 +96,7 @@ public class SaleInvoiceDaoImpl implements SaleInvoiceDao{
 		session = sessionFactory.openSession();
 		tx = session.beginTransaction();
 		
-		SQLQuery query = session.createSQLQuery("select count(*) from saleinvoice s where s.balanceLeft>0");
+		SQLQuery query = session.createSQLQuery("select count(*) from saleinvoice s where s.balanceLeft>0 AND s.isDisable=0"); 
 		BigInteger count = (BigInteger)query.uniqueResult();
 		System.out.println(count);
 		tx.commit();
@@ -108,7 +108,7 @@ public class SaleInvoiceDaoImpl implements SaleInvoiceDao{
 	public List<SaleInvoice> getAllDueSaleInvoice() {
 		session = sessionFactory.openSession();
 		@SuppressWarnings("unchecked")
-		List<SaleInvoice> saleInvoices = session.createQuery("SELECT s FROM SaleInvoice s WHERE  s.balanceLeft>0 ORDER BY s.balanceLeft DESC").list();
+		List<SaleInvoice> saleInvoices = session.createQuery("SELECT s FROM SaleInvoice s WHERE  s.balanceLeft>0 AND s.isDisable=0 ORDER BY s.balanceLeft DESC").list();
 		session.close();
 		return saleInvoices;
 	}
@@ -117,9 +117,21 @@ public class SaleInvoiceDaoImpl implements SaleInvoiceDao{
 	public SaleInvoice getLastSaleInvoice(long customerId){
 		session = sessionFactory.openSession();
 		@SuppressWarnings("unchecked")
-		List<SaleInvoice> saleInvoices = session.createQuery("SELECT s FROM SaleInvoice s WHERE  s.customer:=c").setParameter("c", customerId).list();
+		List<SaleInvoice> saleInvoices = session.createQuery("SELECT s FROM SaleInvoice s WHERE  s.customer:=c AND s.isDisable=0").setParameter("c", customerId).list();
 		
 		session.close();
 		return saleInvoices.get(0);
+	}
+	
+	@Override
+	public BigInteger getMaxId() {
+		session = sessionFactory.openSession();
+		tx = session.beginTransaction();
+		
+		SQLQuery query = session.createSQLQuery("select max(saleInvoiceNo) from saleinvoice");
+		BigInteger maxId = (BigInteger)query.uniqueResult();
+		tx.commit();
+		session.close();
+		return maxId;
 	}
 }

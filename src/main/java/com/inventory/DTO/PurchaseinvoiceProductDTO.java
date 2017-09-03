@@ -21,6 +21,7 @@ public class PurchaseinvoiceProductDTO {
 	private String chequeNumber;
 	private String bankName;
 	private Date chequeDate;
+	private String invoiceSequence;
 	List<ProductDTO> productsArray;
 	public String getInvoiceNumber() {
 		return invoiceNumber;
@@ -95,6 +96,7 @@ public class PurchaseinvoiceProductDTO {
 	public void setFirmId(Long firmId) {
 		this.firmId = firmId;
 	}
+	
 	public String getChequeNumber() {
 		return chequeNumber;
 	}
@@ -112,6 +114,12 @@ public class PurchaseinvoiceProductDTO {
 	}
 	public void setChequeDate(Date chequeDate) {
 		this.chequeDate = chequeDate;
+	}
+	public String getInvoiceSequence() {
+		return invoiceSequence;
+	}
+	public void setInvoiceSequence(String invoiceSequence) {
+		this.invoiceSequence = invoiceSequence;
 	}
 	
 	

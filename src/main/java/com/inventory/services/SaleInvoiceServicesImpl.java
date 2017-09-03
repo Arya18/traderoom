@@ -51,4 +51,9 @@ public class SaleInvoiceServicesImpl implements SaleInvoiceServices{
 	public SaleInvoice getLastSaleInvoice(long customerId){
 		return saleInvoiceDao.getLastSaleInvoice(customerId);
 	}
+
+	@Override
+	public BigInteger getMaxId() {
+		return saleInvoiceDao.getMaxId();
+	}
 }

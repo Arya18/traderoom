@@ -47,6 +47,7 @@
 						<!-- /.box-header -->
 						<!-- form start -->
 						<form role="form" id="productsForm">
+						<input type="hidden" id="maxId" value="${maxId}"/>
 							<div class="box-body clonedDiv" id="addProducts1">
 								<div class="row">
 									<div class="col-md-2">
@@ -289,7 +290,7 @@
 								<div class="row">
 									<div class="col-md-2">
 										<div class="form-group">
-											<label for="invoiceNumber">Invoice Number</label> <input
+											<label for="invoiceNumber">Invoice/Challan Number</label> <input
 												placeholder="invoice number" id="invoiceNo"
 												class="form-control" name="invoiceNumber" required=""
 												type="text">
@@ -308,6 +309,14 @@
 										</select>
 									</div>
 								</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="invoiceNumber">Invoice Sequence</label> <input
+												type="text" placeholder="invoice sequence" id="invoiceSequence"
+												class="form-control" name="invoiceSequence" readonly/>
+										</div>
+									
+									</div>
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="totalDiscountedAmount">Discounted amount</label>
@@ -349,11 +358,11 @@
 											</select>
 										</div>
 									</div>
-								<!-- 	<div class="col-md-2 hide">
+							 	 	<div class="col-md-2 hide">
 										<div class="form-group">
 											<label for="chequeNumber">Cheque Number</label> 
 											<input
-												type="text" name="chequeNumber " placeholder="Cheque number"
+												type="text" name="chequeNumber" placeholder="Cheque number"
 												id="chequeNumber" class="form-control" required />
 										</div>
 									</div>
@@ -365,20 +374,19 @@
 												id="bankName" class="form-control" required />
 										</div>
 									</div>
-									<div class="col-md-2 hide">
+								 	<div class="col-md-2 hide">
 										<div class="form-group">
 											<label>Cheque Date:</label>
 											<div class="input-group">
 												<div class="input-group-addon">
 													<i class="fa fa-calendar"></i>
 												</div>
-												<input type="text" id="chequeDate"
+												<input type="text" id="datemask2"
 													data-inputmask="'alias': 'yyyy-mm-dd'" data-mask
-													class="form-control invoicedate" name="chequeDate" required>
+													class="form-control chequeDate" name="chequeDate" required>
 											</div>
-											/.input group
 										</div>
-									</div> -->
+									</div>  
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="amountPaid">Amount Paid</label> <input
@@ -408,7 +416,7 @@
 									</div>
 									<div class="col-md-2">
 										<div class="form-group">
-											<label>Date masks:</label>
+											<label>Date:</label>
 											<div class="input-group">
 												<div class="input-group-addon">
 													<i class="fa fa-calendar"></i>
@@ -659,20 +667,27 @@
 		 }
 });
 
-/* 	$('body').on('change', '#paymentModeContainer', function() {
+ 	 $('body').on('change', '#paymentModeContainer', function() {
 			var paymentType = $(this).val();
 			console.log(paymentType); 
 			if(paymentType == "Cheque"){
 				$("#chequeNumber").parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
-				$("#chequeDate").parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
+				$(".chequeDate").parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
 				$("#bankName").parents('div[class^="col-md-2 hide"]').removeClass("hide",1000);
 			}else{
 				$("#chequeNumber").parents('div[class^="col-md-2"]').addClass("hide",1000);
-				$("#chequeDate").parents('div[class^="col-md-2"]').addClass("hide",1000);
+				$(".chequeDate").parents('div[class^="col-md-2"]').addClass("hide",1000);
 				$("#bankName").parents('div[class^="col-md-2"]').addClass("hide",1000);
 			}
-		}); */
-
+		});  
+	
+ 	$('body').on('change', '#firmId1', function() {
+		var maxId=$("#maxId").val();
+		var frimName=$("#firmId1 option:selected").text();
+		var saleInvoiceSequence=maxId+"- "+frimName;
+		$("#invoiceSequence").val(saleInvoiceSequence);
+	}); 
+ 	
 	 $('body').on('change', '.product_type', function() {
 		
 		  var productType = $(this).val();
@@ -1015,7 +1030,7 @@
 		var validator = $('#supplierForm').data('bootstrapValidator');
 		var customerData = $("#supplierForm").children("#suppliers");
 		if((customerData).find('.has-error').length>0){ //it's `
-			alert("Please fill the required field.");
+			//alert("Please fill the required field.");
 			$("#supplierForm").submit(function(e){
 			        e.preventDefault();
 			    });

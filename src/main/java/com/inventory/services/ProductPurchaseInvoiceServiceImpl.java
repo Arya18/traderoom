@@ -96,4 +96,9 @@ public List<Object[]> getRecordByFilter(String firmName, String unit, String bra
 		starName,location);
 }
 
+@Override
+public ProductPurchaseInvoice getSaledProductPurchaseInvoiceBySerialNo(String serialNo) {
+	return productPurchaseInvoiceDao.getSaledProductPurchaseInvoiceBySerialNo(serialNo);
+}
+
 }

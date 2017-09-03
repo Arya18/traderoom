@@ -17,4 +17,5 @@ public interface PurchaseInvoiceDao {
 			String purchaseInvoiceNumber);
 	BigInteger paymentDueCountOfSuppliers();
 	List<PurchaseInvoice> getAllDuePurchaseInvoice();
+	BigInteger getMaxId();
 }

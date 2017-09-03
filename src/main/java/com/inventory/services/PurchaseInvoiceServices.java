@@ -16,4 +16,5 @@ public interface PurchaseInvoiceServices {
 			String purchaseInvoiceNumber);
 	BigInteger paymentDueCountOfSuppliers();
 	List<PurchaseInvoice> getAllDuePurchaseInvoice();
+	public BigInteger getMaxId();
 }

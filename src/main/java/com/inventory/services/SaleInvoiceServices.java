@@ -13,4 +13,5 @@ public interface SaleInvoiceServices {
 	BigInteger paymentDueCount();
 	List<SaleInvoice> getAllDueSaleInvoice();
 	SaleInvoice getLastSaleInvoice(long customerId);
+	public BigInteger getMaxId();
 }

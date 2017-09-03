@@ -4,14 +4,9 @@
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
 			<h1>
-				<c:choose>
-					<c:when test="${saleInvoice.taxAmount gt 0}">
-                        Tax Invoice
-                        </c:when>
-					<c:otherwise>
                         Sale Invoice
-                        </c:otherwise>
-				</c:choose>
+	
+				<small>Invoice Sequence:${saleInvoice.invoiceSequence}</small>
 				<small>${saleInvoice.cmpySaleInvoiceNo}</small>
 			</h1>
 			<!--  <ol class="breadcrumb">
@@ -46,7 +41,8 @@
 					From
 					<address>
 						<strong>${firm.name}</strong><br>${firm.addresLine1}<br>
-						${firm.addressLine2}<br> Phone: ${firm.contactNumber}<br /> GST Number:
+						${firm.addressLine2}<br> Phone: ${firm.contactNumber}<br /> 
+						Email:${firm.email}<br />GST Number:
 						${firm.gstNumber}<br />Tin Number:${firm.tinNumber}
 					</address>
 				</div>
@@ -62,7 +58,8 @@
 				</div>
 				<!-- /.col -->
 				<div class="col-sm-4 invoice-col">
-					<b>Invoice ${saleInvoice.cmpySaleInvoiceNo}</b><br /> <br />
+				<b>Invoice Sequence:${saleInvoice.invoiceSequence}</b><br />
+					<b>Invoice/Challan Number: ${saleInvoice.cmpySaleInvoiceNo}</b><br /> <br />
 					<!--   <b>Previous Invoice No:</b> #dd84545<br/>
                             <b>Payment Due:</b> 2/22/2014<br/>
                             <b>Payment Amount:Rs1025</b>  -->
@@ -77,14 +74,17 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>IN No.</th>
+								<!-- <th>IN No.</th> -->
 								<th>Qty</th>
 								<th>Product Type</th>
 								<th>Brand</th>
 								<th>Description</th>
 								<th>Unit Price(in Rs)</th>
-								<th>Discount Rate</th>
-								<th>Unit price After Discount(in Rs)</th>
+								<th>Trade Discount</th>
+								<th>HSN Code</th>
+								<th>Bill Amount</th>
+								<th>Basic Amount</th>
+								<th>Tax Amount</th>
 								<th>Serial Number</th>
 
 							</tr>
@@ -92,17 +92,23 @@
 						<tbody>
 							<c:forEach var="productDetail" items="${productList}">
 								<tr>
-									<td>${productDetail.purchaseInvoiceNo}</td>
-									<td>${productDetail.quantity}</td>
+								<%-- 	<td>${productDetail.purchaseInvoiceNo}</td> --%>
+										<td>${productDetail.quantity}</td>
 									<td>${productDetail.productType}</td>
 									<td>${productDetail.brand}</td>
-									<td>model No ${productDetail.model } ,size
-										${productDetail.size}</td>
+									<td>model No:${productDetail.model}
+										,size:${productDetail.size}</td>
 									<td>${productDetail.unitPrice }</td>
-									<td>${productDetail.discountRate}</td>
-									<td>${productDetail.unitPrice-((productDetail.unitPrice*productDetail.discountRate)/100)}</td>
-									<%-- <td>${productDetail.unitPrice }</td> --%>
-									<td>Serial No:${productDetail.serialNo} <c:if
+									<td>${productDetail.tradeDiscount }</td>
+									<td>${productDetail.hsnCode }</td>
+									<td>${productDetail.billAmount}</td>
+									<td>${productDetail.billAmount-productDetail.singleUnitTax}</td>
+									<td>${productDetail.singleUnitTax} 
+									<c:if test="${not empty productDetail.cgst}">(cgst:${productDetail.cgst}%)
+									</c:if><c:if test="${not empty productDetail.sgst}">,(sgst:${productDetail.sgst}%)
+									</c:if><c:if test="${not empty productDetail.igst}">,(igst:${productDetail.igst}%)
+									</c:if></td> 
+									<td>${productDetail.serialNo}<c:if
 											test="${not empty productDetail.indoorSerialNo}">
                                          >>Indoor Serial No:${productDetail.indoorSerialNo}
                                         </c:if>
@@ -124,13 +130,8 @@
 					<div class="table-responsive">
 						<table class="table">
 
-
 							<tr>
-								<th>Total Discounted Amount:</th>
-								<td>${saleInvoice.totalDiscountedAmount}</td>
-							</tr>
-							<tr>
-								<th>Total Taxable Amount:(${saleInvoice.taxPercent} %)</th>
+								<th>Total Taxable Amount:</th>
 								<td>${saleInvoice.taxAmount}</td>
 							</tr>
 							<tr>
@@ -156,12 +157,16 @@
 							</tr>
 							<tr>
 								<th>Payment Mode:(Cash or Cheque)</th>
-								<td>${saleInvoice.paymentMode}</td>
+								<td>${saleInvoice.paymentMode}
+								<c:if test="${saleInvoice.paymentMode eq 'Cheque'}">
+								<br>Cheque Number: ${saleInvoice.chequeNumber} <br>Bank Name :${saleInvoice.bankName} <br>Cheque Date:${saleInvoice.chequeDate}
+								</c:if>
+								</td>
 							</tr>
 						</table>
 					</div>
 					<input type="button" value="Print" onclick="window.print()" />
-					<input type="button" value="Edit" onclick="" />
+					<!-- <input type="button" value="Edit" onclick="" /> -->
 				</div>
 				<!-- /.col -->
 			</div>

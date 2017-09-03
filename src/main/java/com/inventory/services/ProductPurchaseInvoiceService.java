@@ -40,4 +40,7 @@ public interface ProductPurchaseInvoiceService {
 
 	List<Object[]> getRecordByFilter(String firmName, String unit, String brandName, String modelnumber, String size,
 			String starName, String location);
+	
+	ProductPurchaseInvoice getSaledProductPurchaseInvoiceBySerialNo(
+			String serialNo);
 }

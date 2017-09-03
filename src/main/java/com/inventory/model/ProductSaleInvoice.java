@@ -56,6 +56,9 @@ public class ProductSaleInvoice {
 	@Column(name="bill_amount")
 	private Double billAmount;
 	
+	@Column(name="singleUnitTax")
+	private Double singleUnitTax;
+	
 	@ManyToOne
 	@JoinColumn(name = "firm_id")
 	private Firms firm;
@@ -158,7 +161,11 @@ public class ProductSaleInvoice {
 	public void setBillAmount(Double billAmount) {
 		this.billAmount = billAmount;
 	}
-	
-	
+	public Double getSingleUnitTax() {
+		return singleUnitTax;
+	}
+	public void setSingleUnitTax(Double singleUnitTax) {
+		this.singleUnitTax = singleUnitTax;
+	}
 	
 }

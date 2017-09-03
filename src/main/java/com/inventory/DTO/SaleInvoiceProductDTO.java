@@ -25,6 +25,7 @@ public class SaleInvoiceProductDTO {
 	private String bankName;
 	private Date chequeDate;
 	private Long firmId;
+	private String invoiceSequence;
 	
 	List<ProductDTO> productsArray;
 	public String getInvoiceNumber() {
@@ -139,7 +140,12 @@ public class SaleInvoiceProductDTO {
 	public void setChequeDate(Date chequeDate) {
 		this.chequeDate = chequeDate;
 	}
-	
+	public String getInvoiceSequence() {
+		return invoiceSequence;
+	}
+	public void setInvoiceSequence(String invoiceSequence) {
+		this.invoiceSequence = invoiceSequence;
+	}
 	
 
 }

@@ -39,6 +39,22 @@ public class ProductPurchaseInvoiceDaoImpl implements ProductPurchaseInvoiceDao{
 	}
 	
 	@Override
+	public ProductPurchaseInvoice getSaledProductPurchaseInvoiceBySerialNo(
+			String serialNo) {
+	
+		ProductPurchaseInvoice productPurchaseInvoice=null;
+		session = sessionFactory.openSession();
+		@SuppressWarnings("unchecked")
+		List<ProductPurchaseInvoice> productPurchaseInvoices = session.createQuery("FROM ProductPurchaseInvoice p WHERE p.serialNo=:sn AND p.sale=1").setParameter("sn",serialNo).list();
+		
+		if(!productPurchaseInvoices.isEmpty()){
+		productPurchaseInvoice=productPurchaseInvoices.get(0);
+		}
+		session.close();
+		return productPurchaseInvoice;
+	}
+	
+	@Override
 	public List<ProductPurchaseInvoice> getProductByProductId(long id) {
 		session = sessionFactory.openSession();
 		
